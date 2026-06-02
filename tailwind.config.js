@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -7,7 +7,6 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Primary green - fresh, natural feel
         primary: {
           50: '#f0fdf4',
           100: '#dcfce7',
@@ -21,46 +20,35 @@ module.exports = {
           900: '#14532d',
           950: '#052e16',
         },
-        // Dark slate for text
-        slate: {
-          850: '#1e293b',
-          900: '#0f172a',
-        },
-        // Off-white base
         offwhite: {
-          50: '#fafafa',
+          50: '#fafaf9',
           100: '#f4f4f5',
           200: '#e4e4e7',
+          300: '#d4d4d8',
+          400: '#a1a1aa',
+          500: '#71717a',
+          600: '#52525b',
+          700: '#3f3f46',
+          800: '#27272a',
+          900: '#18181b',
+          950: '#09090b',
         },
-      },
-      fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        slate: {
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
+          950: '#020617',
+        },
       },
       boxShadow: {
         'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
-        'inner-soft': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
-      },
-      animation: {
-        'check-anim': 'check 0.3s ease-out forwards',
-        'slide-up': 'slideUp 0.3s ease-out',
-        'fade-in': 'fadeIn 0.2s ease-out',
-        'bounce-slow': 'bounce 2s infinite',
-      },
-      keyframes: {
-        check: {
-          '0%': { transform: 'scale(1)', opacity: '1' },
-          '50%': { transform: 'scale(1.5)', opacity: '0.5' },
-          '100%': { transform: 'scale(0)', opacity: '0' },
-        },
-        slideUp: {
-          '0%': { transform: 'translateY(10px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
       },
     },
   },
