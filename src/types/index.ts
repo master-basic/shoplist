@@ -69,6 +69,7 @@ export interface User {
   name: string;
   email: string;
   avatar?: string;
+  isAdmin: boolean;
   created_at: string;
   preferred_currency: string;
   notification_preferences: NotificationPreferences;

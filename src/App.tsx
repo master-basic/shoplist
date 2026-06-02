@@ -1,7 +1,7 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AuthProvider } from '@/hooks/useAuth';
+import { AuthProvider, useAuth } from '@/hooks/useAuth';
 import { StoreProvider } from '@/store/useStore';
 
 // Pages
@@ -31,7 +31,20 @@ const queryClient = new QueryClient({
   },
 });
 
+// Public routes that don't require authentication
+const PUBLIC_ROUTES = ['/login', '/register', '/onboarding'];
+
 function App() {
+  const location = useLocation();
+  
+  // Check if current route is a public route
+  const isPublicRoute = PUBLIC_ROUTES.some(route => location.pathname === route);
+  
+  // If not on a public route and not authenticated, redirect to login
+  if (!isPublicRoute && !useAuth.getState().isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  
   return (
     <QueryClientProvider client={queryClient}>
       <StoreProvider>
@@ -42,8 +55,8 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/onboarding" element={<Onboarding />} />
               
-              {/* Main App Routes */}
-              <Route path="/" element={<MainLayout children={<Navigate to="/lists" replace />} />}>
+              {/* Main App Routes - only accessible when authenticated */}
+              <Route path="/" element={<MainLayout />}>
                 <Route index element={<HomePage />} />
                 <Route path="lists" element={<Lists />} />
                 <Route path="list/:id" element={<ListDetail />} />
@@ -55,9 +68,12 @@ function App() {
                 <Route path="profile" element={<Profile />} />
               </Route>
               
-              
-              {/* Catch all */}
-              <Route path="*" element={<Navigate to="/" replace />} />
+              {/* Catch all - redirect to login if not authenticated, otherwise to home */}
+              <Route path="*" element={
+                !useAuth.getState().isAuthenticated 
+                  ? <Navigate to="/login" replace /> 
+                  : <Navigate to="/" replace />
+              } />
             </Routes>
         </AuthProvider>
       </StoreProvider>
