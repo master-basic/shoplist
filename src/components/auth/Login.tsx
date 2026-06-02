@@ -15,7 +15,7 @@ export const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   
-  const { signIn, resetPassword, user } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
   
   // Redirect if already logged in
@@ -31,11 +31,8 @@ export const Login: React.FC = () => {
     setIsLoading(true);
     
     try {
-      if (isForgotPassword) {
-        await resetPassword(email);
-      } else {
-        await signIn(email, password);
-      }
+      // TODO: Implement forgot password
+      await login(email, password);
     } catch (err: any) {
       setError(err.message || 'An error occurred');
     } finally {
@@ -120,17 +117,6 @@ export const Login: React.FC = () => {
             </Button>
           </form>
           
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or continue with</span>
-              </div>
-            </div>
-            
-          </div>
         </div>
         
         <p className="text-center text-gray-600 mt-6">

@@ -4,12 +4,12 @@
 
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useAuth } from '@hooks/useAuth';
-import { useHousehold } from '@hooks/useHousehold';
-import { useGroceryList } from '@hooks/useGroceryList';
+import { useAuth } from '@/hooks/useAuth';
+import { useHousehold } from '@/hooks/useHousehold';
+import { useGroceryList } from '@/hooks/useGroceryList';
 
 export function Sidebar() {
-  const { user, signOut } = useAuth();
+  const { user, logout } = useAuth();
   const { households, currentHouseholdId, setCurrentHouseholdId } = useHousehold();
   const { lists } = useGroceryList();
   const [searchQuery, setSearchQuery] = useState({ q: '', filters: {} });
@@ -197,7 +197,7 @@ export function Sidebar() {
               <p className="text-xs text-slate-500 truncate">{user?.email}</p>
             </div>
             <button
-              onClick={signOut}
+              onClick={logout}
               className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
               title="Logout"
             >

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/useAuth';
@@ -41,11 +41,6 @@ function App() {
   // Check if current route is a public route
   const isPublicRoute = PUBLIC_ROUTES.some(route => location.pathname === route);
   
-  // If not on a public route and not authenticated, redirect to login
-  if (!isPublicRoute && !useAuth.getState().isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-
   // Load user data on mount if authenticated
   useEffect(() => {
     const auth = useAuth();
@@ -71,34 +66,33 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <StoreProvider>
-        <StoreProvider>
-          <Routes>
-              {/* Auth Routes */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/onboarding" element={<Onboarding />} />
-              
-              {/* Main App Routes - only accessible when authenticated */}
-              <Route path="/" element={<MainLayout />}>
-                <Route index element={<HomePage />} />
-                <Route path="lists" element={<Lists />} />
-                <Route path="list/:id" element={<ListDetail />} />
-                <Route path="shopping" element={<Shopping />} />
-                <Route path="scan" element={<Scan />} />
-                <Route path="reports" element={<Reports />} />
-                <Route path="search" element={<Search />} />
-                <Route path="household" element={<Household />} />
-                <Route path="profile" element={<Profile />} />
-              </Route>
-              
-              {/* Catch all - redirect to login if not authenticated, otherwise to home */}
-              <Route path="*" element={
-                !useAuth.getState().isAuthenticated 
-                  ? <Navigate to="/login" replace /> 
-                  : <Navigate to="/" replace />
-              } />
-            </Routes>
-        </StoreProvider>
+        <Routes>
+            {/* Auth Routes */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/onboarding" element={<Onboarding />} />
+            
+            {/* Main App Routes - only accessible when authenticated */}
+            <Route path="/" element={<MainLayout />}>
+              <Route index element={<HomePage />} />
+              <Route path="lists" element={<Lists />} />
+              <Route path="list/:id" element={<ListDetail />} />
+              <Route path="shopping" element={<Shopping />} />
+              <Route path="scan" element={<Scan />} />
+              <Route path="reports" element={<Reports />} />
+              <Route path="search" element={<Search />} />
+              <Route path="household" element={<Household />} />
+              <Route path="profile" element={<Profile />} />
+            </Route>
+            
+            {/* Catch all - redirect to login if not authenticated, otherwise to home */}
+            <Route path="*" element={
+              !isPublicRoute && !localStorage.getItem('user_id')
+                ? <Navigate to="/login" replace /> 
+                : <Navigate to="/" replace />
+            } />
+          </Routes>
+      </StoreProvider>
     </QueryClientProvider>
   );
 }
