@@ -160,52 +160,6 @@ export const useStore = create<StoreState & StoreActions>()(
   )
 );
 
-// Error Boundary Component
-class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-
-  static getDerivedStateFromError(error: Error) {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    this.props.onError(error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="min-h-screen flex items-center justify-center bg-red-50">
-          <div className="text-center p-8 bg-white rounded-lg shadow-lg">
-            <h1 className="text-2xl font-bold text-red-600 mb-4">Something went wrong</h1>
-            <p className="text-gray-600 mb-4">The application encountered an error.</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-            >
-              Reload Application
-            </button>
-          </div>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
-
-interface ErrorBoundaryProps {
-  children: ReactNode;
-  onError: (error: Error, errorInfo: React.ErrorInfo) => void;
-}
-
-interface ErrorBoundaryState {
-  hasError: boolean;
-  error: Error | null;
-}
-
 // Provider Component
 export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const store = useStore();
@@ -229,27 +183,25 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   // Error handling callback
   const handleError = (error: Error, errorInfo: React.ErrorInfo) => {
-    console.error('ErrorBoundary caught an error', error);
+    console.error('StoreProvider caught an error', error);
     console.error('ErrorInfo:', errorInfo);
     useStore.getState().setError('An error occurred: ' + error.message);
   };
 
   return (
-    <ErrorBoundary onError={handleError}>
-      <StoreContext.Provider value={contextValue}>
-        {storageError ? (
-          <div className="min-h-screen flex items-center justify-center bg-yellow-50">
-            <div className="text-center p-8 bg-white rounded-lg shadow-lg">
-              <h1 className="text-2xl font-bold text-yellow-600 mb-4">Storage unavailable</h1>
-              <p className="text-gray-600 mb-4">Your browser does not support local storage. Data will not be saved.</p>
-              <p className="text-sm text-gray-500">Error: {storageError.message}</p>
-            </div>
+    <StoreContext.Provider value={contextValue}>
+      {storageError ? (
+        <div className="min-h-screen flex items-center justify-center bg-yellow-50">
+          <div className="text-center p-8 bg-white rounded-lg shadow-lg">
+            <h1 className="text-2xl font-bold text-yellow-600 mb-4">Storage unavailable</h1>
+            <p className="text-gray-600 mb-4">Your browser does not support local storage. Data will not be saved.</p>
+            <p className="text-sm text-gray-500">Error: {storageError.message}</p>
           </div>
-        ) : (
-          children
-        )}
-      </StoreContext.Provider>
-    </ErrorBoundary>
+        </div>
+      ) : (
+        children
+      )}
+    </StoreContext.Provider>
   );
 };
 
