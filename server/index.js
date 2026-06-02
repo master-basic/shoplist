@@ -73,6 +73,24 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
+// Generic query endpoint for browser-side operations
+app.post('/api/db/query', async (req, res) => {
+  try {
+    const { text, params } = req.body;
+    
+    if (!text) {
+      return res.status(400).json({ error: 'Query text is required' });
+    }
+    
+    const result = await pool.query(text, params || []);
+    
+    res.json({ rows: result.rows });
+  } catch (error) {
+    console.error('Database query error:', error);
+    res.status(500).json({ error: 'Query failed', message: error.message });
+  }
+});
+
 // =====================================================
 // AUTH ROUTES
 // =====================================================
@@ -369,28 +387,13 @@ app.post('/api/lists', async (req, res) => {
     
     // Create list items
     if (items && items.length > 0) {
-      const itemInserts = items.map(item => `
-        INSERT INTO list_items (list_id, name, quantity, unit_price, category, is_checked, created_by)
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
-      `);
-      
-      const itemParams = items.flatMap((item, idx) => [
-        listId,
-        item.name,
-        item.quantity || 1,
-        item.unitPrice || 0,
-        item.category || 'Other',
-        item.isChecked || false,
-        userId
-      ]);
-      
-      const itemValues = itemInserts.map((_, idx) => `$${idx + 1}`).join(', ');
-      const itemArgs = itemParams.map((_, idx) => `$${idx + 1}`).join(', ');
-      
-      await pool.query(`
-        ${itemInserts.join(' ')}
-        WHERE TRUE AND FALSE
-      `, [listId, ...itemParams]);
+      for (const item of items) {
+        await pool.query(
+          `INSERT INTO list_items (list_id, name, quantity, unit_price, category, is_checked, created_by)
+           VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+          [listId, item.name, item.quantity || 1, item.unitPrice || 0, item.category || 'Other', item.isChecked || false, userId]
+        );
+      }
     }
     
     res.status(201).json({ 
@@ -474,7 +477,7 @@ app.put('/api/lists/:id', async (req, res) => {
     
     const result = await pool.query(
       `UPDATE grocery_lists 
-       SET name = COALESCE($1, name), household_id = COALESCE($2, household_id)
+       SET name = COALESCE($1, name), household_id = COALESCE($2, household_id), updated_at = CURRENT_TIMESTAMP
        WHERE id = $3
        RETURNING *`,
       [name, householdId, id]
@@ -554,7 +557,8 @@ app.put('/api/lists/:listId/items/:itemId', async (req, res) => {
            quantity = COALESCE($2, quantity),
            unit_price = COALESCE($3, unit_price),
            category = COALESCE($4, category),
-           is_checked = COALESCE($5, is_checked)
+           is_checked = COALESCE($5, is_checked),
+           updated_at = CURRENT_TIMESTAMP
        WHERE id = $6 AND list_id = $7
        RETURNING *`,
       [name, quantity, unitPrice, category, isChecked, itemId, listId]
@@ -639,26 +643,13 @@ app.post('/api/receipts', async (req, res) => {
     
     // Create receipt items
     if (req.body.items && req.body.items.length > 0) {
-      const itemInserts = req.body.items.map(item => `
-        INSERT INTO receipt_items (receipt_id, list_item_id, quantity, unit_price, total_price)
-        VALUES ($1, $2, $3, $4, $5)
-      `);
-      
-      const itemParams = req.body.items.flatMap((item, idx) => [
-        receiptId,
-        item.listItemId || null,
-        item.quantity,
-        item.unitPrice,
-        item.totalPrice
-      ]);
-      
-      const itemValues = itemInserts.map((_, idx) => `$${idx + 1}`).join(', ');
-      const itemArgs = itemParams.map((_, idx) => `$${idx + 1}`).join(', ');
-      
-      await pool.query(`
-        ${itemInserts.join(' ')}
-        WHERE TRUE AND FALSE
-      `, [receiptId, ...itemParams]);
+      for (const item of req.body.items) {
+        await pool.query(
+          `INSERT INTO receipt_items (receipt_id, list_item_id, quantity, unit_price, total_price)
+           VALUES ($1, $2, $3, $4, $5)`,
+          [receiptId, item.listItemId || null, item.quantity, item.unitPrice, item.totalPrice]
+        );
+      }
     }
     
     res.status(201).json({ 
@@ -749,6 +740,33 @@ app.get('/api/receipts/:id/items', async (req, res) => {
   } catch (error) {
     console.error('Get receipt items error:', error);
     res.status(500).json({ error: 'Failed to get items', message: error.message });
+  }
+});
+
+// Batch create receipt items
+app.post('/api/receipts/batch-items', async (req, res) => {
+  try {
+    const { receiptId, items } = req.body;
+    
+    if (!receiptId || !items || !Array.isArray(items)) {
+      return res.status(400).json({ error: 'receiptId and items array are required' });
+    }
+    
+    const createdItems = [];
+    for (const item of items) {
+      const result = await pool.query(
+        `INSERT INTO receipt_items (receipt_id, list_item_id, quantity, unit_price, total_price)
+         VALUES ($1, $2, $3, $4, $5)
+         RETURNING *`,
+        [receiptId, item.listItemId || null, item.quantity, item.unitPrice, item.totalPrice]
+      );
+      createdItems.push(result.rows[0]);
+    }
+    
+    res.json({ items: createdItems, message: 'Receipt items created successfully' });
+  } catch (error) {
+    console.error('Batch create items error:', error);
+    res.status(500).json({ error: 'Failed to create receipt items', message: error.message });
   }
 });
 

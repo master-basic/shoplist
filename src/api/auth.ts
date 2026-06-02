@@ -1,150 +1,148 @@
-import { query, queryOne } from '@/config/database';
-import bcrypt from 'bcryptjs';
+import { query, queryOne } from '@/utils/database';
 import { User as UserType } from '@/types';
 
 /**
  * Register a new user
  */
 export async function registerUser(name: string, email: string, password: string): Promise<UserType> {
-  // Check if user already exists
-  const existingUser = await queryOne(
-    'SELECT id, email, name, is_admin, preferred_currency FROM users WHERE email = $1',
-    [email]
-  );
+  const response = await fetch('http://localhost:3001/api/auth/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ name, email, password }),
+  });
 
-  if (existingUser) {
-    throw new Error('Email already registered');
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Registration failed');
   }
 
-  // Hash password
-  const passwordHash = await bcrypt.hash(password, 10);
-
-  // Create user
-  const newUser = await queryOne(
-    `INSERT INTO users (email, password_hash, name, is_admin, preferred_currency)
-     VALUES ($1, $2, $3, FALSE, $4)
-     RETURNING id, email, name, is_admin, preferred_currency, created_at`,
-    [email, passwordHash, name, 'AZN']
-  );
-
-  return newUser;
+  const data = await response.json();
+  return data.user;
 }
 
 /**
  * Login user
  */
 export async function loginUser(email: string, password: string): Promise<UserType> {
-  const user = await queryOne(
-    'SELECT id, email, name, is_admin, preferred_currency, created_at FROM users WHERE email = $1',
-    [email]
-  );
+  const response = await fetch('http://localhost:3001/api/auth/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password }),
+  });
 
-  if (!user) {
-    throw new Error('Invalid email or password');
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Login failed');
   }
 
-  const validPassword = await bcrypt.compare(password, user.password_hash);
-
-  if (!validPassword) {
-    throw new Error('Invalid email or password');
-  }
-
-  // Return user without password hash
-  const { password_hash, ...userWithoutPassword } = user;
-  return userWithoutPassword as UserType;
+  const data = await response.json();
+  return data.user;
 }
 
 /**
  * Get user by ID
  */
 export async function getUserById(id: string): Promise<UserType | null> {
-  const user = await queryOne(
-    'SELECT id, email, name, is_admin, preferred_currency, created_at FROM users WHERE id = $1',
-    [id]
-  );
-  return user || null;
+  const response = await fetch(`http://localhost:3001/api/auth/user/${id}`, {
+    method: 'GET',
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to get user');
+  }
+
+  const data = await response.json();
+  return data.user || null;
 }
 
 /**
  * Get user households
  */
 export async function getUserHouseholds(userId: string) {
-  const result = await query(
-    `SELECT h.id, h.name, h.description, h.created_at,
-            h.created_by,
-            ARRAY_AGG(DISTINCT uh.role::text) as roles
-     FROM households h
-     JOIN user_households uh ON h.id = uh.household_id
-     WHERE uh.user_id = $1
-     GROUP BY h.id, h.name, h.description, h.created_at, h.created_by, h.created_by`,
-    [userId]
-  );
-  return result.rows;
+  const response = await fetch(`http://localhost:3001/api/auth/user/${userId}/households`, {
+    method: 'GET',
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to get households');
+  }
+
+  const data = await response.json();
+  return data.households || [];
 }
 
 /**
  * Create a new household
  */
 export async function createHousehold(name: string, description: string, userId: string) {
-  const household = await queryOne(
-    `INSERT INTO households (name, description, created_by)
-     VALUES ($1, $2, $3)
-     RETURNING id, name, description, created_by, created_at`,
-    [name, description, userId]
-  );
+  const response = await fetch('http://localhost:3001/api/auth/households', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ name, description, userId }),
+  });
 
-  // Add user as owner
-  await query(
-    `INSERT INTO user_households (user_id, household_id, role, is_owner)
-     VALUES ($1, $2, 'admin', TRUE)`,
-    [userId, household.id]
-  );
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to create household');
+  }
 
-  return household;
+  const data = await response.json();
+  return data.household;
 }
 
 /**
  * Add user to household
  */
 export async function addUserToHousehold(userId: string, householdId: string, role: string = 'member') {
-  const existing = await queryOne(
-    'SELECT * FROM user_households WHERE user_id = $1 AND household_id = $2',
-    [userId, householdId]
-  );
+  const response = await fetch(`http://localhost:3001/api/households/${householdId}/members`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ userId, role }),
+  });
 
-  if (existing) {
-    throw new Error('User already in this household');
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to add user to household');
   }
-
-  await query(
-    `INSERT INTO user_households (user_id, household_id, role)
-     VALUES ($1, $2, $3)`,
-    [userId, householdId, role]
-  );
 }
 
 /**
  * Remove user from household
  */
 export async function removeUserFromHousehold(userId: string, householdId: string) {
-  await query(
-    'DELETE FROM user_households WHERE user_id = $1 AND household_id = $2',
-    [userId, householdId]
-  );
+  const response = await fetch(`http://localhost:3001/api/households/${householdId}/members/${userId}`, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to remove user from household');
+  }
 }
 
 /**
  * Get household members
  */
 export async function getHouseholdMembers(householdId: string) {
-  const members = await query(
-    `SELECT u.id, u.email, u.name, u.is_admin,
-            uhm.role, uhm.is_owner, uhm.joined_at
-     FROM households h
-     JOIN user_households uhm ON h.id = uhm.household_id
-     JOIN users u ON uhm.user_id = u.id
-     WHERE h.id = $1`,
-    [householdId]
-  );
-  return members.rows;
+  const response = await fetch(`http://localhost:3001/api/households/${householdId}/members`, {
+    method: 'GET',
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to get household members');
+  }
+
+  const data = await response.json();
+  return data.members || [];
 }

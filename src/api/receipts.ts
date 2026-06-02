@@ -1,4 +1,3 @@
-import { query, queryOne } from '@/config/database';
 import { ReceiptFile } from '@/types';
 
 export interface CreateReceiptParams {
@@ -20,91 +19,138 @@ export interface CreateReceiptItemParams {
   totalPrice: number;
 }
 
+/**
+ * Create a new receipt
+ */
 export async function createReceipt(params: CreateReceiptParams): Promise<ReceiptFile> {
-  const result = await query(`
-    INSERT INTO receipts (household_id, list_id, name, total_amount, currency, image_url, ocr_data, status)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-    RETURNING *
-  `, [
-    params.householdId,
-    params.listId || null,
-    params.name,
-    params.totalAmount || null,
-    params.currency || 'AZN',
-    params.imageUrl || null,
-    params.ocrData ? JSON.stringify(params.ocrData) : null,
-    params.status || 'pending'
-  ]);
-  return result.rows[0];
-}
+  const response = await fetch('http://localhost:3001/api/receipts', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(params),
+  });
 
-export async function createReceiptItems(params: CreateReceiptItemParams[]): Promise<any[]> {
-  const results = await query(`
-    INSERT INTO receipt_items (receipt_id, list_item_id, quantity, unit_price, total_price)
-    VALUES ($1, $2, $3, $4, $5)
-    RETURNING *
-  `, params.map(p => [
-    p.receiptId,
-    p.listItemId || null,
-    p.quantity,
-    p.unitPrice,
-    p.totalPrice
-  ]));
-  return results.rows;
-}
-
-export async function updateReceiptStatus(receiptId: string, status: string): Promise<ReceiptFile> {
-  const result = await query(`
-    UPDATE receipts
-    SET status = $1, updated_at = CURRENT_TIMESTAMP
-    WHERE id = $2
-    RETURNING *
-  `, [status, receiptId]);
-  return result.rows[0];
-}
-
-export async function getReceiptById(receiptId: string): Promise<ReceiptFile | null> {
-  const result = await query(`
-    SELECT r.*, u.name as user_name
-    FROM receipts r
-    JOIN users u ON r.user_id = u.id
-    WHERE r.id = $1
-  `, [receiptId]);
-  return result.rows[0] || null;
-}
-
-export async function getUserReceipts(userId: string, householdId?: string): Promise<ReceiptFile[]> {
-  let queryStr = `
-    SELECT r.*, u.name as user_name
-    FROM receipts r
-    JOIN users u ON r.user_id = u.id
-    WHERE r.user_id = $1
-  `;
-  const params: any[] = [userId];
-
-  if (householdId) {
-    params.push(householdId);
-    queryStr += ' AND r.household_id = $2';
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to create receipt');
   }
 
-  queryStr += ' ORDER BY r.created_at DESC';
-
-  const result = await query(queryStr, params);
-  return result.rows;
+  const data = await response.json();
+  return data.receipt;
 }
 
+/**
+ * Create receipt items
+ */
+export async function createReceiptItems(params: CreateReceiptItemParams[]): Promise<any[]> {
+  const response = await fetch('http://localhost:3001/api/receipts/batch-items', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(params),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to create receipt items');
+  }
+
+  const data = await response.json();
+  return data.items || [];
+}
+
+/**
+ * Update receipt status
+ */
+export async function updateReceiptStatus(receiptId: string, status: string): Promise<ReceiptFile> {
+  const response = await fetch(`http://localhost:3001/api/receipts/${receiptId}/status`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ status }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to update receipt status');
+  }
+
+  const data = await response.json();
+  return data.receipt;
+}
+
+/**
+ * Get receipt by ID
+ */
+export async function getReceiptById(receiptId: string): Promise<ReceiptFile | null> {
+  const response = await fetch(`http://localhost:3001/api/receipts/${receiptId}`, {
+    method: 'GET',
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to get receipt');
+  }
+
+  const data = await response.json();
+  return data.receipt || null;
+}
+
+/**
+ * Get user receipts
+ */
+export async function getUserReceipts(userId: string, householdId?: string): Promise<ReceiptFile[]> {
+  let url = `http://localhost:3001/api/receipts/user/${userId}`;
+  const queryParams = new URLSearchParams();
+
+  if (householdId) {
+    queryParams.append('householdId', householdId);
+    url += `?${queryParams.toString()}`;
+  }
+
+  const response = await fetch(url, {
+    method: 'GET',
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to get receipts');
+  }
+
+  const data = await response.json();
+  return data.receipts || [];
+}
+
+/**
+ * Get receipt items
+ */
 export async function getReceiptItems(receiptId: string): Promise<any[]> {
-  const result = await query(`
-    SELECT * FROM receipt_items
-    WHERE receipt_id = $1
-    ORDER BY created_at
-  `, [receiptId]);
-  return result.rows;
+  const response = await fetch(`http://localhost:3001/api/receipts/${receiptId}/items`, {
+    method: 'GET',
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to get receipt items');
+  }
+
+  const data = await response.json();
+  return data.items || [];
 }
 
+/**
+ * Delete a receipt
+ */
 export async function deleteReceipt(receiptId: string): Promise<void> {
-  await query(`
-    DELETE FROM receipts
-    WHERE id = $1
-  `, [receiptId]);
+  const response = await fetch(`http://localhost:3001/api/receipts/${receiptId}`, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to delete receipt');
+  }
 }
