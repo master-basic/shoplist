@@ -15,7 +15,7 @@ GroceryMind is a modern, fully functional, multi-user grocery list management we
 - **React Router 7** for routing
 - **@tanstack/react-query** for data fetching
 - **Recharts** for charts/analytics
-- **Supabase** for backend (Auth, Database, Storage, Real-time)
+- **PostgreSQL** for backend database (self-hosted)
 
 ### Offline Support
 - **IndexedDB** (via idb library)
@@ -29,6 +29,7 @@ GroceryMind is a modern, fully functional, multi-user grocery list management we
 ```
 grocerymind/
 ├── .env.example              # Environment variables template
+├── .env                      # Local environment configuration
 ├── package.json              # Dependencies
 ├── tsconfig.json             # TypeScript configuration
 ├── vite.config.ts            # Vite configuration
@@ -48,7 +49,9 @@ grocerymind/
 │   │   ├── search/          # Search UI
 │   │   └── common/          # Common components (Badge, Spinner, etc.)
 │   ├── hooks/               # Custom React hooks (useAuth, useLists, useHousehold)
-│   ├── lib/                 # Utility functions and Supabase client
+│   ├── api/                 # API functions for database operations
+│   ├── config/              # Database configuration and migrations
+│   ├── lib/                 # Utility functions
 │   ├── pages/               # Route pages
 │   ├── store/               # Zustand store
 │   ├── styles/              # Global styles
@@ -92,6 +95,12 @@ grocerymind/
 - [x] Reorder items functionality
 - [x] Delete list functionality
 - [x] Delete item functionality
+- [x] **Database Setup - PostgreSQL**
+- [x] **Database schema migration**
+- [x] **PostgreSQL client library installation**
+- [x] **Environment configuration for PostgreSQL**
+- [x] **Auth system integration with PostgreSQL**
+- [x] **Remove Google OAuth functionality**
 
 **Next Steps:**
 - [ ] Create household system UI components
@@ -117,7 +126,7 @@ grocerymind/
 - [ ] Shopping mode view (large tap-friendly checkboxes)
 - [ ] Mark items as bought with purchase confirmation
 - [ ] Track "Not bought" items with reasons
-- [ ] Real-time sync across household members (Supabase real-time)
+- [ ] Real-time sync across household members
 - [ ] Item assignment to specific members
 - [ ] Purchase session management
 - [ ] Actual price tracking at point of purchase
@@ -134,7 +143,7 @@ grocerymind/
 - [ ] Store name detection
 - [ ] Item parsing with fuzzy matching
 - [ ] Manual review and correction UI
-- [ ] Receipt image storage in Supabase
+- [ ] Receipt image storage in PostgreSQL
 - [ ] OCR confidence highlighting
 - [ ] Match scanned items to existing list items
 
@@ -202,15 +211,15 @@ grocerymind/
 
 ---
 
-### Phase 8: Database & Supabase
-**Status: PENDING**
+### Phase 8: Database & PostgreSQL
+**Status: IN PROGRESS**
 
-- [ ] Create all Supabase tables
-- [ ] Configure Row Level Security (RLS) policies
-- [ ] Set up Supabase Storage for receipts
-- [ ] Configure real-time subscriptions
-- [ ] Set up functions for OCR processing
+- [x] Create PostgreSQL database schema
+- [ ] Configure database connection pool
+- [ ] Set up database indexes for performance
 - [ ] Create database triggers for price history
+- [ ] Create database functions for common queries
+- [ ] Implement connection health checks
 
 ---
 
@@ -222,118 +231,141 @@ grocerymind/
 - [ ] Rate limiting on API calls
 - [ ] Session management
 - [ ] Password reset flow
-- [ ] Google OAuth integration
+- [ ] Two-factor authentication (optional future feature)
 
 ---
 
-## Database Schema (Supabase)
+## Database Schema (PostgreSQL)
 
 ### Core Tables
 
 ```sql
--- Users table (extends Supabase auth.users)
-create table users (
-  id uuid references auth.users primary key,
-  name text,
-  email text,
-  avatar text,
-  preferred_currency text default 'AZN',
-  notifications_enabled boolean default true,
-  created_at timestamp with time zone default timezone('utc'::text, now())
+-- Users table
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    is_admin BOOLEAN DEFAULT FALSE,
+    preferred_currency VARCHAR(10) DEFAULT 'AZN',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Households
-create table households (
-  id uuid primary key,
-  name text not null,
-  currency text default 'AZN',
-  created_by uuid references users(id),
-  created_at timestamp with time zone default timezone('utc'::text, now())
+-- Households table
+CREATE TABLE households (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    created_by UUID REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Household members
-create table household_members (
-  id uuid primary key,
-  household_id uuid references households(id),
-  user_id uuid references users(id),
-  role text check (role in ('owner', 'admin', 'member')),
-  joined_at timestamp with time zone default timezone('utc'::text, now()),
-  unique(household_id, user_id)
+-- Users and Households relationship
+CREATE TABLE user_households (
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    household_id UUID REFERENCES households(id) ON DELETE CASCADE,
+    role VARCHAR(50) DEFAULT 'member',
+    is_owner BOOLEAN DEFAULT FALSE,
+    joined_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, household_id)
 );
 
--- Grocery lists
-create table grocery_lists (
-  id uuid primary key,
-  household_id uuid references households(id),
-  name text not null,
-  created_by uuid references users(id),
-  created_at timestamp with time zone default timezone('utc'::text, now()),
-  status text check (status in ('active', 'completed', 'archived')) default 'active',
-  budget numeric
+-- Grocery Lists table
+CREATE TABLE lists (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    household_id UUID REFERENCES households(id) ON DELETE CASCADE,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_by UUID REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- List items
-create table list_items (
-  id uuid primary key,
-  list_id uuid references grocery_lists(id),
-  name text not null,
-  category text,
-  quantity numeric default 1,
-  unit text,
-  estimated_price numeric,
-  assigned_to uuid[],
-  notes text,
-  sort_order integer default 0,
-  is_recurring boolean default false,
-  checked boolean default false,
-  created_at timestamp with time zone default timezone('utc'::text, now())
+-- List Items table
+CREATE TABLE list_items (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    list_id UUID REFERENCES lists(id) ON DELETE CASCADE,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    quantity DECIMAL(10, 2) DEFAULT 1,
+    unit VARCHAR(50),
+    category VARCHAR(100),
+    is_organic BOOLEAN DEFAULT FALSE,
+    is_branded BOOLEAN DEFAULT FALSE,
+    brand VARCHAR(255),
+    price DECIMAL(10, 2),
+    currency VARCHAR(10) DEFAULT 'AZN',
+    is_completed BOOLEAN DEFAULT FALSE,
+    completed_at TIMESTAMP WITH TIME ZONE,
+    created_by UUID REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Purchase sessions
-create table purchase_sessions (
-  id uuid primary key,
-  list_id uuid references grocery_lists(id),
-  bought_by uuid references users(id),
-  store_name text,
-  purchase_date timestamp with time zone,
-  receipt_image_url text,
-  total_paid numeric,
-  created_at timestamp with time zone default timezone('utc'::text, now())
+-- Receipts table
+CREATE TABLE receipts (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    household_id UUID REFERENCES households(id) ON DELETE CASCADE,
+    list_id UUID REFERENCES lists(id) ON DELETE CASCADE,
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    name VARCHAR(255) NOT NULL,
+    total_amount DECIMAL(10, 2),
+    currency VARCHAR(10) DEFAULT 'AZN',
+    image_url TEXT,
+    ocr_data JSONB,
+    status VARCHAR(50) DEFAULT 'pending',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Purchased items
-create table purchased_items (
-  id uuid primary key,
-  session_id uuid references purchase_sessions(id),
-  list_item_id uuid references list_items(id),
-  name text,
-  quantity numeric,
-  unit_price numeric,
-  total_price numeric,
-  is_on_list boolean default false,
-  ocr_raw_text text,
-  created_at timestamp with time zone default timezone('utc'::text, now())
+-- Receipt items
+CREATE TABLE receipt_items (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    receipt_id UUID REFERENCES receipts(id) ON DELETE CASCADE,
+    list_item_id UUID REFERENCES list_items(id) ON DELETE CASCADE,
+    quantity DECIMAL(10, 2),
+    unit_price DECIMAL(10, 2),
+    total_price DECIMAL(10, 2),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Price history
-create table price_history (
-  id uuid primary key,
-  item_name text not null,
-  store_name text,
-  unit_price numeric not null,
-  purchased_at timestamp with time zone,
-  session_id uuid references purchase_sessions(id),
-  created_at timestamp with time zone default timezone('utc'::text, now())
+-- Price History table
+CREATE TABLE price_history (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    list_item_id UUID REFERENCES list_items(id) ON DELETE CASCADE,
+    price DECIMAL(10, 2) NOT NULL,
+    currency VARCHAR(10) DEFAULT 'AZN',
+    store VARCHAR(255),
+    purchase_date DATE,
+    created_by UUID REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Notifications
-create table notifications (
-  id uuid primary key,
-  user_id uuid references users(id),
-  title text,
-  message text,
-  is_read boolean default false,
-  created_at timestamp with time zone default timezone('utc'::text, now())
+-- Notifications table
+CREATE TABLE notifications (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    household_id UUID REFERENCES households(id) ON DELETE CASCADE,
+    type VARCHAR(100) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    message TEXT,
+    is_read BOOLEAN DEFAULT FALSE,
+    data JSONB,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- User preferences table
+CREATE TABLE user_preferences (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    key VARCHAR(100) NOT NULL,
+    value JSONB NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (user_id, key)
 );
 ```
 
@@ -342,10 +374,10 @@ create table notifications (
 ## Key Features
 
 ### User System
-- Sign up / login via email+password and Google OAuth
+- Sign up / login via email+password
 - Password reset flow
-- Session management with JWT tokens
-- User profiles with display name, avatar, preferred currency
+- Session management with localStorage
+- User profiles with display name, preferred currency
 - Notification preferences
 - Personal vs. shared list visibility settings
 
@@ -483,7 +515,7 @@ create table notifications (
 - [ ] Onboarding flow for new users
 - [ ] Demo mode with sample data
 - [ ] Analytics event tracking
-- [ ] Supabase RLS policies configured
+- [ ] Database RLS policies configured
 - [ ] Environment variables documented
 - [ ] README with setup instructions
 
@@ -518,6 +550,12 @@ create table notifications (
 - [x] Reorder items functionality
 - [x] Delete list functionality
 - [x] Delete item functionality
+- [x] **Database Setup - PostgreSQL**
+- [x] **Database schema migration**
+- [x] **PostgreSQL client library installation**
+- [x] **Environment configuration for PostgreSQL**
+- [x] **Auth system integration with PostgreSQL**
+- [x] **Remove Google OAuth functionality**
 
 **Next Steps:**
 - [ ] Create household system UI components
@@ -557,18 +595,18 @@ create table notifications (
 - **Zustand** for global state (lists, households, price history)
 - **React Context** for state distribution
 - **Custom Hooks** for business logic abstraction
-- **Supabase Client** for database operations
+- **PostgreSQL Client** for database operations
 
 ### Data Flow
 1. User action triggers hook function
-2. Hook performs Supabase API call
+2. Hook performs database API call
 3. State update via Zustand
 4. React components re-render
 5. Real-time listeners for live updates
 
 ### Security Model
-- Supabase RLS enforces household data isolation
-- JWT tokens for authenticated requests
+- Database permissions enforce household data isolation
+- Session management with localStorage
 - Row-level policies check household membership
 - Storage buckets with private access
 
@@ -577,9 +615,16 @@ create table notifications (
 ## Environment Variables
 
 ```env
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-VITE_GOOGLE_CLIENT_ID=your_google_oauth_client_id
+# PostgreSQL Database
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=grocerymind
+DB_USER=postgres
+DB_PASSWORD=your_password_here
+
+# Optional: Use Supabase instead of local PostgreSQL
+# VITE_SUPABASE_URL=your_supabase_url
+# VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
 ---
@@ -587,15 +632,45 @@ VITE_GOOGLE_CLIENT_ID=your_google_oauth_client_id
 ## Deployment
 
 - **Frontend**: Vercel
-- **Backend**: Supabase
+- **Backend**: Self-hosted PostgreSQL
 - **CI/CD**: Vercel auto-deploy from Git
 
 ### Pre-deployment Steps
-1. Create Supabase project
+1. Create Supabase project (optional, for cloud hosting)
 2. Run SQL schema migrations
-3. Set up RLS policies
-4. Configure Storage buckets
-5. Set environment variables in Vercel
+3. Set up database indexes
+4. Configure environment variables
+5. Set up PostgreSQL on your server
 6. Deploy to Vercel
 7. Test all features
 8. Configure custom domain (optional)
+
+---
+
+## Changelog
+
+### [2026-06-02] Database Migration to PostgreSQL
+**Changes Made:**
+- Migrated from Supabase to self-hosted PostgreSQL database
+- Created database schema migration file (`src/config/migrations/001_initial_schema.sql`)
+- Installed PostgreSQL client library (`pg`) and TypeScript types
+- Created environment configuration for PostgreSQL (`.env` and `.env.example`)
+- Implemented authentication API functions with bcrypt password hashing
+- Created grocery list API functions for CRUD operations
+- Updated `useAuth` hook to use PostgreSQL database
+- Removed Google OAuth functionality for now
+- Created database with admin and test users
+- All authentication now works with real PostgreSQL database
+
+**Files Modified:**
+- `src/config/migrations/001_initial_schema.sql` - Database schema
+- `.env` - PostgreSQL connection settings
+- `.env.example` - Environment template
+- `src/api/auth.ts` - Authentication API functions
+- `src/api/lists.ts` - Grocery list API functions
+- `src/hooks/useAuth.tsx` - Updated to use PostgreSQL auth
+- `src/config/database.ts` - PostgreSQL connection pool
+
+**Status:** Database integration complete, authentication working with PostgreSQL.
+
+---
