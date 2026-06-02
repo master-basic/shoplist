@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AuthProvider, useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 import { StoreProvider } from '@/store/useStore';
+import { getUserById } from '@/api/auth';
 
 // Pages
 import { HomePage } from './pages/HomePage';
@@ -44,11 +45,33 @@ function App() {
   if (!isPublicRoute && !useAuth.getState().isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
+
+  // Load user data on mount if authenticated
+  useEffect(() => {
+    const auth = useAuth();
+    if (auth.isAuthenticated) {
+      const loadUser = async () => {
+        const userId = localStorage.getItem('user_id');
+        if (userId) {
+          try {
+            const userData = await getUserById(userId);
+            if (userData) {
+              localStorage.setItem('user_name', userData.name);
+              localStorage.setItem('user_email', userData.email);
+            }
+          } catch (err) {
+            console.error('Error loading user:', err);
+          }
+        }
+      };
+      loadUser();
+    }
+  }, []);
   
   return (
     <QueryClientProvider client={queryClient}>
       <StoreProvider>
-        <AuthProvider>
+        <StoreProvider>
           <Routes>
               {/* Auth Routes */}
               <Route path="/login" element={<Login />} />
@@ -75,8 +98,7 @@ function App() {
                   : <Navigate to="/" replace />
               } />
             </Routes>
-        </AuthProvider>
-      </StoreProvider>
+        </StoreProvider>
     </QueryClientProvider>
   );
 }
