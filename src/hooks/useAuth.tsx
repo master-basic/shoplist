@@ -11,7 +11,7 @@ interface UseAuthReturn {
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
-  createHousehold: (name: string, description: string) => Promise<void>;
+  createHousehold: (name: string, description: string, userId: string) => Promise<void>;
   refreshUser: () => Promise<void>;
 }
 
@@ -109,14 +109,14 @@ export function useAuth(): UseAuthReturn {
     setHouseholds([]);
   }, []);
 
-  const createHousehold = useCallback(async (name: string, description: string) => {
+  const createHousehold = useCallback(async (name: string, description: string, userId: string) => {
     if (!user) {
       throw new Error('User not authenticated');
     }
 
     try {
       setIsLoading(true);
-      const household = await createHousehold(name, description, user.id);
+      const household = await createHousehold(name, description, userId);
       setHouseholds(prev => [...prev, household] as Household[]);
     } catch (err: any) {
       setError(err.message || 'Failed to create household');

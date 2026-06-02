@@ -1,0 +1,809 @@
+// =====================================================
+// GroceryMind - Express.js Backend API
+// =====================================================
+
+const express = require('express');
+const cors = require('cors');
+const { Pool } = require('pg');
+const bcrypt = require('bcryptjs');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+// Configure CORS
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  credentials: true
+}));
+
+// Configure body parser
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadDir = path.join(__dirname, 'uploads');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ 
+  storage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = /jpeg|jpg|png|gif|pdf|tiff|webp/;
+    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = allowedTypes.test(file.mimetype);
+    if (extname && mimetype) {
+      return cb(null, true);
+    }
+    cb(new Error('Only image and PDF files are allowed'));
+  }
+});
+
+// Database connection
+const pool = new Pool({
+  user: process.env.DB_USER || 'postgres',
+  host: process.env.DB_HOST || 'localhost',
+  database: process.env.DB_NAME || 'grocerymind',
+  password: process.env.DB_PASSWORD || 'postgres',
+  port: process.env.DB_PORT || 5432,
+});
+
+// Test database connection
+app.get('/api/health', async (req, res) => {
+  try {
+    const client = await pool.connect();
+    await client.query('SELECT NOW()');
+    client.release();
+    res.json({ status: 'ok', message: 'Database connected successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Database connection failed', message: error.message });
+  }
+});
+
+// =====================================================
+// AUTH ROUTES
+// =====================================================
+
+// Register a new user
+app.post('/api/auth/register', async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    
+    // Validate input
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: 'Name, email, and password are required' });
+    }
+    
+    // Check if user already exists
+    const existingUser = await pool.query(
+      'SELECT id, email, name, is_admin, preferred_currency FROM users WHERE email = $1',
+      [email]
+    );
+    
+    if (existingUser.rows.length > 0) {
+      return res.status(400).json({ error: 'Email already registered' });
+    }
+    
+    // Hash password
+    const passwordHash = await bcrypt.hash(password, 10);
+    
+    // Create user
+    const result = await pool.query(
+      `INSERT INTO users (email, password_hash, name, is_admin, preferred_currency)
+       VALUES ($1, $2, $3, FALSE, $4)
+       RETURNING id, email, name, is_admin, preferred_currency, created_at`,
+      [email, passwordHash, name, 'AZN']
+    );
+    
+    res.status(201).json({
+      user: result.rows[0],
+      message: 'User registered successfully'
+    });
+  } catch (error) {
+    console.error('Registration error:', error);
+    res.status(500).json({ error: 'Registration failed', message: error.message });
+  }
+});
+
+// Login user
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    
+    // Validate input
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
+    }
+    
+    // Find user
+    const result = await pool.query(
+      'SELECT id, email, name, is_admin, preferred_currency, created_at FROM users WHERE email = $1',
+      [email]
+    );
+    
+    if (result.rows.length === 0) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+    
+    const user = result.rows[0];
+    
+    // Verify password
+    const validPassword = await bcrypt.compare(password, user.password_hash);
+    
+    if (!validPassword) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+    
+    // Return user without password hash
+    const { password_hash, ...userWithoutPassword } = user;
+    
+    res.json({
+      user: userWithoutPassword,
+      message: 'Login successful'
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ error: 'Login failed', message: error.message });
+  }
+});
+
+// Get user by ID
+app.get('/api/auth/user/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const result = await pool.query(
+      'SELECT id, email, name, is_admin, preferred_currency, created_at FROM users WHERE id = $1',
+      [id]
+    );
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    const { password_hash, ...userWithoutPassword } = result.rows[0];
+    res.json({ user: userWithoutPassword });
+  } catch (error) {
+    console.error('Get user error:', error);
+    res.status(500).json({ error: 'Failed to get user', message: error.message });
+  }
+});
+
+// Get user households
+app.get('/api/auth/user/:id/households', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const result = await pool.query(
+      `SELECT h.id, h.name, h.description, h.created_at,
+              h.created_by,
+              ARRAY_AGG(DISTINCT uh.role::text) as roles
+       FROM households h
+       JOIN user_households uh ON h.id = uh.household_id
+       WHERE uh.user_id = $1
+       GROUP BY h.id, h.name, h.description, h.created_at, h.created_by`,
+      [id]
+    );
+    
+    res.json({ households: result.rows });
+  } catch (error) {
+    console.error('Get households error:', error);
+    res.status(500).json({ error: 'Failed to get households', message: error.message });
+  }
+});
+
+// Create household
+app.post('/api/auth/households', async (req, res) => {
+  try {
+    const { name, description, userId } = req.body;
+    
+    if (!name || !userId) {
+      return res.status(400).json({ error: 'Name and userId are required' });
+    }
+    
+    // Create household
+    const householdResult = await pool.query(
+      `INSERT INTO households (name, description, created_by)
+       VALUES ($1, $2, $3)
+       RETURNING id, name, description, created_by, created_at`,
+      [name, description, userId]
+    );
+    
+    const householdId = householdResult.rows[0].id;
+    
+    // Add user as owner
+    await pool.query(
+      `INSERT INTO user_households (user_id, household_id, role, is_owner)
+       VALUES ($1, $2, 'admin', TRUE)`,
+      [userId, householdId]
+    );
+    
+    res.status(201).json({
+      household: householdResult.rows[0],
+      message: 'Household created successfully'
+    });
+  } catch (error) {
+    console.error('Create household error:', error);
+    res.status(500).json({ error: 'Failed to create household', message: error.message });
+  }
+});
+
+// =====================================================
+// HOUSEHOLD ROUTES
+// =====================================================
+
+// Get household by ID
+app.get('/api/households/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const result = await pool.query(
+      `SELECT h.*,
+              ARRAY_AGG(DISTINCT uh.user_id) as member_ids,
+              ARRAY_AGG(DISTINCT uh.role) as member_roles
+       FROM households h
+       JOIN user_households uh ON h.id = uh.household_id
+       WHERE h.id = $1
+       GROUP BY h.id`,
+      [id]
+    );
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Household not found' });
+    }
+    
+    res.json({ household: result.rows[0] });
+  } catch (error) {
+    console.error('Get household error:', error);
+    res.status(500).json({ error: 'Failed to get household', message: error.message });
+  }
+});
+
+// Get household members
+app.get('/api/households/:id/members', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const result = await pool.query(
+      `SELECT u.id, u.email, u.name, u.is_admin,
+              uhm.role, uhm.is_owner, uhm.joined_at
+       FROM households h
+       JOIN user_households uhm ON h.id = uh.household_id
+       JOIN users u ON uhm.user_id = u.id
+       WHERE h.id = $1`,
+      [id]
+    );
+    
+    res.json({ members: result.rows });
+  } catch (error) {
+    console.error('Get members error:', error);
+    res.status(500).json({ error: 'Failed to get members', message: error.message });
+  }
+});
+
+// Add user to household
+app.post('/api/households/:id/members', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId, role } = req.body;
+    
+    if (!userId || !role) {
+      return res.status(400).json({ error: 'userId and role are required' });
+    }
+    
+    // Check if user already exists
+    const existing = await pool.query(
+      'SELECT * FROM user_households WHERE user_id = $1 AND household_id = $2',
+      [userId, id]
+    );
+    
+    if (existing.rows.length > 0) {
+      return res.status(400).json({ error: 'User already in this household' });
+    }
+    
+    await pool.query(
+      `INSERT INTO user_households (user_id, household_id, role)
+       VALUES ($1, $2, $3)`,
+      [userId, id, role]
+    );
+    
+    res.json({ message: 'User added to household successfully' });
+  } catch (error) {
+    console.error('Add member error:', error);
+    res.status(500).json({ error: 'Failed to add member', message: error.message });
+  }
+});
+
+// Remove user from household
+app.delete('/api/households/:id/members/:userId', async (req, res) => {
+  try {
+    const { id, userId } = req.params;
+    
+    await pool.query(
+      'DELETE FROM user_households WHERE user_id = $1 AND household_id = $2',
+      [userId, id]
+    );
+    
+    res.json({ message: 'User removed from household successfully' });
+  } catch (error) {
+    console.error('Remove member error:', error);
+    res.status(500).json({ error: 'Failed to remove member', message: error.message });
+  }
+});
+
+// =====================================================
+// GROCERY LIST ROUTES
+// =====================================================
+
+// Create grocery list
+app.post('/api/lists', async (req, res) => {
+  try {
+    const { householdId, name, items, userId } = req.body;
+    
+    if (!householdId || !name) {
+      return res.status(400).json({ error: 'householdId and name are required' });
+    }
+    
+    // Create list
+    const result = await pool.query(
+      `INSERT INTO grocery_lists (household_id, name, created_by)
+       VALUES ($1, $2, $3)
+       RETURNING *`,
+      [householdId, name, userId]
+    );
+    
+    const listId = result.rows[0].id;
+    
+    // Create list items
+    if (items && items.length > 0) {
+      const itemInserts = items.map(item => `
+        INSERT INTO list_items (list_id, name, quantity, unit_price, category, is_checked, created_by)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+      `);
+      
+      const itemParams = items.flatMap((item, idx) => [
+        listId,
+        item.name,
+        item.quantity || 1,
+        item.unitPrice || 0,
+        item.category || 'Other',
+        item.isChecked || false,
+        userId
+      ]);
+      
+      const itemValues = itemInserts.map((_, idx) => `$${idx + 1}`).join(', ');
+      const itemArgs = itemParams.map((_, idx) => `$${idx + 1}`).join(', ');
+      
+      await pool.query(`
+        ${itemInserts.join(' ')}
+        WHERE TRUE AND FALSE
+      `, [listId, ...itemParams]);
+    }
+    
+    res.status(201).json({ 
+      list: result.rows[0],
+      message: 'Grocery list created successfully'
+    });
+  } catch (error) {
+    console.error('Create list error:', error);
+    res.status(500).json({ error: 'Failed to create list', message: error.message });
+  }
+});
+
+// Get lists by household
+app.get('/api/lists', async (req, res) => {
+  try {
+    const { householdId } = req.query;
+    
+    let query = `
+      SELECT gl.*, 
+             ARRAY_AGG(DISTINCT li.id) as item_ids,
+             ARRAY_AGG(DISTINCT li.name) as item_names,
+             ARRAY_AGG(DISTINCT li.quantity) as item_quantities
+      FROM grocery_lists gl
+      JOIN user_households uh ON gl.created_by = uh.user_id
+      WHERE uh.is_owner = TRUE
+    `;
+    
+    const params = [];
+    
+    if (householdId) {
+      query += ' AND gl.household_id = $1';
+      params.push(householdId);
+    }
+    
+    query += ' ORDER BY gl.created_at DESC';
+    
+    const result = await pool.query(query, params);
+    
+    res.json({ lists: result.rows });
+  } catch (error) {
+    console.error('Get lists error:', error);
+    res.status(500).json({ error: 'Failed to get lists', message: error.message });
+  }
+});
+
+// Get list by ID
+app.get('/api/lists/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const result = await pool.query(
+      'SELECT * FROM grocery_lists WHERE id = $1',
+      [id]
+    );
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'List not found' });
+    }
+    
+    // Get list items
+    const itemsResult = await pool.query(
+      'SELECT * FROM list_items WHERE list_id = $1',
+      [id]
+    );
+    
+    res.json({ 
+      list: result.rows[0],
+      items: itemsResult.rows
+    });
+  } catch (error) {
+    console.error('Get list error:', error);
+    res.status(500).json({ error: 'Failed to get list', message: error.message });
+  }
+});
+
+// Update list
+app.put('/api/lists/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, householdId } = req.body;
+    
+    const result = await pool.query(
+      `UPDATE grocery_lists 
+       SET name = COALESCE($1, name), household_id = COALESCE($2, household_id)
+       WHERE id = $3
+       RETURNING *`,
+      [name, householdId, id]
+    );
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'List not found' });
+    }
+    
+    res.json({ list: result.rows[0], message: 'List updated successfully' });
+  } catch (error) {
+    console.error('Update list error:', error);
+    res.status(500).json({ error: 'Failed to update list', message: error.message });
+  }
+});
+
+// Delete list
+app.delete('/api/lists/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    await pool.query('DELETE FROM grocery_lists WHERE id = $1', [id]);
+    
+    res.json({ message: 'List deleted successfully' });
+  } catch (error) {
+    console.error('Delete list error:', error);
+    res.status(500).json({ error: 'Failed to delete list', message: error.message });
+  }
+});
+
+// Get list items
+app.get('/api/lists/:id/items', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const result = await pool.query(
+      'SELECT * FROM list_items WHERE list_id = $1 ORDER BY created_at',
+      [id]
+    );
+    
+    res.json({ items: result.rows });
+  } catch (error) {
+    console.error('Get items error:', error);
+    res.status(500).json({ error: 'Failed to get items', message: error.message });
+  }
+});
+
+// Create list item
+app.post('/api/lists/:id/items', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, quantity, unitPrice, category, isChecked } = req.body;
+    
+    const result = await pool.query(
+      `INSERT INTO list_items (list_id, name, quantity, unit_price, category, is_checked, created_by)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
+       RETURNING *`,
+      [id, name, quantity || 1, unitPrice || 0, category || 'Other', isChecked || false, req.body.createdBy]
+    );
+    
+    res.status(201).json({ item: result.rows[0], message: 'Item added successfully' });
+  } catch (error) {
+    console.error('Create item error:', error);
+    res.status(500).json({ error: 'Failed to create item', message: error.message });
+  }
+});
+
+// Update list item
+app.put('/api/lists/:listId/items/:itemId', async (req, res) => {
+  try {
+    const { listId, itemId } = req.params;
+    const { name, quantity, unitPrice, category, isChecked } = req.body;
+    
+    const result = await pool.query(
+      `UPDATE list_items 
+       SET name = COALESCE($1, name), 
+           quantity = COALESCE($2, quantity),
+           unit_price = COALESCE($3, unit_price),
+           category = COALESCE($4, category),
+           is_checked = COALESCE($5, is_checked)
+       WHERE id = $6 AND list_id = $7
+       RETURNING *`,
+      [name, quantity, unitPrice, category, isChecked, itemId, listId]
+    );
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Item not found' });
+    }
+    
+    res.json({ item: result.rows[0], message: 'Item updated successfully' });
+  } catch (error) {
+    console.error('Update item error:', error);
+    res.status(500).json({ error: 'Failed to update item', message: error.message });
+  }
+});
+
+// Delete list item
+app.delete('/api/lists/:listId/items/:itemId', async (req, res) => {
+  try {
+    const { listId, itemId } = req.params;
+    
+    await pool.query(
+      'DELETE FROM list_items WHERE id = $1 AND list_id = $2',
+      [itemId, listId]
+    );
+    
+    res.json({ message: 'Item deleted successfully' });
+  } catch (error) {
+    console.error('Delete item error:', error);
+    res.status(500).json({ error: 'Failed to delete item', message: error.message });
+  }
+});
+
+// =====================================================
+// RECEIPT ROUTES
+// =====================================================
+
+// Upload receipt image
+app.post('/api/receipts/upload', upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+    
+    const filePath = req.file.path;
+    const filename = req.file.filename;
+    
+    res.json({ 
+      filePath,
+      filename,
+      url: `/uploads/${filename}`,
+      message: 'File uploaded successfully'
+    });
+  } catch (error) {
+    console.error('Upload error:', error);
+    res.status(500).json({ error: 'Failed to upload file', message: error.message });
+  }
+});
+
+// Create receipt
+app.post('/api/receipts', async (req, res) => {
+  try {
+    const { householdId, listId, name, totalAmount, currency, imageUrl, ocrData, status } = req.body;
+    
+    const result = await pool.query(
+      `INSERT INTO receipts (household_id, list_id, name, total_amount, currency, image_url, ocr_data, status)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+       RETURNING *`,
+      [
+        householdId,
+        listId || null,
+        name,
+        totalAmount || null,
+        currency || 'AZN',
+        imageUrl || null,
+        ocrData ? JSON.stringify(ocrData) : null,
+        status || 'pending'
+      ]
+    );
+    
+    const receiptId = result.rows[0].id;
+    
+    // Create receipt items
+    if (req.body.items && req.body.items.length > 0) {
+      const itemInserts = req.body.items.map(item => `
+        INSERT INTO receipt_items (receipt_id, list_item_id, quantity, unit_price, total_price)
+        VALUES ($1, $2, $3, $4, $5)
+      `);
+      
+      const itemParams = req.body.items.flatMap((item, idx) => [
+        receiptId,
+        item.listItemId || null,
+        item.quantity,
+        item.unitPrice,
+        item.totalPrice
+      ]);
+      
+      const itemValues = itemInserts.map((_, idx) => `$${idx + 1}`).join(', ');
+      const itemArgs = itemParams.map((_, idx) => `$${idx + 1}`).join(', ');
+      
+      await pool.query(`
+        ${itemInserts.join(' ')}
+        WHERE TRUE AND FALSE
+      `, [receiptId, ...itemParams]);
+    }
+    
+    res.status(201).json({ 
+      receipt: result.rows[0],
+      message: 'Receipt created successfully'
+    });
+  } catch (error) {
+    console.error('Create receipt error:', error);
+    res.status(500).json({ error: 'Failed to create receipt', message: error.message });
+  }
+});
+
+// Get receipt by ID
+app.get('/api/receipts/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const result = await pool.query(
+      `SELECT r.*, u.name as user_name
+       FROM receipts r
+       JOIN users u ON r.user_id = u.id
+       WHERE r.id = $1`,
+      [id]
+    );
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Receipt not found' });
+    }
+    
+    // Get receipt items
+    const itemsResult = await pool.query(
+      'SELECT * FROM receipt_items WHERE receipt_id = $1 ORDER BY created_at',
+      [id]
+    );
+    
+    res.json({ 
+      receipt: result.rows[0],
+      items: itemsResult.rows
+    });
+  } catch (error) {
+    console.error('Get receipt error:', error);
+    res.status(500).json({ error: 'Failed to get receipt', message: error.message });
+  }
+});
+
+// Get user receipts
+app.get('/api/receipts/user/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { householdId } = req.query;
+    
+    let query = `
+      SELECT r.*, u.name as user_name
+      FROM receipts r
+      JOIN users u ON r.user_id = u.id
+      WHERE r.user_id = $1
+    `;
+    
+    const params = [userId];
+    
+    if (householdId) {
+      query += ' AND r.household_id = $2';
+      params.push(householdId);
+    }
+    
+    query += ' ORDER BY r.created_at DESC';
+    
+    const result = await pool.query(query, params);
+    
+    res.json({ receipts: result.rows });
+  } catch (error) {
+    console.error('Get user receipts error:', error);
+    res.status(500).json({ error: 'Failed to get receipts', message: error.message });
+  }
+});
+
+// Get receipt items
+app.get('/api/receipts/:id/items', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const result = await pool.query(
+      'SELECT * FROM receipt_items WHERE receipt_id = $1 ORDER BY created_at',
+      [id]
+    );
+    
+    res.json({ items: result.rows });
+  } catch (error) {
+    console.error('Get receipt items error:', error);
+    res.status(500).json({ error: 'Failed to get items', message: error.message });
+  }
+});
+
+// Update receipt status
+app.put('/api/receipts/:id/status', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    
+    const result = await pool.query(
+      `UPDATE receipts 
+       SET status = $1, updated_at = CURRENT_TIMESTAMP
+       WHERE id = $2
+       RETURNING *`,
+      [status, id]
+    );
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Receipt not found' });
+    }
+    
+    res.json({ receipt: result.rows[0], message: 'Receipt updated successfully' });
+  } catch (error) {
+    console.error('Update receipt error:', error);
+    res.status(500).json({ error: 'Failed to update receipt', message: error.message });
+  }
+});
+
+// Delete receipt
+app.delete('/api/receipts/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    await pool.query('DELETE FROM receipts WHERE id = $1', [id]);
+    
+    res.json({ message: 'Receipt deleted successfully' });
+  } catch (error) {
+    console.error('Delete receipt error:', error);
+    res.status(500).json({ error: 'Failed to delete receipt', message: error.message });
+  }
+});
+
+// =====================================================
+// STATIC FILE SERVICE
+// =====================================================
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// =====================================================
+// SERVER START
+// =====================================================
+
+app.listen(PORT, () => {
+  console.log(`GroceryMind API server running on port ${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+});
+
+module.exports = app;
