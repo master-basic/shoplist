@@ -109,11 +109,54 @@ export const useStore = create<StoreState & StoreActions>()(
       addItemToList: (listId, item) => {
         const list = get().lists.find((l) => l.id === listId);
         if (!list) return;
-        const newItem = { ...item, id: uuidv4(), sort_order: list.items.length };
-        set({ lists: get().lists.map((l) => (l.id === listId ? { ...l, items: [...l.items, newItem] } : l)) });
+        
+        // Preserve all fields from the ListItem type
+        const newItem = { 
+          ...item, 
+          id: uuidv4(), 
+          sort_order: list.items.length,
+          // Ensure default values for required fields not provided
+          is_checked: false,
+          checked_by: undefined,
+          checked_at: undefined,
+          is_recurring: item.is_recurring ?? false,
+          restock_threshold: item.restock_threshold ?? undefined,
+          last_bought_at: item.last_bought_at ?? undefined,
+          price_history: item.price_history ?? [],
+          unit: item.unit ?? 'pcs',
+          quantity: item.quantity ?? 1,
+          estimated_price: item.estimated_price ?? 0,
+        };
+        
+        // Recalculate sort order for all items
+        const updatedItems = [...list.items];
+        updatedItems.push(newItem);
+        
+        set({ lists: get().lists.map((l) => (l.id === listId ? { ...l, items: updatedItems, updated_at: new Date().toISOString() } : l)) });
       },
       updateItem: (listId, itemId, updates) => {
-        set({ lists: get().lists.map((l) => (l.id === listId ? { ...l, items: l.items.map((i) => (i.id === itemId ? { ...i, ...updates } : i)) } : l)) });
+        const list = get().lists.find((l) => l.id === listId);
+        if (!list) return;
+        
+        const updatedItems = list.items.map((i) => {
+          if (i.id === itemId) {
+            // If updating sort_order, reorder other items
+            if (updates.sort_order !== undefined) {
+              const newOrder = updates.sort_order;
+              
+              // Remove from current position
+              const remainingItems = list.items.filter(item => item.id !== itemId);
+              // Insert at new position
+              const reorderedItems = [...remainingItems];
+              reorderedItems.splice(newOrder, 0, { ...i, ...updates, sort_order: newOrder });
+              return { ...i, ...updates, sort_order: newOrder };
+            }
+            return { ...i, ...updates, updated_at: new Date().toISOString() };
+          }
+          return i;
+        });
+        
+        set({ lists: get().lists.map((l) => (l.id === listId ? { ...l, items: updatedItems, updated_at: new Date().toISOString() } : l)) });
       },
       toggleItem: (listId, itemId) => {
         const list = get().lists.find((l) => l.id === listId);

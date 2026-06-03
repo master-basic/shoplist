@@ -45,7 +45,8 @@ CREATE TABLE IF NOT EXISTS grocery_lists (
     name VARCHAR(255) NOT NULL,
     created_by UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(20) DEFAULT 'active' CHECK (status IN ('active', 'completed', 'archived'))
 );
 
 -- Create list_items table
@@ -57,6 +58,10 @@ CREATE TABLE IF NOT EXISTS list_items (
     unit_price DECIMAL(10,2) DEFAULT 0,
     category VARCHAR(100) DEFAULT 'Other',
     is_checked BOOLEAN DEFAULT FALSE,
+    sort_order INTEGER DEFAULT 0,
+    is_recurring BOOLEAN DEFAULT FALSE,
+    restock_threshold INTEGER,
+    last_bought_at TIMESTAMP,
     created_by UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -94,9 +99,15 @@ CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_households_created_by ON households(created_by);
 CREATE INDEX IF NOT EXISTS idx_user_households_user ON user_households(user_id);
 CREATE INDEX IF NOT EXISTS idx_user_households_household ON user_households(household_id);
+CREATE INDEX IF NOT EXISTS idx_user_households_unique ON user_households(user_id, household_id);
 CREATE INDEX IF NOT EXISTS idx_grocery_lists_household ON grocery_lists(household_id);
 CREATE INDEX IF NOT EXISTS idx_grocery_lists_created_by ON grocery_lists(created_by);
+CREATE INDEX IF NOT EXISTS idx_grocery_lists_status ON grocery_lists(status);
 CREATE INDEX IF NOT EXISTS idx_list_items_list ON list_items(list_id);
+CREATE INDEX IF NOT EXISTS idx_list_items_sort_order ON list_items(sort_order);
+CREATE INDEX IF NOT EXISTS idx_list_items_name ON list_items(name);
 CREATE INDEX IF NOT EXISTS idx_receipts_user ON receipts(user_id);
 CREATE INDEX IF NOT EXISTS idx_receipts_household ON receipts(household_id);
 CREATE INDEX IF NOT EXISTS idx_receipt_items_receipt ON receipt_items(receipt_id);
+CREATE INDEX IF NOT EXISTS idx_receipt_items_list_item ON receipt_items(list_item_id);
+CREATE INDEX IF NOT EXISTS idx_price_history_item ON price_history(item_name, store_name);

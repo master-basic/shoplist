@@ -1,163 +1,133 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, Outlet } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
-import { useStoreContext } from '../../store/useStore';
-import {
-  Home,
-  Scan,
-  BarChart,
-  Search,
-  User,
-  List as ListIcon,
-  LogOut,
-} from 'lucide-react';
+// =====================================================
+// MainLayout Component
+// =====================================================
 
-interface MainLayoutProps {
-  children?: React.ReactNode;
+import React from 'react';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
+import { Button } from '../ui/Button';
+import { Card } from '../ui/Card';
+import { Badge } from '../ui/Badge';
+
+export interface MainLayoutProps {
+  isAuthenticated: boolean;
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+  };
+  onLogout?: () => void;
 }
 
-const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
-  const { user, logout } = useAuth();
-  const { lists } = useStoreContext();
+export const MainLayout: React.FC<MainLayoutProps> = ({
+  isAuthenticated,
+  user,
+  onLogout,
+}) => {
   const location = useLocation();
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const handleLogout = () => {
-    logout();
-  };
+  const navigate = useNavigate();
 
   const navItems = [
-    { icon: Home, label: 'Home', path: '/' },
-    { icon: ListIcon, label: 'Lists', path: '/lists' },
-    { icon: Scan, label: 'Scan', path: '/scan' },
-    { icon: BarChart, label: 'Reports', path: '/reports' },
-    { icon: Search, label: 'Search', path: '/search' },
-    { icon: User, label: 'Profile', path: '/profile' },
+    { path: '/', label: 'Home', icon: '🏠' },
+    { path: '/lists', label: 'My Lists', icon: '🛒' },
+    { path: '/shopping', label: 'Shopping', icon: '📋' },
+    { path: '/scan', label: 'Scan', icon: '📷' },
+    { path: '/reports', label: 'Reports', icon: '📊' },
+    { path: '/search', label: 'Search', icon: '🔍' },
+    { path: '/profile', label: 'Profile', icon: '👤' },
   ];
 
+  const isActive = (path: string) => location.pathname === path;
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+        <Outlet />
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      {/* Desktop Sidebar */}
-      {!isMobile && (
-        <aside className="w-64 bg-white border-r border-gray-200 flex-shrink-0">
-          <div className="p-4">
-            <h1 className="text-xl font-bold text-green-600">🛒 GroceryMind</h1>
-          </div>
-          <nav className="px-3 py-2 space-y-1">
-            {navItems.map((item) => (
-              <a
-                key={item.path}
-                href={item.path}
-                className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
-                  location.pathname === item.path
-                    ? 'bg-green-50 text-green-600'
-                    : 'text-gray-700 hover:bg-gray-50'
-                }`}
-              >
-                <item.icon className="w-5 h-5" />
-                <span>{item.label}</span>
-              </a>
-            ))}
-          </nav>
-          <div className="absolute bottom-0 w-full p-4 border-t border-gray-200">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                <span className="text-lg">👤</span>
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">{user?.name}</p>
-                <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+      {/* Navigation Bar */}
+      <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16">
+            <div className="flex items-center gap-8">
+              {/* Logo */}
+              <Link to="/" className="flex items-center gap-2">
+                <span className="text-2xl">🛒</span>
+                <span className="text-xl font-bold text-gray-800">GroceryMind</span>
+              </Link>
+
+              {/* Navigation Links */}
+              <div className="hidden md:flex items-center gap-1">
+                {navItems.map(item => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={`
+                      flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors
+                      ${isActive(item.path) 
+                        ? 'bg-green-50 text-green-700' 
+                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}
+                    `}
+                  >
+                    <span>{item.icon}</span>
+                    {item.label}
+                  </Link>
+                ))}
               </div>
             </div>
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg w-full"
-            >
-              <LogOut className="w-5 h-5" />
-              <span>Logout</span>
-            </button>
+
+            {/* User Actions */}
+            <div className="flex items-center gap-4">
+              {user && (
+                <div className="hidden sm:flex items-center gap-3">
+                  <span className="text-sm text-gray-600">Hello,</span>
+                  <Badge variant="primary">{user.name}</Badge>
+                </div>
+              )}
+              <Button
+                variant="outline"
+                onClick={() => {
+                  onLogout?.();
+                  navigate('/login');
+                }}
+                className="gap-2"
+              >
+                <span>🚪</span>
+                Logout
+              </Button>
+            </div>
           </div>
-        </aside>
-      )}
+        </div>
+
+        {/* Mobile Navigation */}
+        <div className="md:hidden border-t border-gray-200 bg-white">
+          <div className="flex items-center gap-1 overflow-x-auto px-4 py-2">
+            {navItems.map(item => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`
+                  flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap
+                  ${isActive(item.path)
+                    ? 'bg-green-50 text-green-700'
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}
+                `}
+              >
+                <span>{item.icon}</span>
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </nav>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <Outlet />
-        </div>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Outlet />
       </main>
-
-      {/* Mobile Bottom Navigation */}
-      {isMobile && (
-        <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
-          <div className="grid grid-cols-6 gap-1 px-2 py-2">
-            <a
-              href="/"
-              className={`flex flex-col items-center justify-center py-1 ${
-                location.pathname === '/' ? 'text-green-600' : 'text-gray-500'
-              }`}
-            >
-              <Home className="w-6 h-6" />
-              <span className="text-xs">Home</span>
-            </a>
-            <a
-              href="/lists"
-              className={`flex flex-col items-center justify-center py-1 ${
-                location.pathname === '/lists' ? 'text-green-600' : 'text-gray-500'
-              }`}
-            >
-              <ListIcon className="w-6 h-6" />
-              <span className="text-xs">Lists</span>
-            </a>
-            <a
-              href="/scan"
-              className={`flex flex-col items-center justify-center py-1 ${
-                location.pathname === '/scan' ? 'text-green-600' : 'text-gray-500'
-              }`}
-            >
-              <Scan className="w-6 h-6" />
-              <span className="text-xs">Scan</span>
-            </a>
-            <a
-              href="/reports"
-              className={`flex flex-col items-center justify-center py-1 ${
-                location.pathname === '/reports' ? 'text-green-600' : 'text-gray-500'
-              }`}
-            >
-              <BarChart className="w-6 h-6" />
-              <span className="text-xs">Reports</span>
-            </a>
-            <a
-              href="/search"
-              className={`flex flex-col items-center justify-center py-1 ${
-                location.pathname === '/search' ? 'text-green-600' : 'text-gray-500'
-              }`}
-            >
-              <Search className="w-6 h-6" />
-              <span className="text-xs">Search</span>
-            </a>
-            <a
-              href="/profile"
-              className={`flex flex-col items-center justify-center py-1 ${
-                location.pathname === '/profile' ? 'text-green-600' : 'text-gray-500'
-              }`}
-            >
-              <User className="w-6 h-6" />
-              <span className="text-xs">Profile</span>
-            </a>
-          </div>
-        </nav>
-      )}
     </div>
   );
 };
-
-export default MainLayout;

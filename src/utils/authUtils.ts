@@ -194,29 +194,29 @@ export const maskData = (data: string, visible: number = 4): string => {
 /**
  * Debounce function
  */
-export const debounce = <T extends (...args: any[]) => any>(
+export const debounce = <T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): ((...args: Parameters<T>) => void) => {
-  let timeout: any = null;
-  
+  let timeoutId: number | undefined = undefined;
+
   return (...args: Parameters<T>) => {
-    if (timeout) {
-      clearTimeout(timeout);
+    if (timeoutId) {
+      clearTimeout(timeoutId);
     }
-    timeout = setTimeout(() => func(...args), wait);
+    timeoutId = setTimeout(() => func(...args), wait);
   };
 };
 
 /**
  * Throttle function
  */
-export const throttle = <T extends (...args: any[]) => any>(
+export const throttle = <T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number
 ): ((...args: Parameters<T>) => void) => {
   let inThrottle = false;
-  
+
   return (...args: Parameters<T>) => {
     if (!inThrottle) {
       func(...args);

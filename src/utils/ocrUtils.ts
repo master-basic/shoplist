@@ -6,6 +6,8 @@ import {
   OCRData, 
   OCRItem, 
   SmartSuggestion, 
+  ListItem,
+  PriceHistoryItem,
   normalizeStoreName, 
   STORES,
   normalizeItemName,
@@ -237,12 +239,16 @@ const tryParseItemLine = (line: string, total?: number): OCRItem | null => {
 /**
  * Match OCR items to existing grocery list items
  */
-export const matchItemsToList = (ocrItems: OCRItem[], listItems: any[], threshold = 0.6): {matched: boolean; ocrItem: OCRItem; listItem?: any}[] => {
+export const matchItemsToList = (ocrItems: OCRItem[], listItems: ListItem[], threshold = 0.6): {
+  matched: boolean;
+  ocrItem: OCRItem;
+  listItem?: ListItem;
+}[] => {
   return ocrItems.map(ocrItem => {
     const normalizedOcr = normalizeItemName(ocrItem.name);
     
     // Find best matching list item
-    let bestMatch: any = undefined;
+    let bestMatch: ListItem | undefined = undefined;
     let bestScore = 0;
     
     for (const listItem of listItems) {
@@ -267,15 +273,15 @@ export const matchItemsToList = (ocrItems: OCRItem[], listItems: any[], threshol
  * Generate smart suggestions from purchase history
  */
 export const generateSmartSuggestions = (
-  items: any[],
-  priceHistory: any[],
+  items: ListItem[],
+  priceHistory: PriceHistoryItem[],
   store?: string,
   limit = 10
 ): SmartSuggestion[] => {
   const suggestions: SmartSuggestion[] = [];
   
   // Get unique items
-  const uniqueItems = new Map<string, any>();
+  const uniqueItems = new Map<string, ListItem>();
   for (const item of items) {
     const key = normalizeItemName(item.name);
     if (!uniqueItems.has(key)) {

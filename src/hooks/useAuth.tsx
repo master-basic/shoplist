@@ -2,6 +2,20 @@ import { useState, useEffect, useCallback } from 'react';
 import { registerUser, loginUser, getUserById, getUserHouseholds, createHousehold } from '@/api/auth';
 import { User, Household } from '@/types';
 
+/**
+ * Error interface for API errors
+ */
+export interface ApiError {
+  message: string;
+  code?: string;
+  details?: Record<string, unknown>;
+}
+
+/**
+ * Generic error type for catch blocks
+ */
+type CatchError = Error | unknown;
+
 interface UseAuthReturn {
   user: User | null;
   households: Household[];
@@ -37,7 +51,7 @@ export function useAuth(): UseAuthReturn {
       const userData = await getUserById(userId);
       if (userData) {
         setUser(userData);
-        
+
         // Load households
         const userHouseholds = await getUserHouseholds(userId);
         setHouseholds(userHouseholds || []);
@@ -64,14 +78,15 @@ export function useAuth(): UseAuthReturn {
       localStorage.setItem('user_id', userData.id);
       localStorage.setItem('user_email', userData.email);
       localStorage.setItem('user_name', userData.name);
-      
+
       setUser(userData);
-      
+
       // Load households
       const userHouseholds = await getUserHouseholds(userData.id);
       setHouseholds(userHouseholds || []);
-    } catch (err: any) {
-      setError(err.message || 'Login failed');
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
+      setError(errorMessage || 'Login failed');
       throw err;
     } finally {
       setIsLoading(false);
@@ -87,14 +102,15 @@ export function useAuth(): UseAuthReturn {
       localStorage.setItem('user_id', userData.id);
       localStorage.setItem('user_email', userData.email);
       localStorage.setItem('user_name', userData.name);
-      
+
       setUser(userData);
-      
+
       // Load households
       const userHouseholds = await getUserHouseholds(userData.id);
       setHouseholds(userHouseholds || []);
-    } catch (err: any) {
-      setError(err.message || 'Registration failed');
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
+      setError(errorMessage || 'Registration failed');
       throw err;
     } finally {
       setIsLoading(false);
@@ -117,9 +133,10 @@ export function useAuth(): UseAuthReturn {
     try {
       setIsLoading(true);
       const household = await createHousehold(name, description, userId);
-      setHouseholds(prev => [...prev, household] as Household[]);
-    } catch (err: any) {
-      setError(err.message || 'Failed to create household');
+      setHouseholds(prev => [...(prev as Household[]), household] as Household[]);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
+      setError(errorMessage || 'Failed to create household');
       throw err;
     } finally {
       setIsLoading(false);

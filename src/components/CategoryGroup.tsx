@@ -3,7 +3,7 @@
 // =====================================================
 
 import { useState } from 'react';
-import { ListItem } from '@store/useStore';
+import { ListItem } from '@/types';
 import { GroceryItemCard } from './GroceryItemCard';
 
 interface CategoryGroupProps {

@@ -304,7 +304,7 @@ export interface SearchFilters {
 export interface SearchResult {
   id: string;
   type: 'item' | 'list' | 'store' | 'user' | 'purchase';
-  data: any;
+  data: unknown;
   relevance_score: number;
 }
 
@@ -336,7 +336,7 @@ export interface Notification {
   type: NotificationType;
   title: string;
   message: string;
-  data?: any;
+  data?: Record<string, unknown>;
   is_read: boolean;
   read_at?: string;
   created_at: string;
@@ -362,7 +362,7 @@ export interface OfflineQueueItem {
   action: 'create' | 'update' | 'delete';
   entity_type: 'list' | 'item' | 'purchase' | 'notification';
   entity_id: string;
-  data: any;
+  data: unknown;
   timestamp: number;
   retry_count: number;
 }
@@ -465,7 +465,7 @@ export interface AppState {
 // API RESPONSE TYPES
 // =====================================================
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = Record<string, unknown>> {
   success: boolean;
   data?: T;
   error?: string;

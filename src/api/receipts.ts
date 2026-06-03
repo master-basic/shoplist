@@ -1,4 +1,4 @@
-import { ReceiptFile } from '@/types';
+import { ReceiptFile, OCRData } from '@/types';
 
 export interface CreateReceiptParams {
   householdId: string;
@@ -7,8 +7,8 @@ export interface CreateReceiptParams {
   totalAmount?: number;
   currency?: string;
   imageUrl?: string;
-  ocrData?: Record<string, any>;
-  status?: string;
+  ocrData?: OCRData;
+  status?: 'pending' | 'processed' | 'failed';
 }
 
 export interface CreateReceiptItemParams {
@@ -43,7 +43,15 @@ export async function createReceipt(params: CreateReceiptParams): Promise<Receip
 /**
  * Create receipt items
  */
-export async function createReceiptItems(params: CreateReceiptItemParams[]): Promise<any[]> {
+export async function createReceiptItems(params: CreateReceiptItemParams[]): Promise<{
+  id: string;
+  receipt_id: string;
+  list_item_id?: string;
+  quantity: number;
+  unit_price: number;
+  total_price: number;
+  created_at: string;
+}[]> {
   const response = await fetch('http://localhost:3001/api/receipts/batch-items', {
     method: 'POST',
     headers: {
@@ -127,7 +135,18 @@ export async function getUserReceipts(userId: string, householdId?: string): Pro
 /**
  * Get receipt items
  */
-export async function getReceiptItems(receiptId: string): Promise<any[]> {
+export async function getReceiptItems(receiptId: string): Promise<
+  {
+    id: string;
+    receipt_id: string;
+    list_item_id?: string;
+    quantity: number;
+    unit_price: number;
+    total_price: number;
+    is_on_list: boolean;
+    created_at: string;
+  }[]
+> {
   const response = await fetch(`http://localhost:3001/api/receipts/${receiptId}/items`, {
     method: 'GET',
   });

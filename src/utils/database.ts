@@ -14,7 +14,7 @@ const DB_CONFIG = {
  * @param text - SQL query text
  * @param params - Query parameters
  */
-export async function query(text: string, params?: any[]): Promise<any> {
+export async function query(text: string, params?: unknown[]): Promise<unknown> {
   try {
     const response = await fetch(`${DB_CONFIG.API_URL}/api/db/query`, {
       method: 'POST',
@@ -42,7 +42,8 @@ export async function query(text: string, params?: any[]): Promise<any> {
  * @param text - SQL query text
  * @param params - Query parameters
  */
-export async function queryOne(text: string, params?: any[]): Promise<any> {
+export async function queryOne(text: string, params?: unknown[]): Promise<unknown> {
   const result = await query(text, params);
-  return result?.rows?.[0] || null;
+  const rows = (result as { rows?: unknown[] })?.rows;
+  return rows?.[0] || null;
 }
