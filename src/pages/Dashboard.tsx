@@ -241,14 +241,10 @@ export const Dashboard: React.FC = () => {
                 
                 {/* Empty State */}
                 {activeLists.length === 0 && completedLists.length === 0 && (
-                  <EmptyState
+                <EmptyState
                     title="No lists yet"
                     description="Create your first grocery list to get started"
-                    action={
-                      <Button onClick={handleNewList}>
-                        Create your first list
-                      </Button>
-                    }
+                    onAction={handleNewList}
                   />
                 )}
               </div>
@@ -263,11 +259,7 @@ export const Dashboard: React.FC = () => {
                   <EmptyState
                     title="No lists yet"
                     description="Create your first grocery list"
-                    action={
-                      <Button onClick={handleNewList}>
-                        Create list
-                      </Button>
-                    }
+                    onAction={handleNewList}
                   />
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

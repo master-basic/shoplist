@@ -2,59 +2,79 @@
 // Lists Page Component
 // =====================================================
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, EmptyState, Button } from '../components/ui';
 import { Badge } from '../components/ui/Badge';
 import { GroceryItemCard } from '../components/GroceryItemCard';
 import { useStore } from '../store/useStore';
-
-interface List {
-  id: string;
-  name: string;
-  description?: string;
-  items: GroceryItem[];
-  category?: string;
-  status: 'active' | 'completed' | 'archived';
-  createdAt: string;
-}
-
-interface GroceryItem {
-  id: string;
-  name: string;
-  quantity?: number;
-  unit?: string;
-  completed: boolean;
-  categoryId?: string;
-  notes?: string;
-}
+import type { GroceryList, ListItem } from '../store/useStore';
 
 export const Lists: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
-  const { lists, categories, loadLists, toggleItem } = useStore();
+  const { lists, addItemToList, deleteList, toggleItem, updateItem, deleteListItem } = useStore();
+  
+  const handleUpdateItem = (item: ListItem) => {
+    const list = lists.find((l) => l.id === item.list_id);
+    if (list) {
+      updateItem(item.list_id, item.id, item);
+    }
+  };
 
-  React.useEffect(() => {
-    loadLists();
-  }, [loadLists]);
+  const handleRemoveItem = (itemId: string) => {
+    deleteListItem('', itemId);
+  };
 
-  const filteredLists = lists.filter((list) => {
+  const filteredLists = lists.filter((list): list is GroceryList => {
+    if (!list) return false;
     const matchesSearch = list.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesFilter = filter === 'all' || list.status === filter;
     return matchesSearch && matchesFilter;
   });
 
   const handleCreateList = () => {
-    useStore.getState().createList();
+    useStore.getState().addItemToList('', {
+      name: 'New List',
+      list_id: '',
+      category: 'general',
+      assigned_to: [],
+      sort_order: 0,
+      is_checked: false,
+      is_recurring: false,
+      restock_threshold: undefined,
+      last_bought_at: undefined,
+      price_history: [],
+      unit: 'pcs',
+      quantity: 1,
+      estimated_price: 0,
+    });
   };
 
-  const getRemainingItems = (items: GroceryItem[]) => {
-    return items.filter((item) => !item.completed).length;
+  const handleDeleteList = (listId: string) => {
+    deleteList(listId);
   };
 
-  const getCompletionPercentage = (items: GroceryItem[]) => {
+  const getRemainingItems = (items: ListItem[]) => {
+    return items.filter((item) => !item.is_checked).length;
+  };
+
+  const getCompletionPercentage = (items: ListItem[]) => {
     if (items.length === 0) return 0;
-    const completed = items.filter((item) => item.completed).length;
+    const completed = items.filter((item) => item.is_checked).length;
     return Math.round((completed / items.length) * 100);
+  };
+
+  const getStatusVariant = (status: string): 'primary' | 'secondary' | 'success' | 'warning' | 'error' | undefined => {
+    switch (status) {
+      case 'active':
+        return 'primary';
+      case 'completed':
+        return 'success';
+      case 'archived':
+        return 'secondary';
+      default:
+        return undefined;
+    }
   };
 
   return (
@@ -93,31 +113,25 @@ export const Lists: React.FC = () => {
       {/* Empty State */}
       {filteredLists.length === 0 && (
         <EmptyState
-          icon="🛒"
           title={lists.length === 0 ? "No Lists Yet" : "No Matching Lists"}
           description={
             lists.length === 0
               ? "Create your first grocery list to get started"
               : "Try adjusting your search or filters"
           }
-          actions={
-            lists.length === 0 ? (
-              <Button onClick={handleCreateList}>Create List</Button>
-            ) : undefined
-          }
+          icon="🛒"
+          actionLabel={lists.length === 0 ? "Create List" : undefined}
+          onAction={lists.length === 0 ? handleCreateList : undefined}
         />
       )}
 
       {/* Lists Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredLists.map((list) => {
-          const items = list.items?.filter(
-            (item) =>
-              item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              item.name.toLowerCase().includes(filter)
-          ) || [];
+          const items = list.items || [];
           const remaining = getRemainingItems(items);
           const completion = getCompletionPercentage(items);
+          const statusVariant = getStatusVariant(list.status);
 
           return (
             <Card key={list.id} className="h-full flex flex-col">
@@ -128,7 +142,7 @@ export const Lists: React.FC = () => {
                     {list.description || 'No description'}
                   </p>
                 </div>
-                <Badge variant={list.status}>{list.status}</Badge>
+                <Badge variant={statusVariant}>{list.status}</Badge>
               </div>
 
               {/* Progress Bar */}
@@ -162,6 +176,8 @@ export const Lists: React.FC = () => {
                         key={item.id}
                         item={item}
                         onToggle={() => toggleItem(list.id, item.id)}
+                        onUpdate={handleUpdateItem}
+                        onRemove={handleRemoveItem}
                       />
                     ))}
                     {items.length > 5 && (
@@ -183,7 +199,7 @@ export const Lists: React.FC = () => {
                   {items.length} {items.length === 1 ? 'item' : 'items'}
                 </span>
                 <span className="text-xs text-gray-500">
-                  {new Date(list.createdAt).toLocaleDateString()}
+                  {list.updated_at ? new Date(list.updated_at).toLocaleDateString() : '-'}
                 </span>
               </div>
             </Card>
