@@ -5,70 +5,77 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, EmptyState, Badge, Spinner } from '../components/ui';
 import { GroceryItemCard } from '../components/GroceryItemCard';
-
-const useAuth = () => {
-  const isAuthenticated = !!localStorage.getItem('user_id');
-  const user = React.useMemo(() => {
-    return {
-      id: localStorage.getItem('user_id') || '',
-      name: localStorage.getItem('user_name') || 'User',
-      email: localStorage.getItem('user_email') || '',
-    };
-  }, []);
-  return { isAuthenticated, user };
-};
+import { useStore } from '../store/useStore';
 
 export const ShoppingPage: React.FC = () => {
-  const { isAuthenticated, user } = useAuth();
+  const { lists, addItemToList, deleteList, toggleItem, updateItem, deleteListItem, archiveList } = useStore();
   
-  const [lists, setLists] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  
+  const [loading, setLoading] = useState(false);
+  const [selectedListId, setSelectedListId] = useState<string | null>(null);
+
   const handleBack = () => {
     window.location.href = '/lists';
   };
 
   const fetchLists = async () => {
-    if (isAuthenticated) {
-      try {
-        const token = localStorage.getItem('access_token');
-        const response = await fetch('https://shoplist-api.onrender.com/lists/user/my', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (response.ok) {
-          const data = await response.json();
-          return data.lists;
+    try {
+      const response = await fetch('http://localhost:3001/api/lists/my', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('access_token') || ''}`
         }
-      } catch (err) {
-        console.error('Error fetching lists:', err);
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        data.lists.forEach((list: any) => {
+          const existingIndex = lists.findIndex((l: any) => l.id === list.id);
+          if (existingIndex >= 0) {
+            lists[existingIndex] = list;
+          } else {
+            lists.push(list);
+          }
+        });
+        return data;
       }
+    } catch (err) {
+      console.error('Error fetching lists:', err);
     }
-    return [];
+    return { lists };
   };
-  
-  useEffect(() => {
-    if (isAuthenticated) {
-      fetchLists().then(setLists).finally(() => setLoading(false));
-    } else {
-      setLoading(false);
-    }
-  }, [isAuthenticated]);
 
-  const selectedLists = React.useMemo(() => {
-    return lists.filter((list: any) => list.status === 'active' && list.is_my_list);
-  }, [lists]);
+  const handleToggleItem = (listId: string, itemId: string) => {
+    toggleItem(listId, itemId);
+  };
 
-  const totalLists = selectedLists.length;
-  const totalItems = selectedLists.reduce((sum: number, list: any) => sum + list.items.length, 0);
-  const completedItems = selectedLists.reduce((sum: number, list: any) => {
-    return sum + list.items.filter((item: any) => item.checked_by).length;
-  }, 0);
+  const handleUpdateItem = (listId: string, item: any) => {
+    updateItem(listId, item.id, item);
+  };
+
+  const handleRemoveItem = (listId: string, itemId: string) => {
+    deleteListItem(listId, itemId);
+  };
+
+  const selectedList = lists.find((l) => l.id === selectedListId);
+  const allItems = selectedList ? selectedList.items || [] : [];
+
+  const totalItems = allItems.length;
+  const completedItems = allItems.filter((item: any) => item.is_checked).length;
   const completionPercentage = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
 
-  // Flatten all items from selected lists
-  const allItems = selectedLists.flatMap((list: any) => list.items);
+  const getStatusVariant = (status: string): 'primary' | 'secondary' | 'success' | 'warning' | undefined => {
+    switch (status) {
+      case 'active':
+        return 'primary';
+      case 'completed':
+        return 'success';
+      case 'archived':
+        return 'secondary';
+      default:
+        return undefined;
+    }
+  };
 
-  if (!isAuthenticated) {
+  if (lists.length === 0) {
     return (
       <div className="flex-1 flex items-center justify-center">
         <EmptyState
@@ -86,38 +93,28 @@ export const ShoppingPage: React.FC = () => {
     return <Spinner />;
   }
 
-  if (selectedLists.length === 0) {
-    return (
-      <div className="flex-1 flex items-center justify-center">
-        <EmptyState
-          title="No Shopping Lists"
-          description="Create a shopping list to start your grocery shopping"
-          icon="🛒"
-          actionLabel="Create List"
-          onAction={handleBack}
-        />
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-200 px-4 py-4">
         <div className="max-w-7xl mx-auto">
-          <button
-            onClick={handleBack}
-            className="mb-2 text-gray-600 hover:text-gray-900 flex items-center gap-1"
-          >
-            <span>←</span>
-            <span>Back to Lists</span>
-          </button>
-          <h1 className="text-3xl font-bold text-gray-800">
-            Shopping Lists
-          </h1>
-          <p className="text-gray-600 mt-1">
-            {totalLists} {totalLists === 1 ? 'list' : 'lists'} • {totalItems} {totalItems === 1 ? 'item' : 'items'}
-          </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <button
+                onClick={handleBack}
+                className="mb-2 text-gray-600 hover:text-gray-900 flex items-center gap-1"
+              >
+                <span>←</span>
+                <span>Back to Lists</span>
+              </button>
+              <h1 className="text-3xl font-bold text-gray-800">
+                Shopping Mode
+              </h1>
+              <p className="text-gray-600 mt-1">
+                Tap items as you shop
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -145,34 +142,33 @@ export const ShoppingPage: React.FC = () => {
         </Card>
 
         {/* Shopping Lists */}
-        {allItems.length === 0 ? (
+        {lists.length === 0 ? (
           <Card>
             <EmptyState
-              title="No Items in Shopping Lists"
-              description="Add items to your shopping lists to start"
+              title="No Shopping Lists"
+              description="Create a shopping list to start your grocery shopping"
               icon="🛒"
               actionLabel="Create List"
               onAction={handleBack}
             />
           </Card>
         ) : (
-          <div className="space-y-4">
-            {/* Group by list */}
-            {selectedLists.map((list: any) => (
-              <Card key={list.id}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {lists.map((list: any) => (
+              <Card key={list.id} className="h-full">
                 <div className="flex items-center justify-between mb-4 pb-3 border-b">
                   <div>
                     <h3 className="font-semibold text-gray-800">{list.name}</h3>
                     <p className="text-sm text-gray-600">
-                      {list.items.length} {list.items.length === 1 ? 'item' : 'items'}
+                      {list.items?.length || 0} {list.items?.length === 1 ? 'item' : 'items'}
                     </p>
                   </div>
-                  <Badge variant={list.status === 'active' ? 'primary' : 'secondary'}>
+                  <Badge variant={getStatusVariant(list.status)}>
                     {list.status}
                   </Badge>
                 </div>
 
-                {list.items.length === 0 ? (
+                {list.items?.length === 0 ? (
                   <EmptyState
                     title="No Items"
                     description="Add items to this list"
@@ -182,14 +178,13 @@ export const ShoppingPage: React.FC = () => {
                   />
                 ) : (
                   <div className="space-y-2">
-                    {list.items.map((item: any) => (
+                {list.items.map((item: any) => (
                       <GroceryItemCard
                         key={item.id}
                         item={item}
-                        onToggle={() => {}}
-                        onUpdate={() => {}}
-                        onRemove={() => {}}
-                        readOnly
+                        onToggle={() => handleToggleItem(list.id, item.id)}
+                        onUpdate={() => handleUpdateItem(list.id, item)}
+                        onRemove={() => handleRemoveItem(list.id, item.id)}
                       />
                     ))}
                   </div>
