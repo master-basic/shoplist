@@ -508,6 +508,72 @@ app.delete('/api/lists/:id', async (req, res) => {
   }
 });
 
+// =====================================================
+// LIST ROUTES - ADDITIONAL ENDPOINTS
+// =====================================================
+
+// Get all lists for current user (across all households)
+app.get('/api/lists/all', async (req, res) => {
+  try {
+    const { userId } = req.query;
+    
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID required' });
+    }
+    
+    // Get all households for user
+    const householdsResult = await pool.query(
+      `SELECT DISTINCT h.id, h.name 
+       FROM households h
+       JOIN user_households uh ON h.id = uh.household_id
+       WHERE uh.user_id = $1`,
+      [userId]
+    );
+    
+    const householdIds = householdsResult.rows.map(h => h.id);
+    
+    if (householdIds.length === 0) {
+      return res.json({ lists: [] });
+    }
+    
+    // Get all grocery lists
+    const listsResult = await pool.query(
+      `SELECT gl.id, gl.name, gl.description, gl.household_id, gl.created_by,
+               gl.created_at, gl.updated_at,
+               (SELECT COUNT(*) FROM list_items li WHERE li.list_id = gl.id AND li.is_checked = FALSE) as total_items,
+               (SELECT COUNT(*) FROM list_items li WHERE li.list_id = gl.id AND li.is_checked = TRUE) as completed_items,
+               (SELECT COUNT(*) FROM list_items li WHERE li.list_id = gl.id) as total_items_count
+       FROM grocery_lists gl
+       WHERE gl.household_id = ANY($1::uuid[])
+       ORDER BY gl.created_at DESC`,
+      [householdIds]
+    );
+    
+    // Get items for each list
+    const listsWithItems = [];
+    for (const list of listsResult.rows) {
+      const itemsResult = await pool.query(
+        'SELECT * FROM list_items WHERE list_id = $1 ORDER BY created_at',
+        [list.id]
+      );
+      
+      listsWithItems.push({
+        ...list,
+        items: itemsResult.rows
+      });
+    }
+    
+    res.json({ lists: listsWithItems });
+  } catch (error) {
+    console.error('Get all lists error:', error);
+    res.status(500).json({ error: 'Failed to get lists', message: error.message });
+  }
+});
+
+// =====================================================
+// CREATE LIST (FIXED)
+// =====================================================
+
 // Get list items
 app.get('/api/lists/:id/items', async (req, res) => {
   try {
