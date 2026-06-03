@@ -136,24 +136,24 @@ app.post('/api/auth/register', async (req, res) => {
   }
 });
 
-// Login user
+// Login user - accepts USERNAME or email
 app.post('/api/auth/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
     
-    // Validate input
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required' });
+    // Validate input - accept username or email
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password are required' });
     }
     
-    // Find user
+    // Find user by username OR email
     const result = await pool.query(
-      'SELECT id, email, name, is_admin, preferred_currency, created_at FROM users WHERE email = $1',
-      [email]
+      'SELECT id, email, name, is_admin, preferred_currency, created_at, password_hash FROM users WHERE username = $1 OR email = $1',
+      [username]
     );
     
     if (result.rows.length === 0) {
-      return res.status(401).json({ error: 'Invalid email or password' });
+      return res.status(401).json({ error: 'Invalid username or password' });
     }
     
     const user = result.rows[0];
@@ -162,7 +162,7 @@ app.post('/api/auth/login', async (req, res) => {
     const validPassword = await bcrypt.compare(password, user.password_hash);
     
     if (!validPassword) {
-      return res.status(401).json({ error: 'Invalid email or password' });
+      return res.status(401).json({ error: 'Invalid username or password' });
     }
     
     // Return user without password hash

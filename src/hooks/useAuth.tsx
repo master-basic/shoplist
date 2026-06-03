@@ -22,7 +22,7 @@ interface UseAuthReturn {
   isLoading: boolean;
   error: string | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
   createHousehold: (name: string, description: string, userId: string) => Promise<void>;
@@ -56,6 +56,10 @@ export function useAuth(): UseAuthReturn {
         const userHouseholds = await getUserHouseholds(userId);
         setHouseholds(userHouseholds || []);
       } else {
+        // User not found - clear localStorage and set to null
+        localStorage.removeItem('user_id');
+        localStorage.removeItem('user_name');
+        localStorage.removeItem('user_email');
         setUser(null);
         setHouseholds([]);
       }
@@ -69,14 +73,18 @@ export function useAuth(): UseAuthReturn {
     }
   }, []);
 
-  const login = useCallback(async (email: string, password: string) => {
+  const login = useCallback(async (username: string, password: string) => {
     try {
       setError(null);
       setIsLoading(true);
 
-      const userData = await loginUser(email, password);
+      // Clear any stale user data before login
+      localStorage.removeItem('user_id');
+      localStorage.removeItem('user_name');
+      localStorage.removeItem('user_email');
+
+      const userData = await loginUser(username, password);
       localStorage.setItem('user_id', userData.id);
-      localStorage.setItem('user_email', userData.email);
       localStorage.setItem('user_name', userData.name);
 
       setUser(userData);
@@ -147,10 +155,10 @@ export function useAuth(): UseAuthReturn {
     await loadUser();
   }, [loadUser]);
 
-  // Load user on mount
+  // Load user on mount - removed loadUser dependency to prevent infinite loop
   useEffect(() => {
     loadUser();
-  }, [loadUser]);
+  }, []);
 
   return {
     user,

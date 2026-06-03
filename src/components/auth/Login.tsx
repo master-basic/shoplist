@@ -12,7 +12,7 @@ import { Spinner } from '../ui/Spinner';
 import { useAuth } from '../../hooks/useAuth';
 
 export const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -25,10 +25,10 @@ export const Login: React.FC = () => {
     setIsLoading(true);
 
     try {
-      await login(email, password);
+      await login(username, password);
       navigate('/');
     } catch (err) {
-      setError('Invalid email or password');
+      setError('Invalid username or password');
     } finally {
       setIsLoading(false);
     }
@@ -50,11 +50,11 @@ export const Login: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
-            label="Email Address"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
+            label="Username"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="your-username"
             required
           />
 
@@ -66,6 +66,12 @@ export const Login: React.FC = () => {
             placeholder="••••••••"
             required
           />
+
+          <div className="mt-4 text-center">
+            <p className="text-xs text-gray-500">
+              Demo: Use username <code className="bg-gray-100 px-1 py-0.5 rounded">admin</code> with password <code className="bg-gray-100 px-1 py-0.5 rounded">admin123</code>
+            </p>
+          </div>
 
           <Button
             type="submit"

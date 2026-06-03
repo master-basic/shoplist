@@ -23,15 +23,15 @@ export async function registerUser(name: string, email: string, password: string
 }
 
 /**
- * Login user
+ * Login user - accepts USERNAME (not email)
  */
-export async function loginUser(email: string, password: string): Promise<UserType> {
+export async function loginUser(username: string, password: string): Promise<UserType> {
   const response = await fetch('http://localhost:3001/api/auth/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ username, password }),
   });
 
   if (!response.ok) {
