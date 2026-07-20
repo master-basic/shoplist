@@ -1,16 +1,25 @@
-// =====================================================
-// GroceryMind - Price History Hook
-// =====================================================
-
-import { useState, useEffect, useCallback } from 'react';
-import { createClient } from '@supabase/supabase-js';
+import { useState, useCallback } from 'react';
 import { useStore } from '@/store/useStore';
 import type { PriceHistoryItem } from '@/types';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const API_BASE = 'http://localhost:3001';
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+export interface PriceAlert {
+  item_name: string;
+  store_name: string;
+  current_price: number;
+  previous_price: number;
+  percentage: number;
+  current_date: string;
+  previous_date: string;
+}
+
+export interface PriceTrend {
+  change: number;
+  percentage: number;
+  indicator: string;
+  label: string;
+}
 
 export const usePriceHistory = () => {
   const { currentHouseholdId } = useStore();
@@ -19,29 +28,19 @@ export const usePriceHistory = () => {
   const [priceHistory, setPriceHistory] = useState<PriceHistoryItem[]>([]);
   const [priceAlerts, setPriceAlerts] = useState<PriceAlert[]>([]);
 
-  // Load price history for an item
   const loadPriceHistory = useCallback(async (itemName: string, storeName?: string) => {
     setLoading(true);
     setError(null);
-    
     try {
-      const query = supabase
-        .from('price_history')
-        .select('*')
-        .ilike('item_name', itemName)
-        .order('purchased_at', { ascending: false });
-      
-      if (storeName) {
-        query.eq('store_name', storeName);
-      }
-      
-      const { data, error } = await query.limit(100);
-      
-      if (error) throw error;
-      
-      if (data) {
-        setPriceHistory(data);
-      }
+      const params = new URLSearchParams();
+      if (itemName) params.append('itemName', itemName);
+      if (storeName) params.append('store', storeName);
+      params.append('limit', '100');
+
+      const response = await fetch(`${API_BASE}/api/price-history?${params.toString()}`);
+      if (!response.ok) throw new Error('Failed to load price history');
+      const data = await response.json();
+      setPriceHistory(data.priceHistory || []);
     } catch (err) {
       console.error('Error loading price history:', err);
       setError(err instanceof Error ? err.message : 'Failed to load price history');
@@ -50,92 +49,69 @@ export const usePriceHistory = () => {
     }
   }, []);
 
-  // Get price trend
   const getPriceTrend = useCallback((currentPrice: number, previousPrice: number): PriceTrend => {
     if (!previousPrice || previousPrice === 0) {
-      return {
-        change: 0,
-        percentage: 0,
-        indicator: '-',
-        label: 'No previous data',
-      };
+      return { change: 0, percentage: 0, indicator: '-', label: 'No previous data' };
     }
-    
     const change = currentPrice - previousPrice;
     const percentage = (change / previousPrice) * 100;
-    
     let indicator = '-';
     let label = '';
-    
     if (percentage > 0) {
-      indicator = String.fromCharCode(8593); // ↑
+      indicator = String.fromCharCode(8593);
       label = 'More expensive';
     } else if (percentage < 0) {
-      indicator = String.fromCharCode(8595); // ↓
+      indicator = String.fromCharCode(8595);
       label = 'Cheaper';
     }
-    
-    return {
-      change,
-      percentage,
-      indicator,
-      label,
-    };
+    return { change, percentage, indicator, label };
   }, []);
 
-  // Check for price change alerts
   const checkPriceAlerts = useCallback(async () => {
     try {
-      const { data, error } = await supabase
-        .from('price_history')
-        .select('*')
-        .order('purchased_at', { ascending: false });
-      
-      if (error) throw error;
-      
-      if (data) {
-        const alerts: PriceAlert[] = [];
-        
-        for (let i = 1; i < data.length; i++) {
-          const current = data[i - 1];
-          const previous = data[i];
-          
-          if (previous.unit_price > 0) {
-            const percentage = ((current.unit_price - previous.unit_price) / previous.unit_price) * 100;
-            
-            if (percentage >= 5) {
-              alerts.push({
-                item_name: current.item_name,
-                store_name: current.store_name,
-                current_price: current.unit_price,
-                previous_price: previous.unit_price,
-                percentage,
-                current_date: current.purchased_at,
-                previous_date: previous.purchased_at,
-              });
-            }
+      const response = await fetch(`${API_BASE}/api/price-history?limit=200`);
+      if (!response.ok) throw new Error('Failed to check price alerts');
+      const data = await response.json();
+      const history = data.priceHistory || [];
+      const alerts: PriceAlert[] = [];
+
+      for (let i = 1; i < history.length; i++) {
+        const current = history[i - 1];
+        const previous = history[i];
+        if (previous.unit_price > 0 && current.item_name === previous.item_name) {
+          const percentage = ((current.unit_price - previous.unit_price) / previous.unit_price) * 100;
+          if (percentage >= 5) {
+            alerts.push({
+              item_name: current.item_name,
+              store_name: current.store_name,
+              current_price: current.unit_price,
+              previous_price: previous.unit_price,
+              percentage,
+              current_date: current.purchased_at,
+              previous_date: previous.purchased_at,
+            });
           }
         }
-        
-        setPriceAlerts(alerts);
       }
+      setPriceAlerts(alerts);
     } catch (err) {
       console.error('Error checking price alerts:', err);
     }
   }, []);
 
-  // Add price history entry
   const addPriceEntry = async (entry: Omit<PriceHistoryItem, 'id' | 'created_at'>) => {
     setLoading(true);
     setError(null);
-    
     try {
-      const { error } = await supabase
-        .from('price_history')
-        .insert([entry]);
-      
-      if (error) throw error;
-      
+      const response = await fetch(`${API_BASE}/api/price-history`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(entry),
+      });
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.error || 'Failed to add price entry');
+      }
       await checkPriceAlerts();
     } catch (err) {
       console.error('Error adding price entry:', err);
@@ -146,49 +122,28 @@ export const usePriceHistory = () => {
     }
   };
 
-  // Get statistics
   const getStatistics = useCallback(async (itemName: string) => {
     try {
-      const { data, error } = await supabase
-        .from('price_history')
-        .select('*')
-        .ilike('item_name', itemName)
-        .order('purchased_at', { ascending: false });
-      
-      if (error) throw error;
-      
-      if (!data || data.length === 0) {
-        return null;
-      }
-      
-      const prices = data.map(d => d.unit_price);
-      const stores = new Set(data.map(d => d.store_name));
-      
-      // Calculate statistics
-      const minPrice = Math.min(...prices);
-      const maxPrice = Math.max(...prices);
-      const avgPrice = prices.reduce((a, b) => a + b, 0) / prices.length;
-      
-      // Get cheapest store
-      const cheapestEntry = data.find(d => d.unit_price === minPrice);
-      
+      const response = await fetch(`${API_BASE}/api/price-history/stats?itemName=${encodeURIComponent(itemName)}`);
+      if (!response.ok) throw new Error('Failed to get statistics');
+      const data = await response.json();
+      const stats = data.stats;
       return {
-        count: data.length,
-        stores: Array.from(stores),
-        minPrice,
-        maxPrice,
-        avgPrice,
-        cheapestStore: cheapestEntry?.store_name,
-        cheapestPrice: minPrice,
-        mostRecent: data[0],
+        count: parseInt(stats.count) || 0,
+        stores: stats.stores || [],
+        minPrice: parseFloat(stats.min_price) || 0,
+        maxPrice: parseFloat(stats.max_price) || 0,
+        avgPrice: parseFloat(stats.avg_price) || 0,
+        cheapestStore: stats.cheapest_store,
+        cheapestPrice: parseFloat(stats.cheapest_price) || 0,
+        mostRecent: priceHistory[0] || null,
       };
     } catch (err) {
       console.error('Error getting statistics:', err);
       throw err;
     }
-  }, []);
+  }, [priceHistory]);
 
-  // Normalize item name
   const normalizeItemName = (name: string): string => {
     return name
       .toLowerCase()
@@ -211,20 +166,3 @@ export const usePriceHistory = () => {
     normalizeItemName,
   };
 };
-
-export interface PriceAlert {
-  item_name: string;
-  store_name: string;
-  current_price: number;
-  previous_price: number;
-  percentage: number;
-  current_date: string;
-  previous_date: string;
-}
-
-export interface PriceTrend {
-  change: number;
-  percentage: number;
-  indicator: string;
-  label: string;
-}

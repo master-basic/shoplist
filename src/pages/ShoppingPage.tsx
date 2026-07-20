@@ -1,47 +1,36 @@
-// =====================================================
-// Shopping Page Component
-// =====================================================
-
 import React, { useState, useEffect } from 'react';
 import { Card, Button, EmptyState, Badge, Spinner } from '../components/ui';
 import { GroceryItemCard } from '../components/GroceryItemCard';
 import { useStore } from '../store/useStore';
+import { getUserLists } from '../api/lists';
 
 export const ShoppingPage: React.FC = () => {
-  const { lists, addItemToList, deleteList, toggleItem, updateItem, deleteListItem, archiveList } = useStore();
-  
-  const [loading, setLoading] = useState(false);
+  const { user, lists, addList, toggleItem, updateItem, deleteListItem } = useStore();
+  const [loading, setLoading] = useState(true);
   const [selectedListId, setSelectedListId] = useState<string | null>(null);
 
-  const handleBack = () => {
-    window.location.href = '/lists';
-  };
-
-  const fetchLists = async () => {
-    try {
-      const response = await fetch('http://localhost:3001/api/lists/my', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('access_token') || ''}`
-        }
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        data.lists.forEach((list: any) => {
-          const existingIndex = lists.findIndex((l: any) => l.id === list.id);
-          if (existingIndex >= 0) {
-            lists[existingIndex] = list;
-          } else {
-            lists.push(list);
-          }
-        });
-        return data;
+  useEffect(() => {
+    const fetchLists = async () => {
+      if (!user?.id) {
+        setLoading(false);
+        return;
       }
-    } catch (err) {
-      console.error('Error fetching lists:', err);
-    }
-    return { lists };
-  };
+      try {
+        const fetchedLists = await getUserLists(user.id);
+        for (const list of fetchedLists) {
+          const existing = lists.find((l) => l.id === list.id);
+          if (!existing) {
+            addList(list);
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching lists:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchLists();
+  }, [user?.id]);
 
   const handleToggleItem = (listId: string, itemId: string) => {
     toggleItem(listId, itemId);
@@ -57,25 +46,20 @@ export const ShoppingPage: React.FC = () => {
 
   const selectedList = lists.find((l) => l.id === selectedListId);
   const allItems = selectedList ? selectedList.items || [] : [];
-
   const totalItems = allItems.length;
   const completedItems = allItems.filter((item: any) => item.is_checked).length;
   const completionPercentage = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
 
   const getStatusVariant = (status: string): 'primary' | 'secondary' | 'success' | 'warning' | undefined => {
     switch (status) {
-      case 'active':
-        return 'primary';
-      case 'completed':
-        return 'success';
-      case 'archived':
-        return 'secondary';
-      default:
-        return undefined;
+      case 'active': return 'primary';
+      case 'completed': return 'success';
+      case 'archived': return 'secondary';
+      default: return undefined;
     }
   };
 
-  if (lists.length === 0) {
+  if (!user) {
     return (
       <div className="flex-1 flex items-center justify-center">
         <EmptyState
@@ -90,66 +74,53 @@ export const ShoppingPage: React.FC = () => {
   }
 
   if (loading) {
-    return <Spinner />;
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <Spinner />
+      </div>
+    );
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
-      {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-200 px-4 py-4">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between">
-            <div>
-              <button
-                onClick={handleBack}
-                className="mb-2 text-gray-600 hover:text-gray-900 flex items-center gap-1"
-              >
-                <span>←</span>
-                <span>Back to Lists</span>
-              </button>
-              <h1 className="text-3xl font-bold text-gray-800">
-                Shopping Mode
-              </h1>
-              <p className="text-gray-600 mt-1">
-                Tap items as you shop
-              </p>
-            </div>
-          </div>
+          <h1 className="text-3xl font-bold text-gray-800">Shopping Mode</h1>
+          <p className="text-gray-600 mt-1">Tap items as you shop</p>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="p-4">
-        {/* Progress Overview */}
-        <Card className="mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h3 className="font-semibold text-gray-800">Shopping Progress</h3>
-              <p className="text-sm text-gray-600">
-                {completedItems} / {totalItems} items completed
-              </p>
+      <div className="p-4 max-w-7xl mx-auto">
+        {selectedList && (
+          <Card className="mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="font-semibold text-gray-800">{selectedList.name} - Progress</h3>
+                <p className="text-sm text-gray-600">
+                  {completedItems} / {totalItems} items completed
+                </p>
+              </div>
+              <div className="text-right">
+                <span className="text-3xl font-bold text-green-600">{completionPercentage}%</span>
+              </div>
             </div>
-            <div className="text-right">
-              <span className="text-3xl font-bold text-green-600">{completionPercentage}%</span>
+            <div className="w-full bg-gray-200 rounded-full h-4">
+              <div
+                className="h-4 rounded-full bg-green-500 transition-all"
+                style={{ width: `${completionPercentage}%` }}
+              />
             </div>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-4">
-            <div
-              className="h-4 rounded-full bg-green-500 transition-all"
-              style={{ width: `${completionPercentage}%` }}
-            />
-          </div>
-        </Card>
+          </Card>
+        )}
 
-        {/* Shopping Lists */}
         {lists.length === 0 ? (
           <Card>
             <EmptyState
               title="No Shopping Lists"
               description="Create a shopping list to start your grocery shopping"
               icon="🛒"
-              actionLabel="Create List"
-              onAction={handleBack}
+              actionLabel="Go to Lists"
+              onAction={() => window.location.href = '/lists'}
             />
           </Card>
         ) : (
@@ -163,22 +134,23 @@ export const ShoppingPage: React.FC = () => {
                       {list.items?.length || 0} {list.items?.length === 1 ? 'item' : 'items'}
                     </p>
                   </div>
-                  <Badge variant={getStatusVariant(list.status)}>
-                    {list.status}
-                  </Badge>
+                  <div className="flex gap-2">
+                    <Badge variant={getStatusVariant(list.status)}>
+                      {list.status}
+                    </Badge>
+                    <Button
+                      size="sm"
+                      variant={selectedListId === list.id ? 'primary' : 'secondary'}
+                      onClick={() => setSelectedListId(selectedListId === list.id ? null : list.id)}
+                    >
+                      {selectedListId === list.id ? 'Close' : 'Shop'}
+                    </Button>
+                  </div>
                 </div>
 
-                {list.items?.length === 0 ? (
-                  <EmptyState
-                    title="No Items"
-                    description="Add items to this list"
-                    icon="📦"
-                    actionLabel="Add Item"
-                    onAction={() => {}}
-                  />
-                ) : (
+                {selectedListId === list.id && list.items?.length > 0 ? (
                   <div className="space-y-2">
-                {list.items.map((item: any) => (
+                    {list.items.map((item: any) => (
                       <GroceryItemCard
                         key={item.id}
                         item={item}
@@ -188,7 +160,17 @@ export const ShoppingPage: React.FC = () => {
                       />
                     ))}
                   </div>
-                )}
+                ) : list.items?.length === 0 ? (
+                  <EmptyState
+                    title="No Items"
+                    description="Add items to this list from the Lists page"
+                    icon="📦"
+                  />
+                ) : selectedListId !== list.id ? (
+                  <p className="text-sm text-gray-500 text-center py-4">
+                    Click "Shop" to start checking off items
+                  </p>
+                ) : null}
               </Card>
             ))}
           </div>

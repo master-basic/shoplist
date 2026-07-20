@@ -115,21 +115,22 @@ app.post('/api/auth/register', async (req, res) => {
 
 app.post('/api/auth/login', async (req, res) => {
   try {
-    const { username, password } = req.body;
-    if (!username || !password) {
-      return res.status(400).json({ error: 'Username and password are required' });
+    const { email, username, password } = req.body;
+    const loginId = email || username;
+    if (!loginId || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
     }
     const result = await pool.query(
-      'SELECT id, email, name, is_admin, preferred_currency, created_at, password_hash FROM users WHERE username = $1 OR email = $1',
-      [username]
+      'SELECT id, email, name, is_admin, preferred_currency, created_at, password_hash FROM users WHERE email = $1',
+      [loginId]
     );
     if (result.rows.length === 0) {
-      return res.status(401).json({ error: 'Invalid username or password' });
+      return res.status(401).json({ error: 'Invalid email or password' });
     }
     const user = result.rows[0];
     const validPassword = await bcrypt.compare(password, user.password_hash);
     if (!validPassword) {
-      return res.status(401).json({ error: 'Invalid username or password' });
+      return res.status(401).json({ error: 'Invalid email or password' });
     }
     const { password_hash, ...userWithoutPassword } = user;
     res.json({ user: userWithoutPassword, message: 'Login successful' });
@@ -216,7 +217,7 @@ app.get('/api/households/:id/members', async (req, res) => {
     const { id } = req.params;
     const result = await pool.query(
       `SELECT u.id, u.email, u.name, u.is_admin, uhm.role, uhm.is_owner, uhm.joined_at
-       FROM households h JOIN user_households uhm ON h.id = uh.household_id
+       FROM households h JOIN user_households uhm ON h.id = uhm.household_id
        JOIN users u ON uhm.user_id = u.id WHERE h.id = $1`,
       [id]
     );
@@ -288,14 +289,13 @@ app.get('/api/lists', async (req, res) => {
     const { householdId } = req.query;
     let query = `SELECT gl.*, ARRAY_AGG(DISTINCT li.id) as item_ids,
              ARRAY_AGG(DISTINCT li.name) as item_names, ARRAY_AGG(DISTINCT li.quantity) as item_quantities
-       FROM grocery_lists gl JOIN user_households uh ON gl.created_by = uh.user_id
-       WHERE uh.is_owner = TRUE`;
+       FROM grocery_lists gl JOIN user_households uh ON gl.household_id = uh.household_id`;
     const params = [];
     if (householdId) {
-      query += ' AND gl.household_id = $1';
+      query += ' WHERE gl.household_id = $1';
       params.push(householdId);
     }
-    query += ' ORDER BY gl.created_at DESC';
+    query += ' GROUP BY gl.id ORDER BY gl.created_at DESC';
     const result = await pool.query(query, params);
     res.json({ lists: result.rows });
   } catch (error) {
@@ -444,6 +444,156 @@ app.delete('/api/lists/:listId/items/:itemId', async (req, res) => {
   } catch (error) {
     console.error('Delete item error:', error);
     res.status(500).json({ error: 'Failed to delete item', message: error.message });
+  }
+});
+
+app.patch('/api/lists/items/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { is_checked, isChecked } = req.body;
+    const checked = is_checked !== undefined ? is_checked : isChecked;
+    const result = await pool.query(
+      `UPDATE list_items SET is_checked = $1, updated_at = CURRENT_TIMESTAMP
+       WHERE id = $2 RETURNING *`,
+      [checked, id]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Item not found' });
+    res.json({ item: result.rows[0], message: 'Item toggled successfully' });
+  } catch (error) {
+    console.error('Toggle item error:', error);
+    res.status(500).json({ error: 'Failed to toggle item', message: error.message });
+  }
+});
+
+app.get('/api/lists/:id/stats', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await pool.query(
+      `SELECT
+        COUNT(*) as total_items,
+        COUNT(*) FILTER (WHERE is_checked = TRUE) as completed_items,
+        COUNT(*) FILTER (WHERE is_checked = FALSE) as pending_items,
+        COALESCE(SUM(unit_price * quantity), 0) as total_estimated_cost,
+        COALESCE(SUM(unit_price * quantity) FILTER (WHERE is_checked = TRUE), 0) as total_actual_cost
+       FROM list_items WHERE list_id = $1`,
+      [id]
+    );
+    res.json({ stats: result.rows[0] });
+  } catch (error) {
+    console.error('Get list stats error:', error);
+    res.status(500).json({ error: 'Failed to get list stats', message: error.message });
+  }
+});
+
+// =====================================================
+// HOUSEHOLD ITEMS ROUTE
+// =====================================================
+
+app.get('/api/households/:id/items', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await pool.query(
+      `SELECT li.* FROM list_items li
+       JOIN grocery_lists gl ON li.list_id = gl.id
+       WHERE gl.household_id = $1 ORDER BY li.created_at DESC`,
+      [id]
+    );
+    res.json({ items: result.rows });
+  } catch (error) {
+    console.error('Get household items error:', error);
+    res.status(500).json({ error: 'Failed to get household items', message: error.message });
+  }
+});
+
+// =====================================================
+// PRICE HISTORY ROUTES
+// =====================================================
+
+app.get('/api/price-history', async (req, res) => {
+  try {
+    const { householdId, itemName, store, limit } = req.query;
+    let query = 'SELECT * FROM price_history';
+    const conditions = [];
+    const params = [];
+    let paramIndex = 1;
+
+    if (householdId) {
+      conditions.push(`list_item_id IN (SELECT li.id FROM list_items li JOIN grocery_lists gl ON li.list_id = gl.id WHERE gl.household_id = $${paramIndex})`);
+      params.push(householdId);
+      paramIndex++;
+    }
+    if (itemName) {
+      conditions.push(`item_name ILIKE $${paramIndex}`);
+      params.push(`%${itemName}%`);
+      paramIndex++;
+    }
+    if (store) {
+      conditions.push(`store_name ILIKE $${paramIndex}`);
+      params.push(`%${store}%`);
+      paramIndex++;
+    }
+
+    if (conditions.length > 0) {
+      query += ' WHERE ' + conditions.join(' AND ');
+    }
+    query += ' ORDER BY purchased_at DESC';
+    if (limit) {
+      query += ` LIMIT $${paramIndex}`;
+      params.push(parseInt(limit));
+    }
+
+    const result = await pool.query(query, params);
+    res.json({ priceHistory: result.rows });
+  } catch (error) {
+    console.error('Get price history error:', error);
+    res.status(500).json({ error: 'Failed to get price history', message: error.message });
+  }
+});
+
+app.post('/api/price-history', async (req, res) => {
+  try {
+    const { listItemId, itemName, storeName, unitPrice, currency, purchasedAt, quantity } = req.body;
+    if (!itemName || unitPrice === undefined) {
+      return res.status(400).json({ error: 'itemName and unitPrice are required' });
+    }
+    const result = await pool.query(
+      `INSERT INTO price_history (list_item_id, item_name, store_name, unit_price, currency, purchased_at, quantity)
+       VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+      [listItemId || null, itemName, storeName || null, unitPrice, currency || 'AZN', purchasedAt || new Date().toISOString(), quantity || 1]
+    );
+    res.status(201).json({ priceEntry: result.rows[0], message: 'Price entry created successfully' });
+  } catch (error) {
+    console.error('Create price history error:', error);
+    res.status(500).json({ error: 'Failed to create price entry', message: error.message });
+  }
+});
+
+app.get('/api/price-history/stats', async (req, res) => {
+  try {
+    const { itemName } = req.query;
+    if (!itemName) return res.status(400).json({ error: 'itemName query parameter is required' });
+    const result = await pool.query(
+      `SELECT
+        COUNT(*) as count,
+        MIN(unit_price) as min_price,
+        MAX(unit_price) as max_price,
+        AVG(unit_price) as avg_price,
+        array_agg(DISTINCT store_name) as stores
+       FROM price_history WHERE item_name ILIKE $1`,
+      [`%${itemName}%`]
+    );
+    const stats = result.rows[0];
+    const cheapestResult = await pool.query(
+      `SELECT store_name, unit_price FROM price_history
+       WHERE item_name ILIKE $1 ORDER BY unit_price ASC LIMIT 1`,
+      [`%${itemName}%`]
+    );
+    stats.cheapest_store = cheapestResult.rows[0]?.store_name || null;
+    stats.cheapest_price = cheapestResult.rows[0]?.unit_price || null;
+    res.json({ stats });
+  } catch (error) {
+    console.error('Get price stats error:', error);
+    res.status(500).json({ error: 'Failed to get price stats', message: error.message });
   }
 });
 

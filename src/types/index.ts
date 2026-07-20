@@ -92,6 +92,7 @@ export interface Household {
   id: string;
   name: string;
   currency: string;
+  description?: string;
   created_by: string; // user id
   created_at: string;
   members: HouseholdMember[];
