@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { normalizeItemName, fuzzyMatch, STORES, CATEGORIES } from '@/types';
+import { createListItem } from '@/api/lists';
 
 const SearchPage: React.FC = () => {
   const { lists, priceHistory, purchaseSessions, user } = useStore();
@@ -95,12 +96,14 @@ const SearchPage: React.FC = () => {
     setSearchResults(results.sort((a, b) => b.score - a.score));
   };
 
-  const handleQuickAdd = (item: any) => {
-    // Add item to first active list
+  const handleQuickAdd = async (name: string) => {
     const activeList = lists.find(l => l.status === 'active');
-    if (activeList) {
-      // In a real app, this would call an API
-      alert(`Added "${item.item_name || item.name}" to ${activeList.name}`);
+    if (activeList && user?.id) {
+      try {
+        await createListItem(name, 1, 0, 'Other', activeList.id, user.id);
+      } catch (err) {
+        console.error('Error adding item:', err);
+      }
     }
   };
 
@@ -188,7 +191,7 @@ const SearchPage: React.FC = () => {
                       Bought {suggestion.frequency} time(s) • Last: {suggestion.last_bought_at ? new Date(suggestion.last_bought_at).toLocaleDateString() : 'Unknown'}
                     </p>
                   </div>
-                  <Button onClick={() => handleQuickAdd(suggestion)} variant="primary" size="sm">
+                  <Button onClick={() => handleQuickAdd(suggestion.item_name)} variant="primary" size="sm">
                     Add to List
                   </Button>
                 </div>
@@ -255,7 +258,7 @@ const SearchPage: React.FC = () => {
                       </div>
                       
                       {result.type === 'item' && (
-                        <Button onClick={() => handleQuickAdd(result)} variant="primary" size="sm">
+                        <Button onClick={() => handleQuickAdd(result.item_name || result.name)} variant="primary" size="sm">
                           Quick Add
                         </Button>
                       )}

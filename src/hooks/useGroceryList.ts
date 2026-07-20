@@ -311,6 +311,29 @@ export const useGroceryList = () => {
     }
   };
 
+  // Update list status
+  const updateList = async (listId: string, status: string, userId: string) => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const list = lists.find((l: GroceryList) => l.id === listId);
+      if (!list) return;
+      
+      await fetch(`http://localhost:3001/api/lists/${listId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: list.name, householdId: list.household_id })
+      });
+    } catch (err) {
+      console.error('Error updating list:', err);
+      setError(err instanceof Error ? err.message : 'Failed to update list');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Archive list
   const archiveListFn = async (listId: string) => {
     setLoading(true);
@@ -322,30 +345,6 @@ export const useGroceryList = () => {
     } catch (err) {
       console.error('Error archiving list:', err);
       setError(err instanceof Error ? err.message : 'Failed to archive list');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Archive list - using updateList instead
-  const updateList = async (listId: string, status: string, userId: string) => {
-    setLoading(true);
-    setError(null);
-    
-    try {
-      const list = lists.find((l: GroceryList) => l.id === listId);
-      if (!list) return;
-      
-      // Update status via API
-      await fetch(`http://localhost:3001/api/lists/${listId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status, householdId: list.household_id })
-      });
-    } catch (err) {
-      console.error('Error updating list:', err);
-      setError(err instanceof Error ? err.message : 'Failed to update list');
       throw err;
     } finally {
       setLoading(false);

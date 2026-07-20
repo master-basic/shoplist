@@ -751,6 +751,19 @@ CREATE TABLE user_preferences (
 - [ ] Purchase session management
 - [ ] Actual price tracking at point of purchase
 
+**Known Issues:**
+- SearchPage works but quick-add is wired to API ✓
+- ScanPage OCR is simulated (hardcoded response)
+- No JWT/session auth middleware on server
+- No unit tests
+- ~~Duplicate page files exist (*Page.tsx and *.tsx variants)~~ **CLEANED UP**
+
+**Cleaned Up:**
+- Removed 11 unused duplicate page files (Dashboard, Household, Onboarding, Profile, Reports, Scan, Search, Shopping, Login, Register old variants + ShoppingMode component)
+- Removed unused dependencies: @supabase/supabase-js, @turf/turf, idb, dotenv
+- Fixed `useGroceryList` "referenced before definition" issue (reordered `updateList` before `archiveListFn`)
+- Wired SearchPage quick-add to use `createListItem` API instead of `alert()`
+
 **Phase 3: Receipt Scanning & OCR - IN PROGRESS**
 
 **Completed:**
@@ -961,5 +974,15 @@ DB_PASSWORD=your_password_here
 - Updated `index.ts` - Reorganized exports, added FormLabel/FormError/FormGroup
 
 **Status:** UI component library updated and complete (14 components).
+
+### [2026-07-20] Codebase Cleanup & SearchPage API Wiring
+**Changes Made:**
+- Removed 11 unused duplicate page files (Dashboard, Household, Onboarding, Profile, Reports, Scan, Search, Shopping, Login, Register old variants + ShoppingMode component)
+- Removed unused dependencies: `@supabase/supabase-js`, `@turf/turf`, `idb`, `dotenv`
+- Fixed `useGroceryList` hook - reordered `updateList` before `archiveListFn` to fix "referenced before definition" error
+- Wired SearchPage quick-add to call `createListItem` API instead of `alert()`
+- Updated PROJECT_PLAN.md with cleanup status
+
+**Status:** Codebase cleaner. Phase 2 continues.
 
 ---
