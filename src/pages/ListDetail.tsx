@@ -1,416 +1,215 @@
-// =====================================================
-// List Detail Page Component
-// =====================================================
-
-import React, { useState } from 'react';
-import { Card, Button, EmptyState, Toast, Input, Select, Badge } from '../components/ui';
+import React, { useState, useEffect } from 'react';
+import { Card, Button, EmptyState, Toast, Input, Select, Badge, Spinner } from '../components/ui';
 import { useStore } from '../store/useStore';
 import { GroceryItemCard } from '../components/GroceryItemCard';
-import type { GroceryList, ListItem } from '../store/useStore';
+import { getUserLists, getListById, createListItem, deleteListItem as apiDeleteListItem, toggleItemCompletion, updateList, deleteList as apiDeleteList } from '../api/lists';
+import { AddItemModal } from '../components/AddItemModal';
+import type { GroceryList, ListItem } from '../types';
 
-interface Props {
-  listId?: string;
-  title?: string;
-}
-
-export const ListDetail: React.FC<Props> = ({ listId, title }) => {
-  const lists = useStore((state) => state.lists);
-  const addList = useStore((state) => state.addList);
-  const deleteList = useStore((state) => state.deleteList);
-  const deleteListItem = useStore((state) => state.deleteListItem);
-  const addItemToList = useStore((state) => state.addItemToList);
-  const updateItem = useStore((state) => state.updateItem);
-  const toggleItem = useStore((state) => state.toggleItem);
-  const archiveList = useStore((state) => state.archiveList);
-  const user = useStore((state) => state.user);
-
-  const [selectedList, setSelectedList] = useState<GroceryList | null>(null);
+export const ListDetail: React.FC = () => {
+  const { user, lists, addList, deleteList: storeDeleteList, deleteListItem: storeDeleteListItem, addItemToList, updateItem, toggleItem, archiveList } = useStore();
+  const [selectedListId, setSelectedListId] = useState<string | null>(null);
   const [showNewItemModal, setShowNewItemModal] = useState(false);
   const [notification, setNotification] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLists = async () => {
+      if (!user?.id) { setLoading(false); return; }
+      try {
+        const fetchedLists = await getUserLists(user.id);
+        for (const list of fetchedLists) {
+          const existing = lists.find((l) => l.id === list.id);
+          if (!existing) addList(list);
+        }
+      } catch (err) {
+        console.error('Error fetching lists:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchLists();
+  }, [user?.id]);
 
   const showNotification = (message: string) => {
     setNotification(message);
     setTimeout(() => setNotification(null), 3000);
   };
 
-  const handleBack = () => {
-    setSelectedList(null);
+  const selectedList = lists.find((l) => l.id === selectedListId);
+
+  const handleCreateItem = async (itemData: Omit<ListItem, 'id' | 'list_id' | 'created_at' | 'updated_at'>) => {
+    if (!selectedList || !user?.id) return;
+    try {
+      const newItem = await createListItem(
+        itemData.name,
+        itemData.quantity,
+        itemData.estimated_price,
+        itemData.category,
+        selectedList.id,
+        user.id
+      );
+      addItemToList(selectedList.id, {
+        ...itemData,
+        ...newItem,
+        list_id: selectedList.id,
+        is_checked: newItem.is_checked || false,
+        sort_order: newItem.sort_order || selectedList.items?.length || 0,
+        is_recurring: false,
+        price_history: [],
+        assigned_to: [],
+      });
+      setShowNewItemModal(false);
+      showNotification('Item added successfully');
+    } catch (err) {
+      console.error('Error adding item:', err);
+    }
   };
 
-  const handleListSelect = (list: GroceryList) => {
-    setSelectedList(list);
+  const handleDeleteItem = async (itemId: string) => {
+    if (!selectedList || !user?.id) return;
+    try {
+      await apiDeleteListItem(itemId, selectedList.id, user.id);
+      storeDeleteListItem(selectedList.id, itemId);
+      showNotification('Item deleted');
+    } catch (err) {
+      console.error('Error deleting item:', err);
+    }
   };
 
-  const handleCreateItem = () => {
-    const list = selectedList;
-    if (!list) return;
-
-    const newItem: Omit<ListItem, 'id'> = {
-      name: 'New Item',
-      category: 'other',
-      list_id: list.id,
-      quantity: 1,
-      unit: 'pcs',
-      estimated_price: 0,
-      is_checked: false,
-      assigned_to: [],
-      checked_by: undefined,
-      checked_at: undefined,
-      is_recurring: false,
-      restock_threshold: undefined,
-      last_bought_at: undefined,
-      price_history: [],
-      notes: '',
-      sort_order: list.items.length,
-    };
-    addItemToList(list.id, newItem);
-    setShowNewItemModal(false);
-    showNotification('Item added successfully');
-  };
-
-  const handleDeleteItem = (itemId: string) => {
-    deleteListItem(selectedList?.id || '', itemId);
-    showNotification('Item deleted');
-  };
-
-  const handleToggleItem = (itemId: string) => {
-    toggleItem(selectedList!.id, itemId);
+  const handleToggleItem = async (itemId: string) => {
+    if (!selectedList) return;
+    const item = selectedList.items?.find((i) => i.id === itemId);
+    if (item) {
+      try {
+        await toggleItemCompletion(itemId, !item.is_checked);
+        toggleItem(selectedList.id, itemId);
+      } catch (err) {
+        console.error('Error toggling item:', err);
+      }
+    }
   };
 
   const handleUpdateItem = (updates: Partial<ListItem>) => {
-    updateItem(selectedList!.id, updates.id || '', updates);
-    showNotification('Item updated successfully');
+    if (!selectedList || !updates.id) return;
+    updateItem(selectedList.id, updates.id, updates);
+    showNotification('Item updated');
   };
 
-  const handleArchiveList = () => {
-    archiveList(selectedList!.id);
-    showNotification('List archived');
-  };
-
-  const handleDeleteList = () => {
+  const handleDeleteList = async () => {
+    if (!selectedList || !user?.id) return;
     if (confirm('Are you sure you want to delete this list?')) {
-      deleteList(selectedList!.id);
-      setSelectedList(null);
-      showNotification('List deleted');
+      try {
+        await apiDeleteList(selectedList.id, user.id);
+        storeDeleteList(selectedList.id);
+        setSelectedListId(null);
+        showNotification('List deleted');
+      } catch (err) {
+        console.error('Error deleting list:', err);
+      }
     }
   };
 
   const items = selectedList?.items || [];
   const totalItems = items.length;
-  const completedItems = items.filter((i) => i.checked_by).length;
-  const remainingItems = totalItems - completedItems;
+  const completedItems = items.filter((i) => i.is_checked).length;
   const completionPercentage = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-AZ', {
-      style: 'currency',
-      currency: 'AZN',
-    }).format(price);
-  };
+  if (loading) {
+    return <div className="flex justify-center py-12"><Spinner /></div>;
+  }
 
-  const getCategoryIcon = (category: string) => {
-    const icons: Record<string, string> = {
-      produce: '🥬',
-      dairy: '🥛',
-      meat: '🥩',
-      bakery: '🍞',
-      frozen: '🍦',
-      household: '🧼',
-      beverages: '🥤',
-      snacks: '🍿',
-      pantry: '🥫',
-      other: '📦',
-    };
-    return icons[category] || '📦';
-  };
-
-  const remainingItemsList = items.filter((item) => !item.checked_by);
-  const sortedRemainingItems = [...remainingItemsList].sort((a, b) => {
-    return (a.sort_order || 0) - (b.sort_order || 0);
-  });
-
-  const getStatusBadgeVariant = (status: string) => {
-    switch (status) {
-      case 'active':
-        return 'primary';
-      case 'completed':
-        return 'success';
-      case 'archived':
-        return 'secondary';
-      default:
-        return 'secondary';
-    }
-  };
-
-  if (!selectedList) {
+  if (!selectedListId) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <EmptyState
-          title="Select a List"
-          description="Choose a grocery list to view its details"
-          icon="🛒"
-        />
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">Select a List</h1>
+        {lists.length === 0 ? (
+          <EmptyState title="No Lists" description="Create a list first" icon="🛒" />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {lists.map((list) => (
+              <Card key={list.id} className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => setSelectedListId(list.id)}>
+                <h3 className="font-semibold text-gray-800">{list.name}</h3>
+                <p className="text-sm text-gray-600">{list.items?.length || 0} items</p>
+                <Badge variant={list.status === 'active' ? 'primary' : 'secondary'}>{list.status}</Badge>
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
     );
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {notification && (
-        <Toast
-          variant="success"
-          message={notification}
-          onClose={() => setNotification(null)}
-        />
-      )}
+      {notification && <Toast variant="success" message={notification} onClose={() => setNotification(null)} />}
 
-      {/* Header */}
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <button
-              onClick={handleBack}
-              className="mb-2 text-gray-600 hover:text-gray-900 flex items-center gap-1"
-            >
-              <span>←</span>
-              <span>Back</span>
+            <button onClick={() => setSelectedListId(null)} className="mb-2 text-gray-600 hover:text-gray-900 flex items-center gap-1">
+              <span>←</span><span>Back</span>
             </button>
-            <h1 className="text-3xl font-bold text-gray-800">{selectedList.name}</h1>
+            <h1 className="text-3xl font-bold text-gray-800">{selectedList?.name}</h1>
           </div>
           <div className="flex items-center gap-2">
-            <Badge variant={getStatusBadgeVariant(selectedList.status)}>
-              {selectedList.status}
-            </Badge>
-            <Button onClick={() => setShowNewItemModal(true)}>
-              <span>+</span> Add Item
-            </Button>
+            <Badge variant={selectedList?.status === 'active' ? 'primary' : 'secondary'}>{selectedList?.status}</Badge>
+            <Button onClick={() => setShowNewItemModal(true)}>+ Add Item</Button>
           </div>
         </div>
 
-        {/* Progress Overview */}
         <Card className="mb-4">
           <div className="flex items-center justify-between">
             <div className="flex-1">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-gray-600">
-                  {completedItems} / {totalItems} items completed
-                </span>
-                <span className="text-2xl font-bold text-green-600">
-                  {completionPercentage}%
-                </span>
+                <span className="text-sm text-gray-600">{completedItems} / {totalItems} completed</span>
+                <span className="text-2xl font-bold text-green-600">{completionPercentage}%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3">
-                <div
-                  className={`h-3 rounded-full transition-all ${
-                    completionPercentage === 100 ? 'bg-green-600' : 'bg-green-500'
-                  }`}
-                  style={{ width: `${completionPercentage}%` }}
-                />
+                <div className={`h-3 rounded-full transition-all ${completionPercentage === 100 ? 'bg-green-600' : 'bg-green-500'}`} style={{ width: `${completionPercentage}%` }} />
               </div>
             </div>
-            <div className="ml-6 space-y-3">
-              <div className="text-sm text-gray-600">
-                {items.some((i) => i.restock_threshold !== undefined) && (
-                  <p>
-                    Restock when: {items[0]?.restock_threshold || 0} {items[0]?.unit || 'pcs'}
-                  </p>
-                )}
-                {items.some((i) => i.restock_threshold !== undefined) && remainingItems <= (items[0]?.restock_threshold || 0) && remainingItems > 0 && (
-                  <p className="text-orange-600 font-medium mt-1">
-                    ⚠️ Low on items - consider restocking!
-                  </p>
-                )}
-              </div>
-              {user && (
-                <Button variant="secondary" size="sm" onClick={handleArchiveList}>
-                  Archive List
-                </Button>
-              )}
+            <div className="ml-6">
+              <Button variant="danger" size="sm" onClick={handleDeleteList}>Delete List</Button>
             </div>
           </div>
         </Card>
-
-        {/* List Meta */}
-        <div className="flex items-center gap-4 text-sm text-gray-600">
-          <span>
-            Updated: {selectedList.updated_at ? new Date(selectedList.updated_at).toLocaleDateString() : '-'}
-          </span>
-          <span>•</span>
-          <span>Category: {items[0]?.category || 'mixed'}</span>
-          {user && (
-            <div className="ml-auto">
-              <Button variant="danger" size="sm" onClick={handleDeleteList}>
-                Delete List
-              </Button>
-            </div>
-          )}
-        </div>
       </div>
 
-      {/* Items Section */}
       <Card>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-gray-800">
-            Items
-          </h2>
-          <div className="flex items-center gap-2">
-            <Badge variant="primary">
-              {remainingItems} remaining
-            </Badge>
-            <Badge variant={completionPercentage === 100 ? 'success' : 'secondary'}>
-              {completionPercentage}%
-            </Badge>
-          </div>
+          <h2 className="text-xl font-semibold text-gray-800">Items</h2>
+          <Badge variant="primary">{items.filter((i) => !i.is_checked).length} remaining</Badge>
         </div>
 
         {items.length === 0 ? (
-          <EmptyState
-            title="No Items Yet"
-            description="Add your first grocery item to get started"
-            icon="🛒"
-            actionLabel="Add Item"
-            onAction={() => setShowNewItemModal(true)}
-          />
+          <EmptyState title="No Items Yet" description="Add your first grocery item" icon="🛒" actionLabel="Add Item" onAction={() => setShowNewItemModal(true)} />
         ) : (
           <div className="space-y-3">
-            {/* Completed Items */}
-            {items.filter((i) => i.checked_by).length > 0 && (
+            {items.filter((i) => i.is_checked).length > 0 && (
               <div className="mb-4">
-                <h3 className="text-sm font-medium text-gray-600 mb-2">
-                  ✅ Completed ({items.filter((i) => i.checked_by).length})
-                </h3>
+                <h3 className="text-sm font-medium text-gray-600 mb-2">Completed ({items.filter((i) => i.is_checked).length})</h3>
                 <div className="space-y-2">
-                  {items
-                    .filter((i) => i.checked_by)
-                    .sort((a, b) => (b.sort_order || 0) - (a.sort_order || 0))
-                    .slice(0, 5)
-                    .map((item) => (
-                      <GroceryItemCard
-                        key={item.id}
-                        item={item}
-                        onToggle={handleToggleItem}
-                        onUpdate={handleUpdateItem}
-                        onRemove={handleDeleteItem}
-                        readOnly
-                      />
-                    ))}
-                </div>
-                {items.filter((i) => i.checked_by).length > 5 && (
-                  <p className="text-sm text-gray-500 text-center mt-2">
-                    +{items.filter((i) => i.checked_by).length - 5} more completed items
-                  </p>
-                )}
-              </div>
-            )}
-
-            {/* Remaining Items */}
-            {sortedRemainingItems.length > 0 && (
-              <div>
-                <h3 className="text-sm font-medium text-gray-600 mb-2">
-                  📋 To Buy ({sortedRemainingItems.length})
-                </h3>
-                <div className="space-y-2">
-                  {sortedRemainingItems.map((item) => (
-                    <GroceryItemCard
-                      key={item.id}
-                      item={item}
-                      onToggle={handleToggleItem}
-                      onUpdate={handleUpdateItem}
-                      onRemove={handleDeleteItem}
-                    />
+                  {items.filter((i) => i.is_checked).slice(0, 5).map((item) => (
+                    <GroceryItemCard key={item.id} item={item} onToggle={handleToggleItem} onUpdate={handleUpdateItem} onRemove={handleDeleteItem} readOnly />
                   ))}
                 </div>
               </div>
             )}
+            <div>
+              <h3 className="text-sm font-medium text-gray-600 mb-2">To Buy ({items.filter((i) => !i.is_checked).length})</h3>
+              <div className="space-y-2">
+                {items.filter((i) => !i.is_checked).map((item) => (
+                  <GroceryItemCard key={item.id} item={item} onToggle={handleToggleItem} onUpdate={handleUpdateItem} onRemove={handleDeleteItem} />
+                ))}
+              </div>
+            </div>
           </div>
         )}
       </Card>
 
-      {/* Add Item Modal */}
-      {showNewItemModal && selectedList && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <Card className="w-full max-w-md mx-4">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-800">Add New Item</h3>
-              <button
-                onClick={() => setShowNewItemModal(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <span className="text-2xl">&times;</span>
-              </button>
-            </div>
-
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              handleCreateItem();
-            }} className="space-y-4">
-              <Input
-                placeholder="Item name *"
-                required
-                autoFocus
-              />
-
-              <div className="grid grid-cols-2 gap-3">
-                <Input
-                  type="number"
-                  placeholder="Quantity"
-                  defaultValue="1"
-                />
-                <Input
-                  placeholder="Unit (kg, pcs, etc.)"
-                  defaultValue="pcs"
-                />
-              </div>
-
-              <Select
-                label="Category"
-                value="other"
-                options={[
-                  { label: 'Produce', value: 'produce' },
-                  { label: 'Dairy', value: 'dairy' },
-                  { label: 'Meat', value: 'meat' },
-                  { label: 'Bakery', value: 'bakery' },
-                  { label: 'Frozen', value: 'frozen' },
-                  { label: 'Household', value: 'household' },
-                  { label: 'Beverages', value: 'beverages' },
-                  { label: 'Snacks', value: 'snacks' },
-                  { label: 'Pantry', value: 'pantry' },
-                  { label: 'Other', value: 'other' },
-                ]}
-              />
-
-              <div className="grid grid-cols-2 gap-3">
-                <Input
-                  type="number"
-                  placeholder="Est. Price (AZN)"
-                  step="0.01"
-                />
-                <Input
-                  type="number"
-                  placeholder="Restock @ Qty"
-                  min="0"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm text-gray-700 mb-1">Notes</label>
-                <Input
-                  placeholder="Additional notes..."
-                  type="textarea"
-                />
-              </div>
-
-              <div className="flex gap-2 pt-2">
-                <Button type="submit" className="flex-1">
-                  Add Item
-                </Button>
-                <Button variant="secondary" onClick={() => setShowNewItemModal(false)}>
-                  Cancel
-                </Button>
-              </div>
-            </form>
-          </Card>
-        </div>
+      {showNewItemModal && (
+        <AddItemModal isOpen={showNewItemModal} onClose={() => setShowNewItemModal(false)} onSubmit={handleCreateItem} existingItems={items} />
       )}
     </div>
   );
