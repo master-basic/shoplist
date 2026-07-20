@@ -102,9 +102,12 @@ export interface Household {
 
 export interface HouseholdMember {
   user_id: string;
+  name?: string;
+  email?: string;
   role: 'owner' | 'admin' | 'member';
   joined_at: string;
   invited_by?: string;
+  is_owner?: boolean;
 }
 
 export interface HouseholdSettings {

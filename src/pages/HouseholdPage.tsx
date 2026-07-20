@@ -1,33 +1,154 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStore } from '@/store/useStore';
+import { useHousehold } from '@/hooks/useHousehold';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
-import { Household, HouseholdMember, HouseholdSettings } from '@/types';
+import { Spinner } from '@/components/ui/Spinner';
+import { EmptyState } from '@/components/ui/EmptyState';
+import type { Household, HouseholdMember } from '@/types';
 
-interface HouseholdPageProps {
-  householdId?: string;
-}
-
-const HouseholdPage: React.FC<HouseholdPageProps> = ({ householdId }) => {
-  const { user, households, setCurrentHouseholdId } = useStore();
+const HouseholdPage: React.FC = () => {
+  const { user, households, currentHouseholdId, setCurrentHouseholdId, addHousehold } = useStore();
+  const { loading, loadUserHouseholds, createHousehold, getMembers, inviteMember, removeMember } = useHousehold();
+  const [members, setMembers] = useState<HouseholdMember[]>([]);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [showInviteModal, setShowInviteModal] = useState(false);
+  const [newHouseholdName, setNewHouseholdName] = useState('');
+  const [inviteEmail, setInviteEmail] = useState('');
+  const [membersLoading, setMembersLoading] = useState(false);
 
-  // Get current household - store doesn't have direct household field, need to derive
-  const currentHousehold = useMemo<Household | null>(() => {
-    const storedHouseholdId = localStorage.getItem('current_household_id');
-    if (!storedHouseholdId) return null;
-    return households?.find((h: Household) => h.id === storedHouseholdId) || null;
-  }, [households]);
+  const currentHousehold = households.find((h) => h.id === currentHouseholdId);
 
-  if (!currentHousehold) {
+  useEffect(() => {
+    const loadData = async () => {
+      if (!user?.id) return;
+      await loadUserHouseholds();
+    };
+    loadData();
+  }, [user?.id]);
+
+  useEffect(() => {
+    const loadMembers = async () => {
+      if (!currentHouseholdId) { setMembers([]); return; }
+      setMembersLoading(true);
+      try {
+        const m = await getMembers(currentHouseholdId);
+        setMembers(m);
+      } catch (err) {
+        console.error('Error loading members:', err);
+      } finally {
+        setMembersLoading(false);
+      }
+    };
+    loadMembers();
+  }, [currentHouseholdId]);
+
+  const handleCreateHousehold = async () => {
+    if (!newHouseholdName.trim()) return;
+    try {
+      const household = await createHousehold(newHouseholdName.trim());
+      setCurrentHouseholdId(household.id);
+      setNewHouseholdName('');
+      setShowCreateModal(false);
+    } catch (err) {
+      console.error('Error creating household:', err);
+    }
+  };
+
+  const handleInvite = async () => {
+    if (!currentHouseholdId || !inviteEmail.trim()) return;
+    try {
+      await inviteMember(currentHouseholdId, inviteEmail.trim());
+      setInviteEmail('');
+      setShowInviteModal(false);
+      const m = await getMembers(currentHouseholdId);
+      setMembers(m);
+    } catch (err) {
+      console.error('Error inviting member:', err);
+    }
+  };
+
+  const handleRemoveMember = async (memberId: string) => {
+    if (!currentHouseholdId) return;
+    if (confirm('Remove this member from the household?')) {
+      try {
+        await removeMember(currentHouseholdId, memberId);
+        setMembers(members.filter((m) => m.user_id !== memberId));
+      } catch (err) {
+        console.error('Error removing member:', err);
+      }
+    }
+  };
+
+  if (!user) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <Card className="p-8">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">Household Not Found</h1>
-          <p className="text-gray-600 mb-6">Please create or join a household to continue.</p>
-          <Button onClick={() => window.location.href = '/lists'}>Go to Lists</Button>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">Please Log In</h1>
+          <p className="text-gray-600 mb-6">You need to be logged in to manage your household.</p>
+          <Button onClick={() => window.location.href = '/login'}>Log In</Button>
         </Card>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return <div className="flex justify-center py-12"><Spinner /></div>;
+  }
+
+  if (!currentHouseholdId || !currentHousehold) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4 py-6">
+          <h1 className="text-3xl font-bold text-gray-800 mb-6">Household</h1>
+          <EmptyState
+            title="No Household Selected"
+            description="Create or join a household to share lists with family and friends"
+            icon="🏠"
+            actionLabel="Create Household"
+            onAction={() => setShowCreateModal(true)}
+          />
+
+          {households.length > 0 && (
+            <Card className="p-6 mt-6">
+              <h2 className="text-lg font-semibold mb-4">Your Households</h2>
+              <div className="space-y-3">
+                {households.map((h) => (
+                  <div key={h.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <p className="font-medium text-gray-800">{h.name}</p>
+                      <p className="text-sm text-gray-600">{h.description || 'No description'}</p>
+                    </div>
+                    <Button size="sm" variant="primary" onClick={() => setCurrentHouseholdId(h.id)}>
+                      Select
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          )}
+
+          {showCreateModal && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+              <Card className="w-full max-w-md mx-4 p-6">
+                <h3 className="text-lg font-semibold mb-4">Create Household</h3>
+                <Input
+                  label="Household Name"
+                  value={newHouseholdName}
+                  onChange={(e) => setNewHouseholdName(e.target.value)}
+                  placeholder="e.g., My Family"
+                  autoFocus
+                />
+                <div className="flex gap-2 mt-4">
+                  <Button onClick={handleCreateHousehold} className="flex-1">Create</Button>
+                  <Button variant="secondary" onClick={() => setShowCreateModal(false)} className="flex-1">Cancel</Button>
+                </div>
+              </Card>
+            </div>
+          )}
+        </div>
       </div>
     );
   }
@@ -37,15 +158,17 @@ const HouseholdPage: React.FC<HouseholdPageProps> = ({ householdId }) => {
       <div className="max-w-4xl mx-auto px-4 py-6">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold text-gray-800">Household</h1>
-          <Button onClick={() => setShowInviteModal(true)}>Invite Members</Button>
+          <div className="flex gap-2">
+            <Button variant="secondary" onClick={() => setShowInviteModal(true)}>Invite Members</Button>
+            <Button variant="secondary" onClick={() => setCurrentHouseholdId(null)}>Switch Household</Button>
+          </div>
         </div>
 
-        {/* Household Info */}
         <Card className="p-6 mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">About This Household</h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">Household Info</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Household Name</p>
+              <p className="text-sm text-gray-600 mb-1">Name</p>
               <p className="font-medium text-gray-800">{currentHousehold.name}</p>
             </div>
             <div>
@@ -54,69 +177,77 @@ const HouseholdPage: React.FC<HouseholdPageProps> = ({ householdId }) => {
             </div>
             <div>
               <p className="text-sm text-gray-600 mb-1">Members</p>
-              <p className="font-medium text-gray-800">{currentHousehold.members?.length || 0} members</p>
+              <p className="font-medium text-gray-800">{members.length} member{members.length !== 1 ? 's' : ''}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">Default Category</p>
-              <p className="font-medium text-gray-800">{currentHousehold.settings?.default_category || 'Pantry'}</p>
+              <p className="text-sm text-gray-600 mb-1">Lists</p>
+              <p className="font-medium text-gray-800">
+                {useStore.getState().lists.filter((l) => l.household_id === currentHouseholdId).length} list(s)
+              </p>
             </div>
           </div>
         </Card>
 
-        {/* Household Members */}
         <Card className="p-6 mb-6">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">Members</h2>
-          <div className="space-y-3">
-            {currentHousehold.members?.map((member: HouseholdMember) => (
-              <div key={member.user_id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                    <span className="text-sm font-bold text-blue-600">
-                      {member.user_id.charAt(0).toUpperCase()}
-                    </span>
+          {membersLoading ? (
+            <Spinner />
+          ) : members.length === 0 ? (
+            <p className="text-gray-500">No members found.</p>
+          ) : (
+            <div className="space-y-3">
+              {members.map((member) => (
+                <div key={member.user_id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                      <span className="text-sm font-bold text-green-600">
+                        {member.name?.charAt(0)?.toUpperCase() || member.email?.charAt(0)?.toUpperCase() || '?'}
+                      </span>
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-800">
+                        {member.name || member.email || 'Unknown'}
+                        {member.user_id === user.id && ' (You)'}
+                      </p>
+                      <p className="text-sm text-gray-600 capitalize">{member.role}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-medium text-gray-800">
-                      {user?.name || 'Guest'} {member.user_id === localStorage.getItem('user_id') && '(You)'}
-                    </p>
-                    <p className="text-sm text-gray-600 capitalize">{member.role}</p>
+                  <div className="flex items-center gap-2">
+                    <Badge variant={member.role === 'owner' ? 'primary' : 'secondary'}>{member.role}</Badge>
+                    {member.user_id !== user.id && (
+                      <button
+                        onClick={() => handleRemoveMember(member.user_id)}
+                        className="text-sm text-red-500 hover:text-red-700"
+                      >
+                        Remove
+                      </button>
+                    )}
                   </div>
                 </div>
-                <div className="text-sm text-gray-500">
-                  Joined {new Date(member.joined_at).toLocaleDateString()}
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </Card>
 
-        {/* Household Settings */}
-        <Card className="p-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Settings</h2>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <div>
-                <p className="font-medium text-gray-800">Auto-sync Lists</p>
-                <p className="text-sm text-gray-600">Automatically sync lists across devices</p>
+        {showInviteModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <Card className="w-full max-w-md mx-4 p-6">
+              <h3 className="text-lg font-semibold mb-4">Invite Member</h3>
+              <Input
+                label="Email Address"
+                type="email"
+                value={inviteEmail}
+                onChange={(e) => setInviteEmail(e.target.value)}
+                placeholder="member@example.com"
+                autoFocus
+              />
+              <div className="flex gap-2 mt-4">
+                <Button onClick={handleInvite} className="flex-1">Send Invite</Button>
+                <Button variant="secondary" onClick={() => setShowInviteModal(false)} className="flex-1">Cancel</Button>
               </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" defaultChecked={currentHousehold.settings?.auto_sync ?? false} />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-              </label>
-            </div>
-            <div className="border-t pt-4">
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="font-medium text-gray-800">Invite Link</p>
-                  <p className="text-sm text-gray-600">Share this link to invite new members</p>
-                </div>
-                <Badge variant="secondary">
-                  {currentHousehold.settings?.invite_link || 'No invite link'}
-                </Badge>
-              </div>
-            </div>
+            </Card>
           </div>
-        </Card>
+        )}
       </div>
     </div>
   );

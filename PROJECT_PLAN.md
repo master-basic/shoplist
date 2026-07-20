@@ -689,69 +689,87 @@ CREATE TABLE user_preferences (
 
 ## Current Status
 
-**Phase 1: Foundation - IN PROGRESS**
+**Phase 1: Foundation - COMPLETE**
 
 **Completed:**
-- [x] Project structure setup
-- [x] Install dependencies
+- [x] Project structure setup (Vite + React 19 + TypeScript)
+- [x] Install dependencies (React, Tailwind, Zustand, etc.)
 - [x] Configure TypeScript with path aliases
 - [x] Configure Tailwind CSS
 - [x] Create utility functions
 - [x] Create Zustand store with all entities
-- [x] Create authentication hooks (useAuth)
-- [x] Create household hooks (useHousehold)
+- [x] Create authentication hooks (useAuth) - works with PostgreSQL API
+- [x] Create household hooks (useHousehold) - **migrated from Supabase to PostgreSQL API**
 - [x] Create grocery list hooks (useGroceryList)
+- [x] Create price history hook (usePriceHistory) - **migrated from Supabase to PostgreSQL API**
 - [x] Login page component
 - [x] Register page component
 - [x] Household management page
-- [x] Main layout components (MainLayout, MobileLayout)
+- [x] Main layout components (MainLayout, Sidebar, Header)
 - [x] App routing configuration
-- [x] Error boundary implementation
 - [x] Store provider implementation
-- [x] useGroceryList hook with CRUD operations
-- [x] Toggle item checked status functionality
-- [x] Mark all items checked/unchecked
-- [x] Duplicate list functionality
-- [x] Archive/restore list functionality
-- [x] Reorder items functionality
-- [x] Delete list functionality
-- [x] Delete item functionality
+- [x] UI Components Library (14 components: Button, Input, Select, Checkbox, Switch, Spinner, Card, Badge, Modal, Toast, EmptyState, FormLabel, FormError, FormGroup)
+- [x] All Pages (20+ pages created)
 - [x] **Database Setup - PostgreSQL**
-- [x] **Database schema migration**
-- [x] **PostgreSQL client library installation**
-- [x] **Environment configuration for PostgreSQL**
-- [x] **Auth system integration with PostgreSQL**
+- [x] **Database schema migration** (2 migration files)
+- [x] **PostgreSQL client library installation** (pg)
+- [x] **Environment configuration for PostgreSQL** (.env)
+- [x] **Auth system integration with PostgreSQL** (bcrypt hashing)
 - [x] **Remove Google OAuth functionality**
+- [x] **Server backend (Express.js on port 3001)**
+- [x] **All API endpoints** (/api/auth/*, /api/lists/*, /api/receipts/*, /api/price-history/*)
+- [x] **Server bug fixes** (login SQL, household members SQL, list query filter, missing PATCH endpoint)
 
-**Next Steps:**
-- [ ] Create household system UI components
-- [ ] Create basic grocery list CRUD UI components
-- [ ] Create UI components library (Button, Input, Modal, etc.)
-- [ ] Create main layouts with navigation
-- [ ] Create HomePage/Dashboard
-- [ ] Create Lists screen
-- [ ] Create List Detail view
-- [ ] Create Shopping Mode view
-- [ ] Create Receipt Scanning UI
-- [ ] Create Price History view
-- [ ] Create Reports dashboard
-- [ ] Create Search page
-- [ ] Create Profile/Settings page
-- [ ] Create NotFound page
-- [ ] Implement Supabase database schema
-- [ ] Configure Row Level Security (RLS) policies
-- [ ] Set up Supabase Storage
-- [ ] Implement real-time subscriptions
-- [ ] Integrate Google OAuth
-- [ ] Implement price tracking features
-- [ ] Integrate OCR (Tesseract.js)
-- [ ] Implement charts/analytics
-- [ ] Create PWA manifest and service worker
-- [ ] Implement offline capability
-- [ ] Add accessibility features
-- [ ] Set up notifications
-- [ ] Configure deployment pipeline
-- [ ] Write comprehensive README
+**Phase 2: Shopping & Interactions - IN PROGRESS**
+
+**Completed:**
+- [x] HomePage - fetches real data from API (stats, lists, recent lists)
+- [x] Lists page - create/delete lists via API, toggle items via API
+- [x] ListDetail page - load lists from API, add/delete/toggle items via API
+- [x] ShoppingPage - fetch lists from API, toggle items via API
+- [x] ProfilePage - fetch real stats from API, show households
+- [x] HouseholdPage - load members from API, create households, invite members
+- [x] GroceryItemCard - fixed import to use @/types
+
+**Not Yet Done:**
+- [ ] Full-screen shopping mode with purchase confirmation
+- [ ] Track "Not bought" items with reasons
+- [ ] Real-time sync across household members
+- [ ] Item assignment to specific members
+- [ ] Purchase session management
+- [ ] Actual price tracking at point of purchase
+
+**Phase 3: Receipt Scanning & OCR - PENDING**
+- [ ] Camera access (mobile) and file upload (desktop)
+- [ ] PDF receipt support
+- [ ] Tesseract.js OCR integration
+- [ ] Store name detection
+- [ ] Item parsing with fuzzy matching
+- [ ] Manual review and correction UI
+- [ ] Receipt image storage in PostgreSQL
+
+**Phase 4: Price Tracking & Analytics - PENDING**
+- [ ] Recharts integration for charts
+- [ ] Price history normalization
+- [ ] Unit price tracking
+- [ ] Line charts showing price trends
+- [ ] Price change alerts
+- [ ] ReportsPage - needs real data from price_history API
+
+**Phase 5-9: Advanced Features - PENDING**
+- See PROJECT_PLAN.md for full list
+
+---
+
+**Known Issues:**
+- ReportsPage still uses store data (not wired to price_history API yet)
+- SearchPage works but quick-add is not wired to API
+- ScanPage OCR is simulated (hardcoded response)
+- No JWT/session auth middleware on server
+- No unit tests
+- Duplicate page files exist (*Page.tsx and *.tsx variants)
+
+**Last Updated:** 2026-07-20
 
 ---
 
@@ -838,5 +856,50 @@ DB_PASSWORD=your_password_here
 - `src/config/database.ts` - PostgreSQL connection pool
 
 **Status:** Database integration complete, authentication working with PostgreSQL.
+
+### [2026-07-20] Critical Bug Fixes & Phase 2 Progress
+**Changes Made:**
+- **Migrated useHousehold.ts from Supabase to PostgreSQL API** - Removed Supabase client dependency, rewrote to use `/api/auth/households` and `/api/households/:id/members` endpoints
+- **Migrated usePriceHistory.ts from Supabase to PostgreSQL API** - Removed Supabase client dependency, rewrote to use `/api/price-history` and `/api/price-history/stats` endpoints
+- **Fixed login route SQL bug** - Server queried `WHERE username = $1` but users table has no `username` column; changed to `WHERE email = $1`
+- **Fixed household members SQL alias error** - SQL used `uh.household_id` but alias was `uhm`; corrected to `uhm.household_id`
+- **Fixed lists query filter** - Removed `is_owner = TRUE` filter that excluded non-owner members from seeing lists
+- **Added missing PATCH /api/lists/items/:id endpoint** - Required for toggling item completion status
+- **Added price history API endpoints** - `GET/POST /api/price-history`, `GET /api/price-history/stats`
+- **Added household items endpoint** - `GET /api/households/:id/items`
+- **Added list stats endpoint** - `GET /api/lists/:id/stats`
+- **Created migration 002** - `002_fix_price_history_and_grocery_lists.sql` adds `grocery_lists` table, fixes `price_history` columns
+- **Updated HomePage** - Fetches real data from API instead of hardcoded mock data
+- **Updated ShoppingPage** - Uses API via store instead of direct fetch mutations
+- **Updated Lists page** - Create/delete lists via API, toggle items via API
+- **Updated ListDetail page** - Load lists from API, add/delete/toggle items via API
+- **Updated ProfilePage** - Fetch real stats from API, show households
+- **Updated HouseholdPage** - Load members from API, create households, invite members
+- **Fixed GroceryItemCard** - Changed import from `@store/useStore` to `@/types`
+- **Added FormLabel, FormError, FormGroup UI components**
+
+**Files Modified:**
+- `server/index.js` - Server bug fixes and new endpoints
+- `src/hooks/useHousehold.ts` - Migrated from Supabase to PostgreSQL API
+- `src/hooks/usePriceHistory.ts` - Migrated from Supabase to PostgreSQL API
+- `src/pages/HomePage.tsx` - Real API data
+- `src/pages/ShoppingPage.tsx` - API integration
+- `src/pages/Lists.tsx` - API integration
+- `src/pages/ListDetail.tsx` - API integration
+- `src/pages/ProfilePage.tsx` - Real stats from API
+- `src/pages/HouseholdPage.tsx` - API integration
+- `src/components/GroceryItemCard.tsx` - Fixed import
+- `src/types/index.ts` - Added `description?` to Household type
+- `src/config/migrations/002_fix_price_history_and_grocery_lists.sql` - New migration
+
+**Status:** Phase 1 complete. Phase 2 in progress - all major pages wired to PostgreSQL API.
+
+### [2026-07-20] UI Component Improvements
+**Changes Made:**
+- Updated `Input.tsx` - Simplified icon prop (single icon instead of leftIcon/rightIcon), added required indicator
+- Updated `Select.tsx` - Added placeholder prop, custom chevron icon, improved styling
+- Updated `index.ts` - Reorganized exports, added FormLabel/FormError/FormGroup
+
+**Status:** UI component library updated and complete (14 components).
 
 ---
