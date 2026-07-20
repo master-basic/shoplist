@@ -4,195 +4,217 @@ import { formatCurrency } from '@/utils/formatCurrency';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { Badge } from '@/components/ui/Badge';
+import { Spinner } from '@/components/ui/Spinner';
+import { getUserLists } from '@/api/lists';
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell, Legend,
+  LineChart, Line,
+} from 'recharts';
+
+const API_BASE = 'http://localhost:3001';
+
+const COLORS = ['#22c55e', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
 
 const ReportsPage: React.FC = () => {
-  const { priceHistory, purchaseSessions, lists, user } = useStore();
-  const [dateRange, setDateRange] = useState<string>('all-time');
-  const [selectedStore, setSelectedStore] = useState<string>('all');
+  const { user, lists, addList } = useStore();
+  const [loading, setLoading] = useState(true);
+  const [dateRange, setDateRange] = useState('90');
+  const [priceHistory, setPriceHistory] = useState<any[]>([]);
 
-  // Get unique stores from purchase history
-  const stores = [...new Set(priceHistory.map(item => item.store_name).filter(Boolean))];
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!user?.id) { setLoading(false); return; }
+      try {
+        const fetchedLists = await getUserLists(user.id);
+        for (const list of fetchedLists) {
+          const existing = lists.find((l) => l.id === list.id);
+          if (!existing) addList(list);
+        }
+        const res = await fetch(`${API_BASE}/api/price-history?limit=500`);
+        if (res.ok) {
+          const data = await res.json();
+          setPriceHistory(data.priceHistory || []);
+        }
+      } catch (err) {
+        console.error('Error fetching report data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [user?.id]);
 
-  // Get unique categories from lists
-  const categories = lists.flatMap(list => {
-    const itemCategories = list.items?.map(item => item.category).filter(Boolean) || [];
-    return itemCategories;
-  });
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - parseInt(dateRange));
 
-  // Calculate statistics
-  const totalSpent = priceHistory.reduce((sum, item) => sum + (item.unit_price || 0) * (item.quantity || 1), 0);
-  const avgPricePerItem = priceHistory.length > 0 ? totalSpent / priceHistory.length : 0;
-  const totalItems = priceHistory.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  const filteredHistory = priceHistory.filter(
+    (h: any) => new Date(h.purchased_at || h.created_at) >= cutoffDate
+  );
 
-  const getSpendingByStore = () => {
-    const storeMap: Record<string, number> = {};
-    
-    priceHistory.forEach(item => {
-      storeMap[item.store_name || 'Unknown'] = 
-        (storeMap[item.store_name || 'Unknown'] || 0) + 
-        (item.unit_price || 0) * (item.quantity || 1);
-    });
-    
-    return Object.entries(storeMap)
-      .map(([name, total]) => ({ name, total }))
-      .sort((a, b) => b.total - a.total);
-  };
+  const totalSpent = filteredHistory.reduce((sum: number, h: any) => sum + (h.unit_price || 0) * (h.quantity || 1), 0);
+  const totalItems = filteredHistory.reduce((sum: number, h: any) => sum + (h.quantity || 1), 0);
+  const avgPrice = totalItems > 0 ? totalSpent / totalItems : 0;
 
-  const getSpendingByCategory = () => {
-    const categoryMap: Record<string, number> = {};
-    
-    // Sum up total_spent from each list by category
-    lists.forEach(list => {
-      // Calculate list total from actual prices or estimated prices
-      const listTotal = list.items?.reduce((sum, item) => {
-        const actualPrice = item.actual_price || item.estimated_price || 0;
-        return sum + (actualPrice * item.quantity);
-      }, 0) || 0;
-      
-      list.items?.forEach(item => {
-        const categoryName = item.category || 'Other';
-        const actualPrice = item.actual_price || item.estimated_price || 0;
-        const itemTotal = actualPrice * item.quantity;
-        categoryMap[categoryName] = (categoryMap[categoryName] || 0) + itemTotal;
-      });
-    });
-    
-    return Object.entries(categoryMap)
-      .map(([name, total]) => ({ name, total }))
-      .sort((a, b) => b.total - a.total);
-  };
+  const byStore = filteredHistory.reduce((acc: Record<string, number>, h: any) => {
+    const store = h.store_name || 'Unknown';
+    acc[store] = (acc[store] || 0) + (h.unit_price || 0) * (h.quantity || 1);
+    return acc;
+  }, {});
+  const storeData = Object.entries(byStore)
+    .map(([name, total]) => ({ name, total: Math.round(total * 100) / 100 }))
+    .sort((a, b) => b.total - a.total);
 
-  const getRecentPurchases = () => {
-    return purchaseSessions
-      .sort((a, b) => new Date(b.purchase_date).getTime() - new Date(a.purchase_date).getTime())
-      .slice(0, 5);
-  };
+  const byItem = filteredHistory.reduce((acc: Record<string, { total: number; count: number }>, h: any) => {
+    const name = h.item_name || 'Unknown';
+    if (!acc[name]) acc[name] = { total: 0, count: 0 };
+    acc[name].total += (h.unit_price || 0) * (h.quantity || 1);
+    acc[name].count += h.quantity || 1;
+    return acc;
+  }, {});
+  const itemData = Object.entries(byItem)
+    .map(([name, v]) => ({ name, total: Math.round(v.total * 100) / 100, count: v.count }))
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 10);
 
-  const recentPurchases = getRecentPurchases();
+  const byDate = filteredHistory.reduce((acc: Record<string, number>, h: any) => {
+    const date = (h.purchased_at || h.created_at || '').split('T')[0];
+    if (date) acc[date] = (acc[date] || 0) + (h.unit_price || 0) * (h.quantity || 1);
+    return acc;
+  }, {});
+  const trendData = Object.entries(byDate)
+    .map(([date, total]) => ({ date, total: Math.round(total * 100) / 100 }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  const allItems = lists.flatMap((l) => l.items || []);
+  const byCategory = allItems.reduce((acc: Record<string, number>, i: any) => {
+    const cat = i.category || 'Other';
+    acc[cat] = (acc[cat] || 0) + (i.estimated_price || 0) * (i.quantity || 1);
+    return acc;
+  }, {});
+  const categoryData = Object.entries(byCategory)
+    .map(([name, value]) => ({ name: name.charAt(0).toUpperCase() + name.slice(1), value: Math.round(value * 100) / 100 }))
+    .sort((a, b) => b.value - a.value);
+
+  if (loading) return <div className="flex justify-center py-12"><Spinner /></div>;
+
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <EmptyState title="Please Log In" description="Log in to view reports" icon="📊" actionLabel="Go to Login" onAction={() => window.location.href = '/login'} />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-6xl mx-auto px-4 py-6">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Spending Reports</h1>
-
-        {/* Store Filter */}
-        <div className="mb-6">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold text-gray-800">Spending Reports</h1>
           <select
-            className="px-4 py-2 border border-gray-300 rounded-lg"
-            value={selectedStore}
-            onChange={(e) => setSelectedStore(e.target.value)}
+            value={dateRange}
+            onChange={(e) => setDateRange(e.target.value)}
+            className="px-4 py-2 border border-gray-300 rounded-lg bg-white"
           >
-            <option value="all">All Stores</option>
-            {stores.map(store => (
-              <option key={store} value={store}>{store}</option>
-            ))}
+            <option value="30">Last 30 days</option>
+            <option value="90">Last 90 days</option>
+            <option value="180">Last 6 months</option>
+            <option value="365">Last year</option>
+            <option value="9999">All time</option>
           </select>
         </div>
 
-        {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <Card className="p-4">
             <p className="text-sm text-gray-600">Total Spent</p>
             <p className="text-2xl font-bold text-gray-800">{formatCurrency(totalSpent)}</p>
           </Card>
           <Card className="p-4">
-            <p className="text-sm text-gray-600">Average Price Per Item</p>
-            <p className="text-2xl font-bold text-gray-800">{formatCurrency(avgPricePerItem)}</p>
+            <p className="text-sm text-gray-600">Items Purchased</p>
+            <p className="text-2xl font-bold text-gray-800">{totalItems}</p>
           </Card>
           <Card className="p-4">
-            <p className="text-sm text-gray-600">Total Items</p>
-            <p className="text-2xl font-bold text-gray-800">{totalItems}</p>
+            <p className="text-sm text-gray-600">Avg Price/Item</p>
+            <p className="text-2xl font-bold text-gray-800">{formatCurrency(avgPrice)}</p>
           </Card>
         </div>
 
-        {/* Spending by Store */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <Card className="p-6">
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">Spending by Store</h2>
+            {storeData.length === 0 ? (
+              <EmptyState title="No data" description="Purchase history will appear here" />
+            ) : (
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={storeData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+                  <YAxis tick={{ fontSize: 12 }} />
+                  <Tooltip formatter={(v: any) => formatCurrency(Number(v) || 0)} />
+                  <Bar dataKey="total" fill="#22c55e" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
+          </Card>
+
+          <Card className="p-6">
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">Spending by Category</h2>
+            {categoryData.length === 0 ? (
+              <EmptyState title="No data" description="Add items with categories to see this chart" />
+            ) : (
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie data={categoryData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label={({ name, percent }: any) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}>
+                    {categoryData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                  </Pie>
+                  <Tooltip formatter={(v: any) => formatCurrency(Number(v) || 0)} />
+                </PieChart>
+              </ResponsiveContainer>
+            )}
+          </Card>
+        </div>
+
         <Card className="p-6 mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Spending by Store</h2>
-          {getSpendingByStore().length === 0 ? (
-            <EmptyState
-              title="No shopping history"
-              description="Start shopping and we'll track your stores!"
-            />
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">Spending Trend</h2>
+          {trendData.length === 0 ? (
+            <EmptyState title="No data" description="Purchase history will appear here" />
           ) : (
-            <div className="space-y-3">
-              {getSpendingByStore()
-                .filter(store => selectedStore === 'all' || store.name === selectedStore)
-                .map(({ name, total }) => (
-                <div key={name}>
-                  <div className="flex justify-between mb-1">
-                    <span className="text-sm font-medium text-gray-700">{name}</span>
-                    <span className="text-sm text-gray-600">{formatCurrency(total)}</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
-                      className="bg-blue-600 h-2 rounded-full" 
-                      style={{ width: `${(total / totalSpent) * 100}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={trendData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" tick={{ fontSize: 11 }} />
+                <YAxis tick={{ fontSize: 11 }} />
+                <Tooltip formatter={(v: any) => formatCurrency(Number(v) || 0)} />
+                <Line type="monotone" dataKey="total" stroke="#22c55e" strokeWidth={2} dot={false} />
+              </LineChart>
+            </ResponsiveContainer>
           )}
         </Card>
 
-        {/* Spending by Category */}
-        <Card className="p-6 mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Spending by Category</h2>
-          {getSpendingByCategory().length === 0 ? (
-            <EmptyState
-              title="No shopping data yet"
-              description="Start shopping and we'll track your categories!"
-            />
-          ) : (
-            <div className="space-y-3">
-              {getSpendingByCategory().map(({ name, total }) => (
-                <div key={name}>
-                  <div className="flex justify-between mb-1">
-                    <span className="text-sm font-medium text-gray-700">{name}</span>
-                    <span className="text-sm text-gray-600">{formatCurrency(total)}</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
-                      className="bg-green-600 h-2 rounded-full" 
-                      style={{ width: `${(total / totalSpent) * 100}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </Card>
-
-        {/* Recent Purchases */}
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Recent Purchases</h2>
-          {recentPurchases.length === 0 ? (
-            <EmptyState
-              title="No purchases yet"
-              description="Your purchase history will appear here!"
-            />
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">Top Items by Spending</h2>
+          {itemData.length === 0 ? (
+            <EmptyState title="No data" description="Purchase history will appear here" />
           ) : (
-            <div className="space-y-4">
-              {recentPurchases.map((session) => (
-                <div key={session.id} className="border border-gray-200 rounded-lg p-4">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <p className="font-medium text-gray-800">{session.store_name}</p>
-                      <p className="text-sm text-gray-600">
-                        {new Date(session.purchase_date).toLocaleDateString()}
-                        {session.purchase_date && ` • ${new Date(session.purchase_date).toLocaleTimeString()}`}
-                      </p>
-                    </div>
-                    <Badge variant="success">
-                      {formatCurrency(session.total_paid)}
-                    </Badge>
-                  </div>
-                  <p className="text-sm text-gray-500 mt-2">
-                    {session.items?.length} items purchased
-                  </p>
-                </div>
-              ))}
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b text-left">
+                    <th className="pb-2 font-medium text-gray-600">Item</th>
+                    <th className="pb-2 font-medium text-gray-600">Times Bought</th>
+                    <th className="pb-2 font-medium text-gray-600 text-right">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {itemData.map((item, i) => (
+                    <tr key={i} className="border-b last:border-0">
+                      <td className="py-2 font-medium text-gray-800">{item.name}</td>
+                      <td className="py-2 text-gray-600">{item.count}</td>
+                      <td className="py-2 text-gray-800 text-right">{formatCurrency(item.total)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
         </Card>

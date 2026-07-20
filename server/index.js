@@ -615,11 +615,11 @@ app.post('/api/receipts/upload', upload.single('image'), async (req, res) => {
 
 app.post('/api/receipts', async (req, res) => {
   try {
-    const { householdId, listId, name, totalAmount, currency, imageUrl, ocrData, status, items } = req.body;
+    const { householdId, listId, name, totalAmount, currency, imageUrl, ocrData, status, items, userId } = req.body;
     const result = await pool.query(
-      `INSERT INTO receipts (household_id, list_id, name, total_amount, currency, image_url, ocr_data, status)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-      [householdId, listId || null, name, totalAmount || null, currency || 'AZN', imageUrl || null,
+      `INSERT INTO receipts (household_id, list_id, user_id, name, total_amount, currency, image_url, ocr_data, status)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
+      [householdId, listId || null, userId || null, name, totalAmount || null, currency || 'AZN', imageUrl || null,
        ocrData ? JSON.stringify(ocrData) : null, status || 'pending']
     );
     const receiptId = result.rows[0].id;

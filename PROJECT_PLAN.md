@@ -287,9 +287,12 @@ grocerymind/
 ---
 
 ### Phase 2: Shopping & Interactions
-**Status: PENDING**
+**Status: IN PROGRESS**
 
-- [ ] Shopping mode view (large tap-friendly checkboxes)
+- [x] Shopping mode view (tap-friendly checkboxes in ShoppingPage)
+- [x] HomePage, Lists, ListDetail, ShoppingPage wired to PostgreSQL API
+- [x] ProfilePage with real stats from API
+- [x] HouseholdPage with member management via API
 - [ ] Mark items as bought with purchase confirmation
 - [ ] Track "Not bought" items with reasons
 - [ ] Real-time sync across household members
@@ -301,26 +304,35 @@ grocerymind/
 ---
 
 ### Phase 3: Receipt Scanning & OCR
-**Status: PENDING**
+**Status: IN PROGRESS**
 
-- [ ] Camera access (mobile) and file upload (desktop)
+- [x] File upload (JPG, PNG) with server-side storage
+- [x] Save receipts to PostgreSQL via API
+- [x] Save scanned items as price history entries
+- [x] Add scanned items to grocery lists
+- [ ] Camera access (mobile) - placeholder UI exists
 - [ ] PDF receipt support
-- [ ] Tesseract.js OCR integration
+- [ ] Tesseract.js OCR integration (currently simulated)
 - [ ] Store name detection
 - [ ] Item parsing with fuzzy matching
 - [ ] Manual review and correction UI
-- [ ] Receipt image storage in PostgreSQL
 - [ ] OCR confidence highlighting
 - [ ] Match scanned items to existing list items
 
 ---
 
 ### Phase 4: Price Tracking & Analytics
-**Status: PENDING**
+**Status: IN PROGRESS**
 
+- [x] Recharts visualization library integrated
+- [x] Spending by store chart (BarChart)
+- [x] Spending by category chart (PieChart)
+- [x] Spending trend over time (LineChart)
+- [x] Top items table by spending
+- [x] Date range filtering (30/90/180/365/all)
+- [x] ReportsPage fetches real data from price_history API
 - [ ] Price history normalization (strip brands, standardize units)
 - [ ] Unit price tracking (not total)
-- [ ] Line charts showing price trends (Recharts)
 - [ ] Price change alerts (5%+ threshold)
 - [ ] "Best deal" badges
 - [ ] Price history view per item
@@ -739,14 +751,41 @@ CREATE TABLE user_preferences (
 - [ ] Purchase session management
 - [ ] Actual price tracking at point of purchase
 
-**Phase 3: Receipt Scanning & OCR - PENDING**
-- [ ] Camera access (mobile) and file upload (desktop)
+**Phase 3: Receipt Scanning & OCR - IN PROGRESS**
+
+**Completed:**
+- [x] File upload and camera placeholder UI
+- [x] Simulated OCR with review flow
+- [x] Save receipts to API (POST /api/receipts)
+- [x] Save scanned items as price history entries
+- [x] Add scanned items to grocery lists via API
+- [x] Receipt image upload to server
+
+**Not Yet Done:**
 - [ ] PDF receipt support
-- [ ] Tesseract.js OCR integration
+- [ ] Tesseract.js OCR integration (real OCR instead of simulated)
 - [ ] Store name detection
 - [ ] Item parsing with fuzzy matching
 - [ ] Manual review and correction UI
 - [ ] Receipt image storage in PostgreSQL
+
+**Phase 4: Price Tracking & Analytics - IN PROGRESS**
+
+**Completed:**
+- [x] Recharts integration for spending charts (BarChart, PieChart, LineChart)
+- [x] ReportsPage fetches real data from price_history API
+- [x] Spending by store chart (bar)
+- [x] Spending by category chart (pie)
+- [x] Spending trend over time (line)
+- [x] Top items by spending table
+- [x] Date range filtering (30/90/180/365/all time)
+
+**Not Yet Done:**
+- [ ] Price history normalization
+- [ ] Unit price tracking
+- [ ] Price change alerts
+- [ ] "Best deal" badges
+- [ ] Price history view per item
 
 **Phase 4: Price Tracking & Analytics - PENDING**
 - [ ] Recharts integration for charts
@@ -877,6 +916,27 @@ DB_PASSWORD=your_password_here
 - **Updated HouseholdPage** - Load members from API, create households, invite members
 - **Fixed GroceryItemCard** - Changed import from `@store/useStore` to `@/types`
 - **Added FormLabel, FormError, FormGroup UI components**
+
+### [2026-07-20] Phase 3 & 4 Progress - ReportsPage, ScanPage API Integration
+**Changes Made:**
+- **Rewrote ReportsPage** - Now fetches real data from `price_history` API instead of store
+- **Added Recharts charts** - BarChart for spending by store, PieChart for spending by category, LineChart for spending trend over time
+- **Added date range filtering** - Quick select for 30/90/180/365/all time
+- **Added top items table** - Shows most-purchased items sorted by total spending
+- **Wired ScanPage to API** - Uploads receipt images to server, saves receipts via `POST /api/receipts`, saves price history via `POST /api/price-history`, adds items to lists via `POST /api/lists/:id/items`
+- **Fixed server receipt creation** - Added `userId` parameter to receipt POST endpoint
+- **Updated Card component** - Added `onClick` prop support for interactive cards
+- **Updated HouseholdMember type** - Added `name`, `email`, `is_owner` fields
+
+**Files Modified:**
+- `src/pages/ReportsPage.tsx` - Recharts integration, API data fetching
+- `src/pages/ScanPage.tsx` - API integration for saving receipts/items
+- `src/components/ui/Card.tsx` - Added onClick prop
+- `src/types/index.ts` - HouseholdMember type updates
+- `server/index.js` - Added userId to receipt creation
+- `PROJECT_PLAN.md` - Updated all phase status sections
+
+**Status:** Phase 1 complete. Phase 2 in progress. Phase 3 in progress. Phase 4 in progress.
 
 **Files Modified:**
 - `server/index.js` - Server bug fixes and new endpoints
