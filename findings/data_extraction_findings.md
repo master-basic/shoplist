@@ -607,15 +607,15 @@ bravo_products.json - 26 extracted products
 
 ### 14.7 Next Steps Checklist
 ```
-[ ] Fix extraction script
+[ ] Fix extraction script (venue-assortment parsing still broken)
 [ ] Extract from all 44 categories
 [ ] Extract from main venue (36 items)
-[ ] Run migration (002_create_price_checks.sql)
-[ ] Restart server
-[ ] Test API endpoints
-[ ] Update scraper
-[ ] Load products to database
-[ ] Test PriceCheckPage
+[x] Run migration (002_create_price_checks.sql)
+[x] Restart server
+[x] Test API endpoints
+[ ] Update scraper to use real Wolt data
+[x] Load 15 sample products to database
+[x] Test PriceCheckPage — working with seeded data
 [ ] Deploy system
 ```
 
