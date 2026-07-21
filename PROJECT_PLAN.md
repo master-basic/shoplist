@@ -751,19 +751,6 @@ CREATE TABLE user_preferences (
 - [ ] Purchase session management
 - [ ] Actual price tracking at point of purchase
 
-**Known Issues:**
-- SearchPage works but quick-add is wired to API ✓
-- ScanPage OCR is simulated (hardcoded response)
-- No JWT/session auth middleware on server
-- No unit tests
-- ~~Duplicate page files exist (*Page.tsx and *.tsx variants)~~ **CLEANED UP**
-
-**Cleaned Up:**
-- Removed 11 unused duplicate page files (Dashboard, Household, Onboarding, Profile, Reports, Scan, Search, Shopping, Login, Register old variants + ShoppingMode component)
-- Removed unused dependencies: @supabase/supabase-js, @turf/turf, idb, dotenv
-- Fixed `useGroceryList` "referenced before definition" issue (reordered `updateList` before `archiveListFn`)
-- Wired SearchPage quick-add to use `createListItem` API instead of `alert()`
-
 **Phase 3: Receipt Scanning & OCR - IN PROGRESS**
 
 **Completed:**
@@ -984,5 +971,16 @@ DB_PASSWORD=your_password_here
 - Updated PROJECT_PLAN.md with cleanup status
 
 **Status:** Codebase cleaner. Phase 2 continues.
+
+### [2026-07-21] Real OCR via Tesseract.js for ScanPage + getUserLists fix
+**Changes Made:**
+- Replaced hardcoded mock OCR result in `ScanPage.tsx` with real Tesseract.js recognition
+- Added `createWorker` import and `worker.recognize()` call in `handleScan`
+- Added `parseReceiptText()` utility extracting store name, items, prices, totals from raw OCR text
+- Removed artificial 2-second delay and hardcoded Bravo Market items
+- Fixed `getUserLists` in `src/api/lists.ts` — now sends userId to `GET /api/lists/my?userId=...` instead of unfiltered `GET /api/lists`
+- Updated build artifacts
+
+**Status:** ScanPage now performs real OCR instead of simulating. Phase 2 continues.
 
 ---

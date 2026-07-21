@@ -36,7 +36,7 @@ export async function createList(name: string, householdId: string, createdBy: s
  * Get all lists for a user (across all households)
  */
 export async function getUserLists(userId: string) {
-  const response = await fetch('http://localhost:3001/api/lists', {
+  const response = await fetch(`http://localhost:3001/api/lists/my?userId=${encodeURIComponent(userId)}`, {
     method: 'GET',
   });
 
