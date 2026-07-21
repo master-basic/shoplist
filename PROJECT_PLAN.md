@@ -747,7 +747,6 @@ CREATE TABLE user_preferences (
 - [ ] Real-time sync across household members
 - [ ] Price history normalization
 - [ ] Unit price tracking
-- [ ] Price change alerts
 - [ ] PDF receipt support
 
 **Phase 3: Receipt Scanning & OCR - IN PROGRESS**
@@ -1021,6 +1020,13 @@ DB_PASSWORD=your_password_here
 - Added `not_bought_reason`/`not_bought_at` to `ListItem`/`GroceryItem` types
 - Wired `ListDetail` to fetch household members and pass to child components
 - Added purchase history nav link in `MainLayout`, route in `App.tsx`
+- Build updates
+
+### [2026-07-21] Price alerts with percentage change detection
+**Changes Made:**
+- Added `GET /api/price-history/alerts` server endpoint (detects 5%+ price changes vs historical average)
+- Fetches and displays price alerts on ReportsPage with up/down arrows and percentage
+- Alerts show current price vs average, store name, and direction
 - Build updates
 
 ---

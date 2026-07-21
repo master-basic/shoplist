@@ -626,6 +626,49 @@ app.post('/api/price-history/best-deals', async (req, res) => {
   }
 });
 
+app.get('/api/price-history/alerts', async (req, res) => {
+  try {
+    const { userId, threshold } = req.query;
+    const pctThreshold = parseFloat(threshold as string) || 5;
+    let result;
+    if (userId) {
+      result = await pool.query(
+        `SELECT item_name, store_name, unit_price, purchased_at FROM price_history
+         WHERE bought_by = $1 ORDER BY item_name, purchased_at DESC`,
+        [userId]
+      );
+    } else {
+      result = await pool.query(
+        `SELECT item_name, store_name, unit_price, purchased_at FROM price_history ORDER BY item_name, purchased_at DESC`
+      );
+    }
+    const byItem: Record<string, { prices: number[]; latest: { store: string; price: number; date: string }; store: string }> = {};
+    for (const row of result.rows) {
+      const name = row.item_name.toLowerCase().trim();
+      if (!byItem[name]) {
+        byItem[name] = { prices: [], latest: { store: row.store_name, price: parseFloat(row.unit_price), date: row.purchased_at }, store: row.store_name };
+      }
+      if (byItem[name].prices.length < 10) {
+        byItem[name].prices.push(parseFloat(row.unit_price));
+      }
+    }
+    const alerts: any[] = [];
+    for (const [name, data] of Object.entries(byItem)) {
+      if (data.prices.length < 2) continue;
+      const avg = data.prices.reduce((a, b) => a + b, 0) / data.prices.length;
+      const change = ((data.latest.price - avg) / avg) * 100;
+      if (Math.abs(change) >= pctThreshold) {
+        alerts.push({ itemName: name, store: data.latest.store, currentPrice: data.latest.price, averagePrice: Math.round(avg * 100) / 100, changePercent: Math.round(change * 10) / 10, direction: change > 0 ? 'up' : 'down', lastPurchased: data.latest.date });
+      }
+    }
+    alerts.sort((a, b) => Math.abs(b.changePercent) - Math.abs(a.changePercent));
+    res.json({ alerts });
+  } catch (error) {
+    console.error('Get price alerts error:', error);
+    res.status(500).json({ error: 'Failed to get price alerts', message: error.message });
+  }
+});
+
 // =====================================================
 // RECEIPT ROUTES
 // =====================================================

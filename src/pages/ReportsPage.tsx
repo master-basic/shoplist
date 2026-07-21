@@ -22,6 +22,7 @@ const ReportsPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState('90');
   const [priceHistory, setPriceHistory] = useState<any[]>([]);
+  const [alerts, setAlerts] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,10 +33,17 @@ const ReportsPage: React.FC = () => {
           const existing = lists.find((l) => l.id === list.id);
           if (!existing) addList(list);
         }
-        const res = await fetch(`${API_BASE}/api/price-history?limit=500`);
-        if (res.ok) {
-          const data = await res.json();
+        const [historyRes, alertsRes] = await Promise.all([
+          fetch(`${API_BASE}/api/price-history?limit=500`),
+          fetch(`${API_BASE}/api/price-history/alerts?userId=${user.id}&threshold=5`)
+        ]);
+        if (historyRes.ok) {
+          const data = await historyRes.json();
           setPriceHistory(data.priceHistory || []);
+        }
+        if (alertsRes.ok) {
+          const data = await alertsRes.json();
+          setAlerts(data.alerts || []);
         }
       } catch (err) {
         console.error('Error fetching report data:', err);
@@ -142,6 +150,28 @@ const ReportsPage: React.FC = () => {
             <p className="text-2xl font-bold text-gray-800">{formatCurrency(avgPrice)}</p>
           </Card>
         </div>
+
+        {alerts.length > 0 && (
+          <Card className="mb-6 p-4 border-amber-200">
+            <h2 className="text-lg font-semibold text-gray-800 mb-3">⚠️ Price Alerts</h2>
+            <div className="space-y-2">
+              {alerts.slice(0, 5).map((alert) => (
+                <div key={alert.itemName} className="flex items-center justify-between p-2 bg-amber-50 rounded-lg">
+                  <div>
+                    <p className="text-sm font-medium text-gray-800">{alert.itemName}</p>
+                    <p className="text-xs text-gray-500">at {alert.store}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className={`text-sm font-bold ${alert.direction === 'up' ? 'text-red-600' : 'text-green-600'}`}>
+                      {alert.direction === 'up' ? '↑' : '↓'} {Math.abs(alert.changePercent)}%
+                    </p>
+                    <p className="text-xs text-gray-500">{alert.currentPrice.toFixed(2)} vs avg {alert.averagePrice.toFixed(2)}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <Card className="p-6">
