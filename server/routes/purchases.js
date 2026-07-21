@@ -17,15 +17,17 @@ router.post('/', async (req, res) => {
     );
     const receipt = receiptResult.rows[0];
     const createdItems = [];
+    const logger = require('../utils/logger');
     for (const item of items) {
+      logger.info(`[PURCHASE] item listItemId=${item.listItemId} name=${item.name} qty=${item.quantity} price=${item.unitPrice}`);
       const ri = await pool.query(
         'INSERT INTO receipt_items (receipt_id, list_item_id, quantity, unit_price, total_price) VALUES ($1, $2, $3, $4, $5) RETURNING *',
         [receipt.id, item.listItemId || null, item.quantity || 1, item.unitPrice || 0, item.totalPrice || item.unitPrice || 0]
       );
       createdItems.push(ri.rows[0]);
       await pool.query(
-        'INSERT INTO price_history (list_item_id, price, currency, store, purchase_date, created_by) VALUES ($1, $2, $3, $4, $5, $6)',
-        [item.listItemId || null, item.unitPrice || 0, 'AZN', storeName || 'Unknown', new Date().toISOString().split('T')[0], userId]
+        'INSERT INTO price_history (item_name, store_name, unit_price, quantity, session_id, bought_by, list_item_id, price, currency, store, purchase_date, created_by) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)',
+        [item.name || 'Unknown', storeName || 'Unknown', item.unitPrice || 0, item.quantity || 1, receipt.id, userId, item.listItemId || null, item.unitPrice || 0, 'AZN', storeName || 'Unknown', new Date().toISOString().split('T')[0], userId]
       );
     }
     res.status(201).json({ session: { ...receipt, items: createdItems } });

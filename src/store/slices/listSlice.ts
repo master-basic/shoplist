@@ -38,7 +38,7 @@ export const createListSlice: ListSliceCreator = (set, get) => ({
     if (!list) { log.warn('Store addItemToList: list not found', { listId }); return; }
     const newItem = {
       ...item,
-      id: uuidv4(),
+      id: item.id || uuidv4(),
       sort_order: list.items.length,
       is_checked: false,
       is_recurring: item.is_recurring ?? false,

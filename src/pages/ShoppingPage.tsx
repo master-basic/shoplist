@@ -30,7 +30,9 @@ export const ShoppingPage: React.FC = () => {
         const fetchedLists = await getUserLists(user.id);
         for (const list of fetchedLists) {
           const existing = lists.find((l) => l.id === list.id);
-          if (!existing) {
+          if (existing) {
+            useStore.setState({ lists: lists.map((l) => l.id === list.id ? list : l) });
+          } else {
             addList(list);
           }
         }

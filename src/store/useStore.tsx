@@ -21,7 +21,7 @@ export const useStore = create<StoreState>()(
       ...createPriceHistorySlice(...a),
       ...createUISlice(...a),
     }),
-    { name: 'grocerymind-store', storage: createJSONStorage(() => localStorage), partialize: (state) => ({ lists: state.lists, priceHistory: state.priceHistory, user: state.user }) }
+    { name: 'grocerymind-store', storage: createJSONStorage(() => localStorage), partialize: (state) => ({ user: state.user }) }
   )
 );
 

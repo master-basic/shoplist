@@ -1,0 +1,19 @@
+{
+  "apps": [
+    {
+      "name": "vite",
+      "script": "node_modules/vite/bin/vite.js",
+      "cwd": "D:\\Repos\\shoplist",
+      "watch": false,
+      "interpreter": "node"
+    },
+    {
+      "name": "server",
+      "script": "node_modules/nodemon/bin/nodemon.js",
+      "args": "index.js",
+      "cwd": "D:\\Repos\\shoplist\\server",
+      "watch": false,
+      "interpreter": "node"
+    }
+  ]
+}

@@ -11,10 +11,9 @@ async function flushLogs() {
   sending = true;
   const batch = logQueue.splice(0);
   try {
-    const token = localStorage.getItem('auth_token');
     await fetch(`${API_BASE}/api/log/frontend`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ logs: batch }),
     });
   } catch {

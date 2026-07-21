@@ -47,7 +47,11 @@ export const HomePage: React.FC = () => {
         const fetchedLists = await getUserLists(user.id);
         for (const list of fetchedLists) {
           const existing = lists.find((l) => l.id === list.id);
-          if (!existing) addList(list);
+          if (existing) {
+            useStore.setState({ lists: lists.map((l) => l.id === list.id ? list : l) });
+          } else {
+            addList(list);
+          }
         }
         const hhRes = await fetch(`${API_BASE}/api/auth/user/${user.id}/households`, { headers: { 'Content-Type': 'application/json', ...authHeaders() } });
         if (hhRes.ok) {

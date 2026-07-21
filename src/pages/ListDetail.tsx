@@ -38,7 +38,11 @@ export const ListDetail: React.FC = () => {
         const fetchedLists = await getUserLists(user.id);
         for (const list of fetchedLists) {
           const existing = lists.find((l) => l.id === list.id);
-          if (!existing) addList(list);
+          if (existing) {
+            useStore.setState({ lists: lists.map((l) => l.id === list.id ? list : l) });
+          } else {
+            addList(list);
+          }
         }
       } catch (err) {
         console.error('Error fetching lists:', err);
@@ -106,12 +110,13 @@ export const ListDetail: React.FC = () => {
         itemData.is_recurring,
         itemData.recurrence_frequency
       );
+      const savedItem = newItem.item || newItem;
       addItemToList(selectedList.id, {
         ...itemData,
-        ...newItem,
+        ...savedItem,
         list_id: selectedList.id,
-        is_checked: newItem.is_checked || false,
-        sort_order: newItem.sort_order || selectedList.items?.length || 0,
+        is_checked: savedItem.is_checked || false,
+        sort_order: savedItem.sort_order || selectedList.items?.length || 0,
         is_recurring: itemData.is_recurring || false,
         recurrence_frequency: itemData.recurrence_frequency,
         price_history: [],
