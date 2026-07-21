@@ -1,4 +1,6 @@
 import React, { ErrorInfo, ReactNode } from 'react';
+import { reportError } from '@/api/logging';
+import log from '@/utils/debug';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -16,14 +18,18 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    log.warn('ErrorBoundary caught error', { message: error.message, name: error.name });
     return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+    log.warn('ErrorBoundary.componentDidCatch', { message: error.message, stack: errorInfo.componentStack?.substring(0, 500) });
     console.error('ErrorBoundary caught an error:', error, errorInfo);
+    reportError(error, { componentStack: errorInfo.componentStack || '' });
   }
 
   handleReload = (): void => {
+    log.info('ErrorBoundary: user clicking reload');
     window.location.reload();
   };
 
@@ -37,6 +43,9 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
             </h2>
             <p className="text-gray-600 text-center mb-6">
               An unexpected error occurred. Please try reloading the page.
+            </p>
+            <p className="text-xs text-gray-400 text-center mb-4 font-mono break-all">
+              {this.state.error?.message}
             </p>
             <button
               onClick={this.handleReload}

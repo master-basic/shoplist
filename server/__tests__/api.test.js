@@ -139,14 +139,14 @@ describe('GET /api/auth/verify', () => {
 describe('GET /api/auth/user/:id', () => {
   it('returns user by id', async () => {
     mockQuery([mockUser]);
-    const res = await request(app).get('/api/auth/user/u1');
+    const res = await request(app).get('/api/auth/user/u1').set('Authorization', `Bearer ${mockToken}`);
     expect(res.status).toBe(200);
     expect(res.body.user.id).toBe('u1');
   });
 
   it('returns 404 when user not found', async () => {
     mockQuery([]);
-    const res = await request(app).get('/api/auth/user/nonexistent');
+    const res = await request(app).get('/api/auth/user/nonexistent').set('Authorization', `Bearer ${mockToken}`);
     expect(res.status).toBe(404);
     expect(res.body.error).toBe('User not found');
   });
@@ -159,6 +159,7 @@ describe('POST /api/auth/households', () => {
     pool.query.mockResolvedValueOnce({ rows: [] });
     const res = await request(app)
       .post('/api/auth/households')
+      .set('Authorization', `Bearer ${mockToken}`)
       .send({ name: 'Test Family', description: 'desc', userId: 'u1' });
     expect(res.status).toBe(201);
     expect(res.body.household.name).toBe('Test Family');
@@ -167,6 +168,7 @@ describe('POST /api/auth/households', () => {
   it('returns 400 when name is missing', async () => {
     const res = await request(app)
       .post('/api/auth/households')
+      .set('Authorization', `Bearer ${mockToken}`)
       .send({ userId: 'u1' });
     expect(res.status).toBe(400);
     expect(res.body.error).toContain('required');
@@ -176,7 +178,7 @@ describe('POST /api/auth/households', () => {
 describe('GET /api/lists', () => {
   it('returns lists for a household', async () => {
     mockQuery([{ id: 'l1', name: 'Weekly Shop', household_id: 'h1', item_ids: null, item_names: null, item_quantities: null }]);
-    const res = await request(app).get('/api/lists?householdId=h1');
+    const res = await request(app).get('/api/lists?householdId=h1').set('Authorization', `Bearer ${mockToken}`);
     expect(res.status).toBe(200);
     expect(Array.isArray(res.body.lists)).toBe(true);
   });
@@ -187,6 +189,7 @@ describe('POST /api/lists', () => {
     mockQueryOnce([{ id: 'l1', name: 'New List', household_id: 'h1', created_by: 'u1', created_at: new Date().toISOString() }]);
     const res = await request(app)
       .post('/api/lists')
+      .set('Authorization', `Bearer ${mockToken}`)
       .send({ householdId: 'h1', name: 'New List', userId: 'u1' });
     expect(res.status).toBe(201);
     expect(res.body.list.name).toBe('New List');
@@ -197,14 +200,14 @@ describe('GET /api/lists/:id', () => {
   it('returns a list by id', async () => {
     mockQueryOnce([{ id: 'l1', name: 'My List', household_id: 'h1', created_by: 'u1', created_at: new Date().toISOString(), updated_at: new Date().toISOString() }]);
     pool.query.mockResolvedValueOnce({ rows: [] });
-    const res = await request(app).get('/api/lists/l1');
+    const res = await request(app).get('/api/lists/l1').set('Authorization', `Bearer ${mockToken}`);
     expect(res.status).toBe(200);
     expect(res.body.list.id).toBe('l1');
   });
 
   it('returns 404 when list not found', async () => {
     mockQuery([]);
-    const res = await request(app).get('/api/lists/nonexistent');
+    const res = await request(app).get('/api/lists/nonexistent').set('Authorization', `Bearer ${mockToken}`);
     expect(res.status).toBe(404);
   });
 });
@@ -214,6 +217,7 @@ describe('PUT /api/lists/:id', () => {
     mockQuery([{ id: 'l1', name: 'Updated Name', household_id: 'h1', created_by: 'u1', created_at: new Date().toISOString(), updated_at: new Date().toISOString() }]);
     const res = await request(app)
       .put('/api/lists/l1')
+      .set('Authorization', `Bearer ${mockToken}`)
       .send({ name: 'Updated Name' });
     expect(res.status).toBe(200);
     expect(res.body.list.name).toBe('Updated Name');
@@ -226,6 +230,7 @@ describe('POST /api/lists/:id/items', () => {
     mockQuery([mockItem]);
     const res = await request(app)
       .post('/api/lists/l1/items')
+      .set('Authorization', `Bearer ${mockToken}`)
       .send({ name: 'Milk', quantity: 1, unitPrice: 2.5, category: 'Dairy', createdBy: 'u1' });
     expect(res.status).toBe(201);
     expect(res.body.item.name).toBe('Milk');
@@ -235,32 +240,34 @@ describe('POST /api/lists/:id/items', () => {
 describe('GET /api/households/:id', () => {
   it('returns household by id', async () => {
     mockQuery([{ id: 'h1', name: 'Family', description: null, created_by: 'u1', created_at: new Date().toISOString(), updated_at: new Date().toISOString(), member_ids: ['u1'], member_roles: ['admin'] }]);
-    const res = await request(app).get('/api/households/h1');
+    const res = await request(app).get('/api/households/h1').set('Authorization', `Bearer ${mockToken}`);
     expect(res.status).toBe(200);
     expect(res.body.household.id).toBe('h1');
   });
 
   it('returns 404 when household not found', async () => {
     mockQuery([]);
-    const res = await request(app).get('/api/households/nonexistent');
+    const res = await request(app).get('/api/households/nonexistent').set('Authorization', `Bearer ${mockToken}`);
     expect(res.status).toBe(404);
   });
 });
 
 describe('POST /api/price-history', () => {
   it('creates a price history entry', async () => {
-    const entry = { id: 'ph1', list_item_id: null, item_name: 'Milk', store_name: 'Store A', unit_price: 2.5, currency: 'AZN', purchased_at: new Date().toISOString(), quantity: 1 };
+    const entry = { id: 'ph1', list_item_id: 'li1', item_name: 'Milk', store_name: 'Store A', unit_price: 2.5, currency: 'AZN', purchased_at: new Date().toISOString(), quantity: 1 };
     mockQuery([entry]);
     const res = await request(app)
       .post('/api/price-history')
-      .send({ itemName: 'Milk', unitPrice: 2.5 });
+      .set('Authorization', `Bearer ${mockToken}`)
+      .send({ listItemId: 'li1', price: 2.5, store: 'Store A' });
     expect(res.status).toBe(201);
-    expect(res.body.priceEntry.item_name).toBe('Milk');
+    expect(res.body.priceEntry.list_item_id).toBe('li1');
   });
 
   it('returns 400 when required fields missing', async () => {
     const res = await request(app)
       .post('/api/price-history')
+      .set('Authorization', `Bearer ${mockToken}`)
       .send({ storeName: 'Store' });
     expect(res.status).toBe(400);
     expect(res.body.error).toContain('required');
@@ -272,13 +279,13 @@ describe('GET /api/price-history/stats', () => {
     const statsRow = { count: 5, min_price: 1.0, max_price: 3.0, avg_price: 2.0, stores: ['Store A'] };
     mockQueryOnce([statsRow]);
     pool.query.mockResolvedValueOnce({ rows: [{ store_name: 'Store A', unit_price: 1.0 }] });
-    const res = await request(app).get('/api/price-history/stats?itemName=Milk');
+    const res = await request(app).get('/api/price-history/stats?itemName=Milk').set('Authorization', `Bearer ${mockToken}`);
     expect(res.status).toBe(200);
     expect(res.body.stats.count).toBe(5);
   });
 
   it('returns 400 when itemName missing', async () => {
-    const res = await request(app).get('/api/price-history/stats');
+    const res = await request(app).get('/api/price-history/stats').set('Authorization', `Bearer ${mockToken}`);
     expect(res.status).toBe(400);
   });
 });
@@ -286,7 +293,7 @@ describe('GET /api/price-history/stats', () => {
 describe('DELETE /api/lists/:id', () => {
   it('deletes a list', async () => {
     mockQuery([]);
-    const res = await request(app).delete('/api/lists/l1');
+    const res = await request(app).delete('/api/lists/l1').set('Authorization', `Bearer ${mockToken}`);
     expect(res.status).toBe(200);
     expect(res.body.message).toContain('deleted');
   });

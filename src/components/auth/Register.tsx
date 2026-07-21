@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/Skeleton';
 import { registerUser, createHousehold } from '@/api/auth';
 import { useStore } from '@/store/useStore';
 import { STORES } from '@/types';
+import log from '@/utils/debug';
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ const Register: React.FC = () => {
   const updateField = (field: string, value: string) => setFormData(prev => ({ ...prev, [field]: value }));
 
   const handleNext = () => {
+    log.info('Register handleNext', { currentStep: step, nextStep: step + 1 });
     if (step === 1) {
       if (!formData.name || !formData.email || !formData.password) { setError('Please fill in all fields'); return; }
       if (formData.password !== formData.confirmPassword) { setError('Passwords do not match'); return; }
@@ -35,14 +37,17 @@ const Register: React.FC = () => {
     setStep(step + 1);
   };
 
-  const handlePrevious = () => { setError(''); setStep(step - 1); };
+  const handlePrevious = () => { log.info('Register handlePrevious', { fromStep: step, toStep: step - 1 }); setError(''); setStep(step - 1); };
 
   const handleSubmit = async () => {
+    log.info('Register handleSubmit', { name: formData.name, email: formData.email });
     setIsLoading(true);
     setError('');
     try {
       const { user: userData, token } = await registerUser(formData.name, formData.email, formData.password);
+      log.info('Register: user created, creating household', { userId: userData.id });
       await createHousehold(`${formData.name}'s Household`, '', userData.id);
+      log.info('Register: household created, setting localStorage');
       localStorage.setItem('user_id', userData.id);
       localStorage.setItem('user_name', userData.name);
       localStorage.setItem('user_email', userData.email);
@@ -51,8 +56,10 @@ const Register: React.FC = () => {
       localStorage.setItem('currency', formData.currency);
       if (formData.demoMode) localStorage.setItem('demo_mode', 'true');
       useStore.getState().setUser(userData);
+      log.info('Register: user set in store, navigating to /');
       navigate('/');
     } catch (err) {
+      log.error('Register failed', { error: err instanceof Error ? err.message : String(err) });
       setError(err instanceof Error ? err.message : 'Registration failed');
       setIsLoading(false);
     }

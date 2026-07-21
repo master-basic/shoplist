@@ -9,8 +9,10 @@ import { SkeletonCard } from '@/components/ui/Skeleton';
 import { Skeleton } from '@/components/Skeleton';
 import { EmptyState } from '@/components/ui/EmptyState';
 import type { Household, HouseholdMember } from '@/types';
+import { useLogRender } from '@/hooks/useLogRender';
 
 const HouseholdPage: React.FC = () => {
+  useLogRender('HouseholdPage');
   const { user, currentHouseholdId, setCurrentHouseholdId } = useStore();
   const { loading, households, loadUserHouseholds, createHousehold, getMembers, fetchMembers, inviteMember, removeMember } = useHousehold();
   const [members, setMembers] = useState<HouseholdMember[]>([]);

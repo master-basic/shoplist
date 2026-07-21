@@ -2,13 +2,18 @@ import React, { useState } from 'react';
 import { useStore } from '@/store/useStore';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
+
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Skeleton } from '@/components/Skeleton';
 import { API_BASE } from '@/config';
+import { authHeaders } from '@/api/client';
 import { createListItem } from '@/api/lists';
+import { useLogRender } from '@/hooks/useLogRender';
+import { ScanReview } from '@/components/ScanReview';
+import type { OCRItem } from '@/components/ScanReview';
 
 const ScanPage: React.FC = () => {
+  useLogRender('ScanPage');
   const { lists, user } = useStore();
   const [scanMode, setScanMode] = useState<'upload' | 'camera'>('upload');
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -16,17 +21,12 @@ const ScanPage: React.FC = () => {
   const [saving, setSaving] = useState(false);
   const [ocrResult, setOcrResult] = useState<any>(null);
   const [reviewMode, setReviewMode] = useState(false);
-  const [reviewItems, setReviewItems] = useState<any[]>([]);
   const [selectedListId, setSelectedListId] = useState<string | null>(null);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setImageFile(e.target.files[0]);
     }
-  };
-
-  const handleCameraCapture = () => {
-    setScanMode('upload');
   };
 
   const handleScan = async () => {
@@ -37,8 +37,11 @@ const ScanPage: React.FC = () => {
       const formData = new FormData();
       formData.append('image', imageFile);
 
+      const token = localStorage.getItem('auth_token');
+      const authHeader = token ? { Authorization: `Bearer ${token}` } : {};
       const ocrRes = await fetch(`${API_BASE}/api/receipts/ocr`, {
         method: 'POST',
+        headers: authHeader,
         body: formData
       });
 
@@ -53,13 +56,14 @@ const ScanPage: React.FC = () => {
     }
   };
 
-  const handleSaveReceipt = async () => {
+  const handleSaveReceipt = async (itemsOverride?: OCRItem[]) => {
+    const items = itemsOverride ?? ocrResult?.items ?? [];
     if (!ocrResult || !user?.id) return;
     setSaving(true);
     try {
       const receiptRes = await fetch(`${API_BASE}/api/receipts`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeaders() },
         body: JSON.stringify({
           userId: user.id,
           householdId: null,
@@ -70,7 +74,7 @@ const ScanPage: React.FC = () => {
           imageUrl: ocrResult.imageUrl,
           ocrData: ocrResult,
           status: 'processed',
-          items: ocrResult.items.map((item: any) => ({
+          items: items.map((item: OCRItem) => ({
             listItemId: null,
             quantity: item.quantity,
             unitPrice: item.unitPrice,
@@ -80,10 +84,10 @@ const ScanPage: React.FC = () => {
       });
       if (!receiptRes.ok) throw new Error('Failed to save receipt');
 
-      for (const item of ocrResult.items) {
+      for (const item of items) {
         await fetch(`${API_BASE}/api/price-history`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', ...authHeaders() },
           body: JSON.stringify({
             itemName: item.name,
             storeName: ocrResult.storeName,
@@ -105,8 +109,8 @@ const ScanPage: React.FC = () => {
 
       setOcrResult(null);
       setImageFile(null);
-      setReviewItems([]);
       setReviewMode(false);
+      setSelectedListId(null);
     } catch (err) {
       console.error('Error saving receipt:', err);
     } finally {
@@ -114,46 +118,15 @@ const ScanPage: React.FC = () => {
     }
   };
 
-  const handleReview = () => {
-    if (!ocrResult) return;
-    const normalizedItems = ocrResult.items.map((item: any) => ({
-      ...item,
-      normalized: item.name.toLowerCase().replace(/[^\w]/g, ''),
-    }));
-    setReviewItems(normalizedItems);
-    setReviewMode(true);
+  const handleSaveReview = (editedItems: OCRItem[]) => {
+    handleSaveReceipt(editedItems);
   };
 
-  const handleMatchItem = async (ocrItem: any) => {
-    if (!selectedListId || !user?.id || !ocrResult) return;
-    try {
-      await createListItem(ocrItem.name, ocrItem.quantity, ocrItem.unitPrice, 'Other', selectedListId, user.id);
-      await fetch(`${API_BASE}/api/price-history`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          itemName: ocrItem.name,
-          storeName: ocrResult.storeName,
-          unitPrice: ocrItem.unitPrice,
-          currency: 'AZN',
-          quantity: ocrItem.quantity,
-          purchasedAt: new Date().toISOString(),
-        }),
-      });
-      setReviewItems((prev: any) => prev.filter((item: any) => item.id !== ocrItem.id));
-    } catch (err) {
-      console.error('Error matching item:', err);
-    }
-  };
-
-  const handleAddNewItem = async (name: string, quantity: number, unitPrice: number) => {
-    if (!selectedListId || !user?.id) return;
-    try {
-      await createListItem(name, quantity, unitPrice, 'Other', selectedListId, user.id);
-      setReviewItems((prev: any) => prev.filter((item: any) => item.name.toLowerCase() !== name.toLowerCase()));
-    } catch (err) {
-      console.error('Error adding new item:', err);
-    }
+  const handleDiscardReview = () => {
+    setOcrResult(null);
+    setImageFile(null);
+    setReviewMode(false);
+    setSelectedListId(null);
   };
 
   if (!user) {
@@ -170,8 +143,8 @@ const ScanPage: React.FC = () => {
         <h1 className="text-2xl font-bold text-gray-800 mb-4">Receipt Scanner</h1>
 
         <div className="flex gap-4 mb-6">
-          <Button onClick={() => setScanMode('upload')} variant={scanMode === 'upload' ? 'primary' : 'ghost'}>Upload</Button>
-          <Button onClick={() => setScanMode('camera')} variant={scanMode === 'camera' ? 'primary' : 'ghost'}>Camera</Button>
+          <Button onClick={() => setScanMode('upload')} variant={scanMode === 'upload' ? 'primary' : 'outline'}>Upload</Button>
+          <Button onClick={() => setScanMode('camera')} variant={scanMode === 'camera' ? 'primary' : 'outline'} className="flex items-center gap-2">📷 Camera</Button>
         </div>
 
         {scanMode === 'upload' && (
@@ -186,17 +159,15 @@ const ScanPage: React.FC = () => {
         )}
 
         {scanMode === 'camera' && (
-          <div className="mb-6">
-            <div className="aspect-video bg-gray-200 rounded-lg flex items-center justify-center">
-              <div className="text-center">
-                <svg className="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <p className="text-gray-600">Camera preview would appear here</p>
-                <Button onClick={handleCameraCapture} className="mt-4">Capture Photo</Button>
-              </div>
-            </div>
+          <div className="mt-4">
+            <input
+              type="file"
+              accept="image/*"
+              capture="environment"
+              onChange={handleFileUpload}
+              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+            />
+            <p className="text-xs text-gray-400 mt-1">Point camera at receipt</p>
           </div>
         )}
 
@@ -238,15 +209,14 @@ const ScanPage: React.FC = () => {
               <div className="flex justify-between border-t pt-2"><span className="font-medium">Total:</span><span className="font-bold text-green-600">{formatCurrency(ocrResult.total)}</span></div>
             </div>
             <div className="flex gap-2">
-              <Button onClick={handleReview}>Review Items</Button>
-              <Button onClick={handleSaveReceipt} variant="secondary">Save All</Button>
+              <Button onClick={() => setReviewMode(true)}>Review Items</Button>
+              <Button onClick={() => handleSaveReceipt()} variant="secondary">Save All</Button>
             </div>
           </div>
         )}
 
-        {reviewMode && reviewItems.length > 0 && (
+        {reviewMode && ocrResult && (
           <div className="mb-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">Review Items ({reviewItems.length})</h2>
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">Add to List</label>
               <select className="w-full px-4 py-2 border border-gray-300 rounded-lg" value={selectedListId || ''} onChange={(e) => setSelectedListId(e.target.value || null)}>
@@ -256,28 +226,18 @@ const ScanPage: React.FC = () => {
                 ))}
               </select>
             </div>
-            <div className="space-y-3">
-              {reviewItems.map((item: any) => (
-                <div key={item.id} className="bg-white border border-gray-200 rounded-lg p-4">
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <p className="font-medium text-gray-800">{item.name}</p>
-                      <p className="text-sm text-gray-600">Qty: {item.quantity} • {formatCurrency(item.unitPrice)}</p>
-                    </div>
-                    <div className="flex gap-2">
-                      {selectedListId && (
-                        <Button onClick={() => handleMatchItem(item)} variant="success" size="sm">Match</Button>
-                      )}
-                      <Button onClick={() => {
-                        const name = prompt('Enter item name:', item.name);
-                        if (name) handleAddNewItem(name, item.quantity, item.unitPrice);
-                      }} variant="secondary" size="sm">Add New</Button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <Button onClick={() => { setOcrResult(null); setReviewMode(false); setReviewItems([]); setImageFile(null); }} variant="secondary" className="mt-4">Start New Scan</Button>
+            <ScanReview
+              items={ocrResult.items.map((item: any) => ({
+                name: item.name,
+                quantity: item.quantity,
+                unitPrice: item.unitPrice,
+                totalPrice: item.totalPrice,
+              }))}
+              storeName={ocrResult.storeName}
+              onSave={handleSaveReview}
+              onDiscard={handleDiscardReview}
+              isLoading={saving}
+            />
           </div>
         )}
       </div>

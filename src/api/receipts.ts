@@ -1,176 +1,95 @@
-import { API_BASE } from '@/config';
-import { ReceiptFile, OCRData } from '@/types';
+import { apiFetch } from './client';
+import type { ReceiptFile } from '@/types';
+import log from '@/utils/debug';
 
-export interface CreateReceiptParams {
+interface CreateReceiptParams {
+  userId: string;
   householdId: string;
   listId?: string;
-  name: string;
+  name?: string;
   totalAmount?: number;
   currency?: string;
-  imageUrl?: string;
-  ocrData?: OCRData;
-  status?: 'pending' | 'processed' | 'failed';
+  file: File;
 }
 
-export interface CreateReceiptItemParams {
+interface CreateReceiptItemParams {
   receiptId: string;
   listItemId?: string;
+  name?: string;
   quantity: number;
   unitPrice: number;
   totalPrice: number;
 }
 
-/**
- * Create a new receipt
- */
 export async function createReceipt(params: CreateReceiptParams): Promise<ReceiptFile> {
-  const response = await fetch(`${API_BASE}/api/receipts`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(params),
-  });
+  log.info('API createReceipt', { userId: params.userId, fileName: params.file.name, fileSize: params.file.size });
+  const formData = new FormData();
+  formData.append('file', params.file);
+  formData.append('userId', params.userId);
+  formData.append('householdId', params.householdId);
+  if (params.listId) formData.append('listId', params.listId);
+  if (params.name) formData.append('name', params.name);
 
+  const token = localStorage.getItem('auth_token');
+  const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/receipts/upload`, {
+    method: 'POST',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    body: formData,
+  });
   if (!response.ok) {
     const error = await response.json();
+    log.warn('API createReceipt failed', { error: error.error });
     throw new Error(error.error || 'Failed to create receipt');
   }
-
   const data = await response.json();
-  return data.receipt;
+  log.info('API createReceipt success', { receiptId: data.id });
+  return data;
 }
 
-/**
- * Create receipt items
- */
-export async function createReceiptItems(params: CreateReceiptItemParams[]): Promise<{
-  id: string;
-  receipt_id: string;
-  list_item_id?: string;
-  quantity: number;
-  unit_price: number;
-  total_price: number;
-  created_at: string;
-}[]> {
-  const response = await fetch(`${API_BASE}/api/receipts/batch-items`, {
+export async function createReceiptItems(params: CreateReceiptItemParams[]): Promise<{ receiptItems: ReceiptFile[] }> {
+  log.info('API createReceiptItems', { count: params.length });
+  const response = await apiFetch('/api/receipt-items', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(params),
+    body: JSON.stringify({ items: params }),
   });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to create receipt items');
-  }
-
-  const data = await response.json();
-  return data.items || [];
+  return response.json();
 }
 
-/**
- * Update receipt status
- */
 export async function updateReceiptStatus(receiptId: string, status: string): Promise<ReceiptFile> {
-  const response = await fetch(`${API_BASE}/api/receipts/${receiptId}/status`, {
+  log.info('API updateReceiptStatus', { receiptId, status });
+  const response = await apiFetch(`/api/receipts/${receiptId}/status`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
     body: JSON.stringify({ status }),
   });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to update receipt status');
-  }
-
-  const data = await response.json();
-  return data.receipt;
+  return response.json();
 }
 
-/**
- * Get receipt by ID
- */
 export async function getReceiptById(receiptId: string): Promise<ReceiptFile | null> {
-  const response = await fetch(`${API_BASE}/api/receipts/${receiptId}`, {
-    method: 'GET',
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to get receipt');
-  }
-
+  log.info('API getReceiptById', { receiptId });
+  const response = await apiFetch(`/api/receipts/${receiptId}`);
   const data = await response.json();
+  log.info('API getReceiptById result', { found: !!data.receipt });
   return data.receipt || null;
 }
 
-/**
- * Get user receipts
- */
 export async function getUserReceipts(userId: string, householdId?: string): Promise<ReceiptFile[]> {
-  let url = `${API_BASE}/api/receipts/user/${userId}`;
-  const queryParams = new URLSearchParams();
-
-  if (householdId) {
-    queryParams.append('householdId', householdId);
-    url += `?${queryParams.toString()}`;
-  }
-
-  const response = await fetch(url, {
-    method: 'GET',
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to get receipts');
-  }
-
+  const params = new URLSearchParams({ userId });
+  if (householdId) params.append('householdId', householdId);
+  log.info('API getUserReceipts', { userId, householdId });
+  const response = await apiFetch(`/api/receipts?${params}`);
   const data = await response.json();
+  log.info('API getUserReceipts result', { count: (data.receipts || []).length });
   return data.receipts || [];
 }
 
-/**
- * Get receipt items
- */
-export async function getReceiptItems(receiptId: string): Promise<
-  {
-    id: string;
-    receipt_id: string;
-    list_item_id?: string;
-    quantity: number;
-    unit_price: number;
-    total_price: number;
-    is_on_list: boolean;
-    created_at: string;
-  }[]
-> {
-  const response = await fetch(`${API_BASE}/api/receipts/${receiptId}/items`, {
-    method: 'GET',
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to get receipt items');
-  }
-
-  const data = await response.json();
-  return data.items || [];
+export async function getReceiptItems(receiptId: string): Promise<{ items: ReceiptFile[]; receipt: ReceiptFile }> {
+  log.info('API getReceiptItems', { receiptId });
+  const response = await apiFetch(`/api/receipt-items/${receiptId}`);
+  return response.json();
 }
 
-/**
- * Delete a receipt
- */
 export async function deleteReceipt(receiptId: string): Promise<void> {
-  const response = await fetch(`${API_BASE}/api/receipts/${receiptId}`, {
-    method: 'DELETE',
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to delete receipt');
-  }
+  log.info('API deleteReceipt', { receiptId });
+  await apiFetch(`/api/receipts/${receiptId}`, { method: 'DELETE' });
+  log.info('API deleteReceipt success');
 }

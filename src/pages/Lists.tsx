@@ -3,12 +3,16 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Card, EmptyState, Button, Input, Select, SkeletonCard } from '../components/ui';
 import { Badge } from '../components/ui/Badge';
 import { GroceryItemCard } from '../components/GroceryItemCard';
+import { StockBadge } from '../components/StockBadge';
 import { useStore } from '../store/useStore';
 import { getUserLists, createList, deleteList as apiDeleteList, createListItem, deleteListItem as apiDeleteListItem, toggleItemCompletion } from '../api/lists';
 import { getUserHouseholds } from '../api/auth';
 import type { GroceryList, ListItem } from '../types';
+import log from '@/utils/debug';
+import { useLogRender } from '@/hooks/useLogRender';
 
 export const Lists: React.FC = () => {
+  useLogRender('Lists');
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [searchMode, setSearchMode] = useState<'lists' | 'items'>('lists');
@@ -28,9 +32,10 @@ export const Lists: React.FC = () => {
         setHouseholds(hh);
         if (hh.length > 0 && !currentHouseholdId) setCurrentHouseholdId(hh[0].id);
         const fetchedLists = await getUserLists(user.id);
+        // Clear existing lists from store and replace with server data
+        useStore.getState().lists.forEach((l) => useStore.getState().deleteList(l.id));
         for (const list of fetchedLists) {
-          const existing = lists.find((l) => l.id === list.id);
-          if (!existing) addList(list);
+          addList(list);
         }
       } catch (err) {
         console.error('Error fetching lists:', err);
@@ -44,7 +49,7 @@ export const Lists: React.FC = () => {
   const filteredLists = lists.filter((list) => {
     if (!list) return false;
     if (currentHouseholdId && list.household_id !== currentHouseholdId) return false;
-    const matchesSearch = list.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = (list.name || '').toLowerCase().includes(searchTerm.toLowerCase());
     const matchesFilter = filter === 'all' || list.status === filter;
     return matchesSearch && matchesFilter;
   });
@@ -55,12 +60,13 @@ export const Lists: React.FC = () => {
     if (!newListName.trim()) { setError('List name is required'); return; }
     if (!currentHouseholdId) { setError('No household found.'); return; }
     try {
-      const newList = await createList(newListName.trim(), currentHouseholdId, user.id);
+      const res = await createList(newListName.trim(), currentHouseholdId, user.id);
+      const createdList = res.list || res;
       addList({
-        ...newList,
+        ...createdList,
         items: [],
-        status: newList.status || 'active',
-        description: newList.description || '',
+        status: createdList.status || 'active',
+        description: createdList.description || '',
       });
       setNewListName('');
       setShowCreateModal(false);
@@ -287,13 +293,17 @@ export const Lists: React.FC = () => {
                 {items.length > 0 ? (
                   <div className="space-y-2">
                     {items.slice(0, 5).map((item) => (
-                      <GroceryItemCard
-                        key={item.id}
-                        item={item}
-                        onToggle={() => handleToggleItem(list.id, item.id)}
-                        onUpdate={(updated) => updateItem(list.id, item.id, updated)}
-                        onRemove={() => handleRemoveItem(list.id, item.id)}
-                      />
+                      <div key={item.id} className="relative">
+                        <GroceryItemCard
+                          item={item}
+                          onToggle={() => handleToggleItem(list.id, item.id)}
+                          onUpdate={(updated) => updateItem(list.id, item.id, updated)}
+                          onRemove={() => handleRemoveItem(list.id, item.id)}
+                        />
+                        <div className="absolute top-2 right-2">
+                          <StockBadge threshold={item.restock_threshold ?? null} lastBoughtAt={item.last_bought_at} />
+                        </div>
+                      </div>
                     ))}
                     {items.length > 5 && <p className="text-sm text-gray-500 text-center">+{items.length - 5} more</p>}
                   </div>

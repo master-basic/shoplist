@@ -1,117 +1,218 @@
 # Parallel Work Plan — Architect (DeepSeek) + Junior (Local LLM)
 
 ## Strategy
-- **Architect (me, DeepSeek):** Complex reasoning, modifications spanning 3+ files, architectural decisions, code review, security, all backend work
-- **Junior (local LLM):** Scoped, single-file work with clear specs — isolated component changes, data plumbing, type migrations, CSS
+- **Architect (DeepSeek):** Complex reasoning, modifications spanning 3+ files, architectural decisions, code review, security, all backend work, cross-cutting concerns
+- **Junior (local LLM):** Scoped, single-file work with clear specs — isolated component changes, data plumbing, type migrations, CSS, test writing, small UI features
 
 ---
 
-## Round 1: Foundation (ship-blocking)
+## ✅ Rounds 1-13: COMPLETE
+All foundation, security, testing, code quality, DB setup, frontend tests, CI, React Query migration, and all Architect feature work done.
 
-| Task | Worker | Files | Complexity | Est. Time |
-|---|---|---|---|---|
-| **1a** JWT auth middleware + login/register routes | **Architect** | `server/index.js`, `server/`, `.env` | 🔴 high — security, multiple files | 45 min |
-| **1b** Remove `POST /api/db/query` | **Architect** | `server/index.js` | 🟢 trivial — delete 15 lines | 2 min |
-| **1c** Remove `.env` from git, add to `.gitignore` | **Architect** | `.gitignore`, git history | 🟢 trivial | 5 min |
-| **1d** Add ErrorBoundary at App level | **Junior** | `src/components/ErrorBoundary.tsx`, `src/main.tsx` | ✅ completed | 15 min |
+| Round | Name | Status |
+|-------|------|--------|
+| 1 | Foundation (ship-blocking) | ✅ All 4 tasks done |
+| 2 | Testing (server + React Query) | ✅ All 3 tasks done |
+| 3 | UX Polish | ✅ All 4 tasks done |
+| 4 | Server Structure | ✅ All 3 tasks done |
+| 5 | Auth Security (CRITICAL) | ✅ All 5 tasks done |
+| 6 | Code Quality Fixes | ✅ All 6 tasks done |
+| 7 | Setup & Configuration | ✅ All 5 tasks done |
+| 8 | Frontend Testing | ✅ All 4 tasks done |
+| 9 | CI & Infrastructure | ✅ All 2 tasks done |
+| 10 | Shopping & Interactions | ✅ 1 of 4 done (WebSocket) |
+| 11 | OCR & Receipts | ✅ 1 of 4 done (Real OCR) |
+| 12 | Price Tracking & Analytics | ✅ 2 of 4 done (Unit Price Normalization, Cheapest Store) |
+| 13 | Advanced Features (MVP) | ✅ 4 of 7 done (Recurring BE + FE API, Dashboard API, CSV Export) |
 
-**Round 1 spec for Junior:** Create `src/components/ErrorBoundary.tsx` — a React class component that catches errors, logs them to console, and renders a fallback UI with a "Reload" button. Then wrap `<App />` in `src/main.tsx` with it. Use `componentDidCatch` and `getDerivedStateFromError`. The fallback should be a centered card saying "Something went wrong" with a retry button that calls `window.location.reload()`.
-
----
-
-## Round 2: Testing (high priority)
-
-| Task | Worker | Files | Complexity | Est. Time |
-|---|---|---|---|---|
-| **2a** Set up Jest + supertest for API | **Architect** | `server/package.json`, `server/jest.config.js`, CI config | 🟡 medium — config + first test suite | ✅ completed | 20 min |
-| **2b** Write 20 API integration tests | **Architect** | `server/__tests__/api.test.js` | 🟡 medium — covers all 36 routes via 20 tests | ✅ completed | 60 min |
-| **2c** Convert 4 hooks to React Query | **Junior** | `src/hooks/useGroceryList.ts`, `src/hooks/useHousehold.ts`, `src/hooks/usePriceHistory.ts` | ✅ completed | 40 min |
-
-**Round 2 spec for Junior:** Convert 4 hooks from `useEffect`+`useState` to `@tanstack/react-query`'s `useQuery`. Each hook follows the same pattern:
-1. Import `useQuery` from `@tanstack/react-query`
-2. Replace `useState`/`useEffect` with `useQuery({ queryKey: [...], queryFn: () => apiCall(), enabled: !!userId })`
-3. Return `{ data, isLoading, error }` (same shape the consumers expect)
-4. Remove all manual `isLoading`/`error` state variables
-5. Check that consumers use `.data`, `.isLoading`, `.error` — if they use different keys, alias in the return
+## Test Baseline
+- **Server:** 29/29 tests pass (Jest + Supertest)
+- **Frontend:** 27/27 tests pass (Vitest + RTL, 7 files)
+- **0 open handles:** node-cron disabled in test mode
 
 ---
 
-## Round 3: UX Polish (nice-to-have)
+## Round 8: Frontend Testing (wrap up)
 
-| Task | Worker | Files | Complexity | Est. Time |
-|---|---|---|---|---|
-| **3a** Replace Spinners with skeletons | **Junior** | `src/pages/*.tsx` (6-8 files) | ✅ completed | 20 min |
-| **3b** Merge Sidebar into MainLayout | **Junior** | `src/layouts/MainLayout.tsx`, delete `Sidebar.tsx` | ✅ completed | 10 min |
-| **3c** Merge SearchPage into Lists | **Architect** | `src/App.tsx`, `src/pages/SearchPage.tsx`, `src/pages/Lists.tsx` | 🟡 medium — need to understand routing + state | 20 min |
-| **3d** Remove PieChart + BarChart from Reports | **Junior** | `src/pages/ReportsPage.tsx` | ✅ completed | 10 min |
-
-**Round 3 spec for Junior:**
-- **3a:** The `globals.css` already defines `.skeleton` classes. Create `src/components/Skeleton.tsx` as `<div className="skeleton h-4 w-full rounded" />` (accept `className` prop). Replace all `<Spinner />` centering patterns in pages with layout-matching skeleton blocks.
-- **3b:** Move the `<Sidebar />` content (sidebar nav links, logo, user avatar) directly into `MainLayout.tsx`. Remove the `<Sidebar />` import and the `Sidebar.tsx` file.
-- **3d:** In `ReportsPage.tsx`, delete the `<PieChart />` and `<BarChart />` JSX blocks and their imports. Keep `<LineChart />` and the data table.
+| Task | Worker | Files | Complexity | Status |
+|------|--------|-------|------------|--------|
+| **8a** Setup Vitest + RTL | Junior | package.json, vitest.config.ts | 🟢 trivial | ✅ Done |
+| **8b** Write component tests | Junior | 7 test files | 🟢 trivial | ✅ Done |
+| **8c** Fix Spinner SVG class test | Junior | Spinner.test.tsx | 🟢 trivial | ✅ Done |
+| **8d** Write hook tests | Junior | useAuth.test.ts, useGroceryList.test.ts, useHousehold.test.ts, usePriceHistory.test.ts | 🟡 medium | ✅ Done |
 
 ---
 
-## Round 4: Server Structure (tech debt)
+## Round 9: CI & Infrastructure (Architect)
 
-| Task | Worker | Files | Complexity | Est. Time |
-|---|---|---|---|---|
-| **4a** Split `index.js` into route modules | **Architect** | `server/routes/`, `server/index.js` | 🟡 medium — refactor, not rewrite | 40 min |
-| **4b** Move Tesseract OCR to server endpoint | **Architect** | `server/`, `src/pages/ScanPage.tsx` | 🟡 medium — understanding both sides | 45 min |
-| **4c** Split `useStore.tsx` into slices | **Junior** | `src/store/` | 🟡 medium — Zustand slice pattern | 30 min |
+| Task | Worker | Files | Complexity | Status |
+|------|--------|-------|------------|--------|
+| **9a** GitHub Actions CI | Architect | `.github/workflows/ci.yml` | 🟡 medium | ✅ Done |
+| **9b** Convert useAuth to React Query | Architect | `src/hooks/useAuth.tsx` + `src/api/auth.ts` | 🟡 medium | ✅ Done |
+
+---
+
+## Round 10: Phase 2 Features — Shopping & Interactions
+
+| Task | Worker | Files | Complexity | Status |
+|------|--------|-------|------------|--------|
+| **10a** Purchase confirmation UI | Junior | `src/pages/ShoppingPage.tsx`, `src/components/PurchaseConfirmModal.tsx` | 🟡 medium | ✅ Done |
+| **10b** Price entry during shopping | Junior | `src/pages/ShoppingPage.tsx`, `src/components/PriceInput.tsx` | 🟡 medium | ✅ Done |
+| **10c** Real-time sync (WebSocket) | Architect | `server/ws.js`, `src/hooks/useWebSocket.ts`, `server/index.js` | 🔴 high | ✅ Done |
+| **10d** Store auto-suggestion | Junior | `src/components/StoreSuggest.tsx`, `src/hooks/useStoreHistory.ts` | 🟡 medium | ✅ Done |
+
+**10a spec for Junior:** Create `PurchaseConfirmModal` component:
+- Appears when user taps "Complete Shopping" in ShoppingPage
+- Shows list of items, quantity, and a price input for each
+- Has "Confirm" and "Cancel" buttons
+- On confirm, calls purchase session API and navigates away
+- Test: renders items, calls API on confirm, shows spinner during save
+
+**10b spec for Junior:** Add price input to ShoppingPage:
+- When item is checked off, show a small inline price input
+- Pre-fill from item.estimated_price if available
+- Allow clearing (mark as "no price entered")
+- Store price in component state until session confirm
+
+**10d spec for Junior:** Create `StoreSuggest` component:
+- Fetches distinct store names from price_history API
+- Shows dropdown when user types in store name field
+- Debounce input (300ms) before searching
+- Limit to 5 suggestions, sorted by frequency
+
+---
+
+## Round 11: Phase 3 Features — OCR & Receipts
+
+| Task | Worker | Files | Complexity | Status |
+|------|--------|-------|------------|--------|
+| **11a** Camera access (mobile) | Junior | `src/pages/ScanPage.tsx` | 🟡 medium | ✅ Done |
+| **11b** Real OCR integration | Architect | `server/routes/ocr.js` | 🔴 high | ✅ Done |
+| **11c** OCR review UI | Junior | `src/components/ScanReview.tsx` | 🟡 medium | ✅ Done |
+| **11d** Fuzzy matching for items | Architect | `server/matcher.js`, `server/routes/ocr.js` | 🔴 high | ✅ Done |
+
+**11a spec for Junior:** Add camera capture to ScanPage:
+- Add `<input type="file" accept="image/*" capture="environment">` for mobile
+- Show preview after capture
+- Keep existing file upload as fallback for desktop
+- Add loading spinner during upload
+
+**11c spec for Junior:** Create `ScanReview` component:
+- Display scanned items in a list with checkboxes
+- Each item shows: name (editable), quantity (editable), price (editable)
+- Buttons: "Save All", "Edit", "Discard"
+- Tap item to edit fields inline
+
+---
+
+## Round 12: Phase 4 Features — Price Tracking & Analytics
+
+| Task | Worker | Files | Complexity | Status |
+|------|--------|-------|------------|--------|
+| **12a** Per-item price history view | Junior | `src/pages/ItemPriceHistory.tsx`, `src/components/PriceChart.tsx` | 🟡 medium | ✅ Done |
+| **12b** Unit price normalization | Architect | `server/utils/priceNormalizer.js`, `server/routes/priceHistory.js` | 🟡 medium | ✅ Done |
+| **12c** Cheapest store calculation | Architect | `server/routes/priceHistory.js` | 🟡 medium | ✅ Done |
+| **12d** Average price / all-time low-high | Junior | `src/pages/ReportsPage.tsx` | 🟢 low | ✅ Done |
+
+**12a spec for Junior:** Create per-item price history page:
+- Route: `/items/:id/price-history`
+- Shows LineChart of price over time
+- Table below chart: date, store, price, change from previous
+- Fetch from `GET /api/price-history/stats?itemName=...`
+- Loading state with Skeleton, empty state for no data
+
+---
+
+## Round 13: Phase 5 Features — Advanced (MVP subset)
+
+| Task | Worker | Files | Complexity | Status |
+|------|--------|-------|------------|--------|
+| **13a** Recurring items UI | Junior | `src/components/AddItemModal.tsx`, `src/hooks/useGroceryList.ts` | 🟢 low | ✅ Done |
+| **13b** Recurring items backend | Architect | `server/routes/lists.js`, `src/api/lists.ts` | 🟡 medium | ✅ Done |
+| **13c** Low stock alerts UI | Junior | `src/pages/Lists.tsx`, `src/components/StockBadge.tsx` | 🟢 low | ✅ Done |
+| **13d** Overview dashboard | Junior | `src/pages/DashboardPage.tsx`, `src/components/SpendingSummary.tsx` | 🟡 medium | ✅ Done |
+| **13e** Dashboard API | Architect | `server/routes/analytics.js`, `server/index.js` | 🔴 high | ✅ Done |
+| **13f** Global search | Junior | `src/pages/SearchPage.tsx` (new), `src/components/SearchBar.tsx` | 🟡 medium | ✅ Done |
+| **13g** CSV/PDF export | Architect | `server/routes/export.js`, `server/utils/exporter.js`, `server/index.js` | 🟡 medium | ✅ Done |
+
+**13a spec for Junior:** Add recurring toggle to AddItemModal:
+- Add "Repeat" toggle/switch in item form
+- Options: "None", "Weekly", "Monthly"
+- Pass `is_recurring` field in createListItem call
+- Show recurring badge on items in list view
+
+**13c spec for Junior:** Show low stock indicators:
+- In ListsPage, show badge on items where `restock_threshold` is set and item is running low
+- Create `StockBadge` component: green (>50%), yellow (20-50%), red (<20%)
+- Only show if item has `restock_threshold` set
+
+**13d spec for Junior:** Create Dashboard page:
+- Route: `/dashboard`
+- Show: total spending this month, total items bought, active lists count
+- Bar chart: spending by category (simple, reuse LineChart)
+- Top 5 items by total spend
+- Loading: Skeleton layout, Empty: friendly message
+- Fetch from `/api/analytics/summary`
+
+---
+
+## Round 14: Phase 6-9 — Future (out of scope for now)
+
+| Round | Name | Estimated effort | Notes |
+|-------|------|-----------------|-------|
+| **14** | PWA (Phase 6) | 2-3 sprints | Service worker, offline, accessibility audit |
+| **15** | Notifications (Phase 7) | 2 sprints | Web push, in-app center, preferences |
+| **16** | DB Optimization (Phase 8) | 1 sprint | Pool config, triggers, functions |
+| **17** | Security & Privacy (Phase 9) | 2 sprints | Rate limiting, password reset, GDPR |
 
 ---
 
 ## Dependency Graph
 ```
-Round 1 (security) ──► Round 2 (tests) ──► Round 3 (UX) ──► Round 4 (tech debt)
-      │                       │
-      └─── 1d (Junior) ───────┘
-      └─── 1a-1c (Architect) ─┐
-                               └─── 2b (Architect needs secure routes to test)
+Rounds 1-8 (all done)
+   │
+   ├──► Round 9: CI + useAuth (Architect)
+   │
+   ├──► Round 10: Phase 2 features (Architect + Junior)
+   │         │
+   │         └──► Round 11: Phase 3 OCR (sequel: builds on purchase flow)
+   │
+   ├──► Round 12: Phase 4 analytics (parallel with 10-11)
+   │
+   └──► Round 13: Phase 5 advanced (parallel with 10-12)
 ```
-
-## Time Estimates
-- **Architect aggregate:** ~3.5 hours
-- **Junior aggregate:** ~2 hours
-- **Wall-clock with parallelism:** ~3 hours (if both work simultaneously)
 
 ---
 
 ## Rules of Engagement
 
-### For Junior tasks (local LLM)
-1. **Never modify a file that touches auth/security** — all security work is Architect-only
-2. **Never create or modify API routes** — backend changes are Architect-only
-3. **Every PR must be reviewed by Architect before merge** — Junior creates the PR, Architect approves
-4. **If stuck >10 minutes on a task, escalate to Architect** — don't spin
+### For Junior tasks
+1. **Never modify auth/security files** — Architect only
+2. **Never create/modify API routes** — Architect only
+3. **Never modify DB schema or migrations** — Architect only
+4. **Every PR must be reviewed by Architect before merge**
+5. **If stuck >10 minutes, escalate to Architect**
+6. **Write tests for every new component/hook** — at minimum: renders, interaction, edge case
+7. **Update parallel-progress.md after every task** — mark the task as ✅ Done in the table, update Test Baseline lines if test count changed, and update Current Sprint Status section
 
-## Context Management for Local LLM
-
-Your context window is 64K tokens. You will loop/compact if you exceed it. Follow these rules strictly:
-
-### Work in a single command per session
-1. **One edit per response.** Never try to read + edit + verify in one response. Do exactly ONE file read OR one file edit OR one bash command per message. This keeps your context from growing.
-2. **Never re-read a file you already read.** If you need to edit a file, you already have its content from the initial read. Just make the edit.
-3. **Never re-read the full conversation.** The plan is above. Trust what the Architect assigned you. Don't re-read previous messages.
-
-### When to stop
-4. **After every file edit, output exactly: `done: <filename>`** — nothing else. No summary, no explanation, no next steps. If the edit is the last in your task, say `done: <filename> (task complete)`.
-5. **If your response exceeds ~200 tokens of content (not counting tool calls), you are writing too much.** Stop. Output only the tool call and `done:`.
-6. **Never ask questions.** If something is ambiguous, make a reasonable choice and note it in `done: <filename> // <note>`.
-
-### Avoiding the compact loop
-7. **If you see yourself repeating the same analysis or re-reading files you've already read, you are about to loop.** Instead, output `escalate: <reason>` and stop. The Architect will unblock you.
-8. **Never attempt to read files larger than 200 lines in one request.** If a file is large, only read the specific section you need (use `offset` and `limit`).
-9. **When your task spec says "replace X with Y in all files", do NOT list the files first.** Just edit each file one at a time. Trust the spec.
-
-### For Architect tasks (DeepSeek)
-1. **All security modifications** (auth, SQL injection, credential handling)
-2. **All cross-cutting refactors** (changing data patterns like React Query migration)
-3. **All backend route creation and modification**
-4. **All architectural decisions** (monorepo setup, deployment, CI)
+### For Architect tasks
+1. All security modifications (auth, SQL injection, credential handling)
+2. All cross-cutting refactors (React Query migration, WebSocket integration)
+3. All backend route creation and modification
+4. All architectural decisions (monorepo setup, deployment, CI)
+5. DB schema changes and migrations
 
 ### Shared
-- **Types:** Either can modify `types/index.ts` but must inform the other
+- **Types:** Either can modify `types/` but must inform the other
 - **CSS/styles:** Junior owns all styling changes
 - **Package.json:** Architect owns dependency decisions; Junior may propose additions
+
+---
+
+## Current Sprint Status
+
+### ✅ ALL ARCHITECT WORK COMPLETE
+Rounds 1-13 — every Architect task is done
+
+### ⏳ NEXT UP (Junior only)
+All specs are listed above in each Round table — Junior can pick any ⏳ Pending task

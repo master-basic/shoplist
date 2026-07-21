@@ -1,12 +1,6 @@
 import { API_BASE } from '@/config';
-
-async function headers() {
-  const token = localStorage.getItem('auth_token');
-  return {
-    'Content-Type': 'application/json',
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-  };
-}
+import { authHeaders } from './client';
+import log from '@/utils/debug';
 
 export interface ProductInfo {
   product_name: string;
@@ -46,25 +40,31 @@ export interface TrendInfo {
 
 export async function getStoreProducts(store?: string): Promise<ProductInfo[]> {
   const params = store ? `?store=${encodeURIComponent(store)}` : '';
-  const res = await fetch(`${API_BASE}/api/price-check/products${params}`, { headers: await headers() });
-  if (!res.ok) return [];
+  log.info('API getStoreProducts', { store: store || 'all' });
+  const res = await fetch(`${API_BASE}/api/price-check/products${params}`, { headers: { 'Content-Type': 'application/json', ...authHeaders() } });
+  if (!res.ok) { log.warn('API getStoreProducts failed', { status: res.status }); return []; }
   const data = await res.json();
+  log.info('API getStoreProducts result', { count: (data.products || data || []).length });
   return data.products || data || [];
 }
 
 export async function getProductHistory(productName: string, store?: string): Promise<PriceHistoryEntry[]> {
   const params = new URLSearchParams({ product_name: productName });
   if (store) params.set('store', store);
-  const res = await fetch(`${API_BASE}/api/price-check/products/${encodeURIComponent(productName)}/history?${params}`, { headers: await headers() });
-  if (!res.ok) return [];
+  log.info('API getProductHistory', { productName, store });
+  const res = await fetch(`${API_BASE}/api/price-check/products/${encodeURIComponent(productName)}/history?${params}`, { headers: { 'Content-Type': 'application/json', ...authHeaders() } });
+  if (!res.ok) { log.warn('API getProductHistory failed', { status: res.status }); return []; }
   const data = await res.json();
+  log.info('API getProductHistory result', { count: (data.history || []).length });
   return data.history || [];
 }
 
 export async function getCompare(productName: string): Promise<CompareResult[]> {
-  const res = await fetch(`${API_BASE}/api/price-check/compare?product_name=${encodeURIComponent(productName)}`, { headers: await headers() });
-  if (!res.ok) return [];
+  log.info('API getCompare', { productName });
+  const res = await fetch(`${API_BASE}/api/price-check/compare?product_name=${encodeURIComponent(productName)}`, { headers: { 'Content-Type': 'application/json', ...authHeaders() } });
+  if (!res.ok) { log.warn('API getCompare failed', { status: res.status }); return []; }
   const data = await res.json();
+  log.info('API getCompare result', { count: (data.comparison || []).length });
   return data.comparison || [];
 }
 
@@ -72,22 +72,28 @@ export async function getTrends(store?: string, category?: string): Promise<Tren
   const params = new URLSearchParams();
   if (store) params.set('store', store);
   if (category) params.set('category', category);
-  const res = await fetch(`${API_BASE}/api/price-check/trends?${params}`, { headers: await headers() });
-  if (!res.ok) return [];
+  log.info('API getTrends', { store, category });
+  const res = await fetch(`${API_BASE}/api/price-check/trends?${params}`, { headers: { 'Content-Type': 'application/json', ...authHeaders() } });
+  if (!res.ok) { log.warn('API getTrends failed', { status: res.status }); return []; }
   const data = await res.json();
+  log.info('API getTrends result', { count: (data.trends || []).length });
   return data.trends || [];
 }
 
 export async function getStores(): Promise<string[]> {
-  const res = await fetch(`${API_BASE}/api/price-check/stores`, { headers: await headers() });
-  if (!res.ok) return [];
+  log.info('API getStores');
+  const res = await fetch(`${API_BASE}/api/price-check/stores`, { headers: { 'Content-Type': 'application/json', ...authHeaders() } });
+  if (!res.ok) { log.warn('API getStores failed', { status: res.status }); return []; }
   const data = await res.json();
+  log.info('API getStores result', { stores: data.stores });
   return data.stores || [];
 }
 
 export async function getCategories(): Promise<string[]> {
-  const res = await fetch(`${API_BASE}/api/price-check/categories`, { headers: await headers() });
-  if (!res.ok) return [];
+  log.info('API getCategories');
+  const res = await fetch(`${API_BASE}/api/price-check/categories`, { headers: { 'Content-Type': 'application/json', ...authHeaders() } });
+  if (!res.ok) { log.warn('API getCategories failed', { status: res.status }); return []; }
   const data = await res.json();
+  log.info('API getCategories result', { categories: data.categories });
   return data.categories || [];
 }

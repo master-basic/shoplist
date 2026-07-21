@@ -12,6 +12,7 @@ import { Skeleton } from '../../components/Skeleton';
 import { loginUser } from '../../api/auth';
 import { useAuth } from '../../hooks/useAuth';
 import { useStore } from '../../store/useStore';
+import log from '@/utils/debug';
 
 export const Login: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -20,24 +21,33 @@ export const Login: React.FC = () => {
   const [error, setError] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
+  log.info('Login component rendered');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
+    log.info('Login form submitted', { username });
 
     try {
+      log.info('Calling loginUser API');
       const { user: userData, token } = await loginUser(username, password);
+      log.info('loginUser API success', { userId: userData.id, hasToken: !!token });
       localStorage.setItem('user_id', userData.id);
       localStorage.setItem('user_name', userData.name);
       localStorage.setItem('user_email', userData.email);
       localStorage.setItem('auth_token', token);
+      log.info('localStorage written, setting user in store');
       useStore.getState().setUser(userData);
+      log.info('Navigating to /');
       navigate('/');
+      log.info('navigate() called - page should redirect');
     } catch (err) {
+      log.error('Login failed', { message: err instanceof Error ? err.message : String(err) });
       setError(err instanceof Error ? err.message : 'Invalid username or password');
     } finally {
       setIsLoading(false);
+      log.info('Login submit finished', { success: !error });
     }
   };
 

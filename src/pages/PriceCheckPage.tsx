@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Card, Input, Badge, Spinner, EmptyState } from '@/components/ui';
 import { API_BASE } from '@/config';
+import { authHeaders } from '@/api/client';
 import { PRODUCT_CATALOG } from '@/data/productCatalog';
 import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   LineChart, Line, Legend,
 } from 'recharts';
+import { useLogRender } from '@/hooks/useLogRender';
 
 type TabType = 'compare' | 'history' | 'trends';
 
@@ -41,6 +43,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 export const PriceCheckPage: React.FC = () => {
+  useLogRender('PriceCheckPage');
   const [tab, setTab] = useState<TabType>('compare');
   const [search, setSearch] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -66,7 +69,7 @@ export const PriceCheckPage: React.FC = () => {
   }, [search]);
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/price-check/stores`)
+    fetch(`${API_BASE}/api/price-check/stores`, { headers: { 'Content-Type': 'application/json', ...authHeaders() } })
       .then(r => r.json())
       .then(d => setStores(d.stores || []))
       .catch(() => {});
@@ -77,15 +80,16 @@ export const PriceCheckPage: React.FC = () => {
     setLoading(true);
     setError('');
 
-    const fetchCompare = fetch(`${API_BASE}/api/price-check/compare?product_name=${encodeURIComponent(selectedProduct)}`)
+    const h = { 'Content-Type': 'application/json', ...authHeaders() };
+    const fetchCompare = fetch(`${API_BASE}/api/price-check/compare?product_name=${encodeURIComponent(selectedProduct)}`, { headers: h })
       .then(r => r.ok ? r.json() : { comparison: [] })
       .then(d => setCompareData(d.comparison || []));
 
-    const fetchHistory = fetch(`${API_BASE}/api/price-check/products/${encodeURIComponent(selectedProduct)}/history`)
+    const fetchHistory = fetch(`${API_BASE}/api/price-check/products/${encodeURIComponent(selectedProduct)}/history`, { headers: h })
       .then(r => r.ok ? r.json() : { history: [] })
       .then(d => setHistoryData(d.history || []));
 
-    const fetchTrends = fetch(`${API_BASE}/api/price-check/trends`)
+    const fetchTrends = fetch(`${API_BASE}/api/price-check/trends`, { headers: h })
       .then(r => r.ok ? r.json() : { trends: [] })
       .then(d => setTrends(d.trends || []));
 

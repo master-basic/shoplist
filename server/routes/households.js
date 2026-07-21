@@ -1,7 +1,11 @@
 const express = require('express');
 const pool = require('../db');
+const { authenticateToken } = require('../auth');
+const { broadcastToHousehold } = require('../ws');
 
 const router = express.Router();
+
+router.use(authenticateToken);
 
 router.get('/:id', async (req, res) => {
   try {
@@ -44,6 +48,7 @@ router.post('/:id/members', async (req, res) => {
     const existing = await pool.query('SELECT * FROM user_households WHERE user_id = $1 AND household_id = $2', [userId, id]);
     if (existing.rows.length > 0) return res.status(400).json({ error: 'User already in this household' });
     await pool.query('INSERT INTO user_households (user_id, household_id, role) VALUES ($1, $2, $3)', [userId, id, role]);
+    broadcastToHousehold(id, { type: 'member_added', payload: { householdId: id, userId } });
     res.json({ message: 'User added to household successfully' });
   } catch (error) {
     console.error('Add member error:', error);
@@ -55,6 +60,7 @@ router.delete('/:id/members/:userId', async (req, res) => {
   try {
     const { id, userId } = req.params;
     await pool.query('DELETE FROM user_households WHERE user_id = $1 AND household_id = $2', [userId, id]);
+    broadcastToHousehold(id, { type: 'member_removed', payload: { householdId: id, userId } });
     res.json({ message: 'User removed from household successfully' });
   } catch (error) {
     console.error('Remove member error:', error);

@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useStore } from '@/store/useStore';
 import { API_BASE } from '@/config';
+import { authHeaders } from '@/api/client';
 import { useHousehold } from './useHousehold';
 import { useAuth } from './useAuth';
 import type { ListItem, GroceryList, OCRData } from '@/types';
@@ -59,7 +60,9 @@ export const useGroceryList = () => {
     mutationFn: async ({ listId, item }: { listId: string; item: Omit<ListItem, 'id' | 'sort_order' | 'is_checked' | 'checked_by' | 'checked_at'> }) => {
       const newItem = await createListItem(
         item.name, item.quantity || 1, item.estimated_price || 0,
-        item.category || 'Other', listId, user!.id
+        item.category || 'Other', listId, user!.id,
+        undefined, undefined, undefined,
+        item.is_recurring, item.recurrence_frequency
       );
       return { listId, newItem };
     },
@@ -91,11 +94,17 @@ export const useGroceryList = () => {
     mutationFn: async ({ listId, itemId }: { listId: string; itemId: string }) => {
       await deleteListItem(itemId, listId, user!.id);
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['lists', user?.id] });
+    },
   });
 
   const toggleItemMutation = useMutation({
     mutationFn: async ({ itemId, isChecked }: { itemId: string; isChecked: boolean }) => {
       await toggleItemCompletion(itemId, isChecked);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['lists', user?.id] });
     },
   });
 
@@ -109,7 +118,7 @@ export const useGroceryList = () => {
         totalPrice: item.estimated_price || 0,
       }));
       const res = await fetch(`${API_BASE}/api/purchase-sessions`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: { 'Content-Type': 'application/json', ...authHeaders() },
         body: JSON.stringify({ listId, storeName, userId, householdId: list.household_id, items, ocrData }),
       });
       if (!res.ok) { const err = await res.json(); throw new Error(err.error || 'Failed to create purchase session'); }

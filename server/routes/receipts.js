@@ -1,8 +1,11 @@
 const express = require('express');
 const pool = require('../db');
 const upload = require('../upload');
+const { authenticateToken } = require('../auth');
 
 const router = express.Router();
+
+router.use(authenticateToken);
 
 router.post('/upload', upload.single('image'), async (req, res) => {
   try {

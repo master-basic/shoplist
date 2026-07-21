@@ -66,7 +66,7 @@ router.get('/verify', authenticateToken, async (req, res) => {
   }
 });
 
-router.get('/user/:id', async (req, res) => {
+router.get('/user/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const result = await pool.query('SELECT id, email, name, username, is_admin, preferred_currency, created_at FROM users WHERE id = $1', [id]);
@@ -78,7 +78,7 @@ router.get('/user/:id', async (req, res) => {
   }
 });
 
-router.get('/user/:id/households', async (req, res) => {
+router.get('/user/:id/households', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const result = await pool.query(
@@ -94,7 +94,7 @@ router.get('/user/:id/households', async (req, res) => {
   }
 });
 
-router.post('/households', async (req, res) => {
+router.post('/households', authenticateToken, async (req, res) => {
   try {
     const { name, description, userId } = req.body;
     if (!name || !userId) return res.status(400).json({ error: 'Name and userId are required' });

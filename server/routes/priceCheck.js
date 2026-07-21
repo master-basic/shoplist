@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db');
+const { authenticateToken } = require('../auth');
+
+router.use(authenticateToken);
 
 // GET /api/price-check/products - all tracked products with latest price per store
 router.get('/products', async (req, res) => {

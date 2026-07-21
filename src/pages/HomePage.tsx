@@ -6,6 +6,8 @@ import { SkeletonCard } from '../components/Skeleton';
 import { useStore } from '../store/useStore';
 import { getUserLists } from '../api/lists';
 import { API_BASE } from '@/config';
+import { authHeaders } from '@/api/client';
+import { useLogRender } from '@/hooks/useLogRender';
 
 interface StatCardProps {
   title: string;
@@ -29,6 +31,7 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, icon, href }) => (
 );
 
 export const HomePage: React.FC = () => {
+  useLogRender('HomePage');
   const { user, lists, addList, currentHouseholdId, setCurrentHouseholdId } = useStore();
   const [loading, setLoading] = useState(true);
   const [householdName, setHouseholdName] = useState('');
@@ -46,7 +49,7 @@ export const HomePage: React.FC = () => {
           const existing = lists.find((l) => l.id === list.id);
           if (!existing) addList(list);
         }
-        const hhRes = await fetch(`${API_BASE}/api/auth/user/${user.id}/households`);
+        const hhRes = await fetch(`${API_BASE}/api/auth/user/${user.id}/households`, { headers: { 'Content-Type': 'application/json', ...authHeaders() } });
         if (hhRes.ok) {
           const hhData = await hhRes.json();
           setActiveHouseholds(hhData.households || []);
@@ -58,7 +61,7 @@ export const HomePage: React.FC = () => {
             if (cur) setHouseholdName(cur.name);
           }
         }
-        const psRes = await fetch(`${API_BASE}/api/purchase-sessions/user/${user.id}`);
+        const psRes = await fetch(`${API_BASE}/api/purchase-sessions/user/${user.id}`, { headers: { 'Content-Type': 'application/json', ...authHeaders() } });
         if (psRes.ok) {
           const psData = await psRes.json();
           const sessions = psData.sessions || [];

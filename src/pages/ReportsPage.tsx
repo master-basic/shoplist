@@ -10,9 +10,12 @@ import {
   LineChart, Line,
 } from 'recharts';
 
-import { API_BASE } from '@/config';
+import { useLogRender } from '@/hooks/useLogRender';
+import log from '@/utils/debug';
+import { apiFetch } from '@/api/client';
 
 const ReportsPage: React.FC = () => {
+  useLogRender('ReportsPage');
   const { user, lists, addList } = useStore();
   const location = useLocation();
   const navigate = useNavigate();
@@ -34,21 +37,27 @@ const ReportsPage: React.FC = () => {
           if (!existing) addList(list);
         }
         const [historyRes, alertsRes, sessionsRes] = await Promise.all([
-          fetch(`${API_BASE}/api/price-history?limit=500`),
-          fetch(`${API_BASE}/api/price-history/alerts?userId=${user.id}&threshold=5`),
-          fetch(`${API_BASE}/api/purchase-sessions/user/${user.id}`)
+          apiFetch(`/api/price-history?limit=500`),
+          apiFetch(`/api/price-history/alerts?userId=${user.id}&threshold=5`),
+          apiFetch(`/api/purchase-sessions/user/${user.id}`)
         ]);
         if (historyRes.ok) {
           const data = await historyRes.json();
           setPriceHistory(data.priceHistory || []);
+        } else {
+          log.warn('ReportsPage: price-history fetch failed', { status: historyRes.status });
         }
         if (alertsRes.ok) {
           const data = await alertsRes.json();
           setAlerts(data.alerts || []);
+        } else {
+          log.warn('ReportsPage: alerts fetch failed', { status: alertsRes.status });
         }
         if (sessionsRes.ok) {
           const data = await sessionsRes.json();
           setSessions(data.sessions || []);
+        } else {
+          log.warn('ReportsPage: sessions fetch failed', { status: sessionsRes.status });
         }
       } catch (err) {
         console.error('Error fetching report data:', err);
@@ -69,6 +78,13 @@ const ReportsPage: React.FC = () => {
   const totalSpent = filteredHistory.reduce((sum: number, h: any) => sum + (h.unit_price || 0) * (h.quantity || 1), 0);
   const totalItems = filteredHistory.reduce((sum: number, h: any) => sum + (h.quantity || 1), 0);
   const avgPrice = totalItems > 0 ? totalSpent / totalItems : 0;
+
+  const unitPrices = filteredHistory.map((h: any) => h.unit_price || 0);
+  const avgUnitPrice = unitPrices.length > 0
+    ? unitPrices.reduce((a: number, b: number) => a + b, 0) / unitPrices.length
+    : 0;
+  const allTimeLow = unitPrices.length > 0 ? Math.min(...unitPrices) : 0;
+  const allTimeHigh = unitPrices.length > 0 ? Math.max(...unitPrices) : 0;
 
   const byStore = filteredHistory.reduce((acc: Record<string, number>, h: any) => {
     const store = h.store_name || 'Unknown';
@@ -99,19 +115,6 @@ const ReportsPage: React.FC = () => {
   const trendData = Object.entries(byDate)
     .map(([date, total]) => ({ date, total: Math.round(total * 100) / 100 }))
     .sort((a, b) => a.date.localeCompare(b.date));
-
-  const byCategory = filteredHistory.reduce((acc: Record<string, number>, h: any) => {
-    const name = (h.item_name || '').toLowerCase();
-    let cat = 'Other';
-    for (const c of CATEGORIES) {
-      if (name.includes(c.toLowerCase())) { cat = c; break; }
-    }
-    acc[cat] = (acc[cat] || 0) + (h.unit_price || 0) * (h.quantity || 1);
-    return acc;
-  }, {});
-  const categoryData = Object.entries(byCategory)
-    .map(([name, value]) => ({ name: name.charAt(0).toUpperCase() + name.slice(1), value: Math.round(value * 100) / 100 }))
-    .sort((a, b) => b.value - a.value);
 
   if (loading) return <div className="space-y-4"><SkeletonCard /><SkeletonCard /><SkeletonCard /></div>;
 
@@ -203,7 +206,7 @@ const ReportsPage: React.FC = () => {
           </>
         ) : (
           <React.Fragment>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
           <Card className="p-4">
             <p className="text-sm text-gray-600">Total Spent</p>
             <p className="text-2xl font-bold text-gray-800">{formatCurrency(totalSpent)}</p>
@@ -215,6 +218,18 @@ const ReportsPage: React.FC = () => {
           <Card className="p-4">
             <p className="text-sm text-gray-600">Avg Price/Item</p>
             <p className="text-2xl font-bold text-gray-800">{formatCurrency(avgPrice)}</p>
+          </Card>
+          <Card className="p-4">
+            <p className="text-sm text-gray-600">Avg Unit Price</p>
+            <p className="text-2xl font-bold text-gray-800">{formatCurrency(avgUnitPrice)}</p>
+          </Card>
+          <Card className="p-4">
+            <p className="text-sm text-gray-600">All-Time Low</p>
+            <p className="text-2xl font-bold text-gray-800">{formatCurrency(allTimeLow)}</p>
+          </Card>
+          <Card className="p-4">
+            <p className="text-sm text-gray-600">All-Time High</p>
+            <p className="text-2xl font-bold text-gray-800">{formatCurrency(allTimeHigh)}</p>
           </Card>
         </div>
         {alerts.length > 0 && (

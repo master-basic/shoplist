@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useStore } from '@/store/useStore';
 import { API_BASE } from '@/config';
+import { authHeaders } from '@/api/client';
 import { getUserHouseholds, createHousehold as apiCreateHousehold, addUserToHousehold, removeUserFromHousehold, getHouseholdMembers } from '@/api/auth';
 import type { Household, HouseholdMember } from '@/types';
 
@@ -31,7 +32,7 @@ export const useHousehold = () => {
 
   const loadCurrentHousehold = async () => {
     if (!currentHouseholdId) return;
-    const response = await fetch(`${API_BASE}/api/households/${currentHouseholdId}`);
+    const response = await fetch(`${API_BASE}/api/households/${currentHouseholdId}`, { headers: { 'Content-Type': 'application/json', ...authHeaders() } });
     if (!response.ok) throw new Error('Failed to load household');
     const data = await response.json();
     return mapApiHousehold(data.household);
@@ -72,8 +73,10 @@ export const useHousehold = () => {
     mutationFn: async (householdId: string) => {
       if (!user?.id) throw new Error('User not logged in');
       await addUserToHousehold(user.id, householdId, 'member');
-      queryClient.invalidateQueries({ queryKey: ['households', user?.id] });
       setCurrentHouseholdId(householdId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['households', user?.id] });
     },
   });
 
@@ -81,7 +84,7 @@ export const useHousehold = () => {
     mutationFn: async (args: { householdId: string; email: string }) => {
       const response = await fetch(`${API_BASE}/api/households/${args.householdId}/members`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeaders() },
         body: JSON.stringify({ email: args.email, role: 'member' }),
       });
       if (!response.ok) {
@@ -102,15 +105,7 @@ export const useHousehold = () => {
 
   const updateMemberRoleMutation = useMutation({
     mutationFn: async (args: { householdId: string; memberId: string; role: 'owner' | 'admin' | 'member' }) => {
-      const response = await fetch(`${API_BASE}/api/households/${args.householdId}/members`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: args.memberId, role: args.role }),
-      });
-      if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.error || 'Failed to update member role');
-      }
+      await addUserToHousehold(args.memberId, args.householdId, args.role);
     },
   });
 

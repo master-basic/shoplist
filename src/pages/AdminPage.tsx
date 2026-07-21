@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Card, Button, Input, EmptyState, SkeletonCard } from '@/components/ui';
 import { useStore } from '@/store/useStore';
 import { getUsers, createUser, resetPassword, deleteUser } from '@/api/admin';
+import { useLogRender } from '@/hooks/useLogRender';
 
 const AdminPage: React.FC = () => {
+  useLogRender('AdminPage');
   const { user } = useStore();
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);

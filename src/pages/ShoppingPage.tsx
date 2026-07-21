@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, EmptyState, Badge, Input, SkeletonCard } from '../components/ui';
-import { Skeleton } from '../components/Skeleton';
+import { PurchaseConfirmModal } from '../components/PurchaseConfirmModal';
 import { useStore } from '../store/useStore';
-import { API_BASE } from '../config';
 import { getUserLists } from '../api/lists';
+import { useLogRender } from '@/hooks/useLogRender';
+import { apiFetch } from '@/api/client';
+import log from '@/utils/debug';
 
 export const ShoppingPage: React.FC = () => {
+  useLogRender('ShoppingPage');
   const { user, lists, addList, toggleItem } = useStore();
   const [loading, setLoading] = useState(true);
   const [selectedListId, setSelectedListId] = useState<string | null>(null);
   const [shoppingMode, setShoppingMode] = useState(false);
   const [storeName, setStoreName] = useState('');
   const [hideChecked, setHideChecked] = useState(false);
-  const [showCompleteModal, setShowCompleteModal] = useState(false);
   const [completing, setCompleting] = useState(false);
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+  const [purchaseItems, setPurchaseItems] = useState<any[]>([]);
+  const [itemPrices, setItemPrices] = useState<Record<string, number>>({});
 
   useEffect(() => {
     const fetchLists = async () => {
@@ -42,22 +47,37 @@ export const ShoppingPage: React.FC = () => {
     toggleItem(listId, itemId);
   };
 
-  const handleCompletePurchase = async () => {
+  const handleOpenPurchaseModal = () => {
+    if (!selectedListId || !user?.id) return;
+    const list = lists.find((l) => l.id === selectedListId);
+    if (!list) return;
+    const items = list.items.filter((i: any) => i.is_checked).map((i: any) => ({
+      listItemId: i.id,
+      name: i.name,
+      quantity: i.quantity || 1,
+      unitPrice: itemPrices[i.id] !== undefined ? itemPrices[i.id] : (i.estimated_price || 0),
+    }));
+    setPurchaseItems(items);
+    setShowPurchaseModal(true);
+  };
+
+  const handleConfirmPurchase = async (updatedItems: any[]) => {
     if (!selectedListId || !user?.id) return;
     setCompleting(true);
     try {
-      const list = lists.find((l) => l.id === selectedListId);
-      if (!list) return;
-      const items = list.items.filter((i: any) => i.is_checked).map((i: any) => ({
-        listItemId: i.id, name: i.name, quantity: i.quantity || 1,
-        unitPrice: i.estimated_price || 0, totalPrice: i.estimated_price || 0,
-      }));
-      await fetch(`${API_BASE}/api/purchase-sessions`, {
+      const res = await apiFetch('/api/purchase-sessions', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ listId: selectedListId, storeName: storeName || 'Unknown', userId: user.id, items }),
+        body: JSON.stringify({
+          listId: selectedListId,
+          storeName: storeName || 'Unknown',
+          userId: user.id,
+          items: updatedItems,
+        }),
       });
-      setShowCompleteModal(false);
+      if (!res.ok) {
+        log.error('ShoppingPage: complete purchase failed', { status: res.status });
+      }
+      setShowPurchaseModal(false);
       setShoppingMode(false);
       setSelectedListId(null);
     } catch (err) {
@@ -111,7 +131,7 @@ export const ShoppingPage: React.FC = () => {
               <div className="text-6xl mb-4">🎉</div>
               <h3 className="text-xl font-semibold text-gray-700 mb-2">All done!</h3>
               <p className="text-gray-500 mb-4">Every item has been checked off.</p>
-              <Button onClick={() => setShowCompleteModal(true)} variant="primary" size="lg">Complete Purchase</Button>
+              <Button onClick={handleOpenPurchaseModal} variant="primary" size="lg">Complete Purchase</Button>
             </div>
           ) : (
             <div className="space-y-2">
@@ -134,6 +154,18 @@ export const ShoppingPage: React.FC = () => {
                     <p className={`text-lg font-medium truncate ${item.is_checked ? 'line-through text-gray-400' : 'text-gray-800'}`}>
                       {item.name}
                     </p>
+                    {item.is_checked && (
+                      <div className="mt-1" onClick={(e) => e.stopPropagation()}>
+                        <label className="text-[10px] uppercase text-gray-400 font-bold">Price</label>
+                        <Input
+                          type="number"
+                          step="0.01"
+                          value={itemPrices[item.id] !== undefined ? itemPrices[item.id] : (item.estimated_price || 0)}
+                          onChange={(e: any) => setItemPrices((prev) => ({ ...prev, [item.id]: parseFloat(e.target.value) || 0 }))}
+                          className="h-8 w-24 text-sm"
+                        />
+                      </div>
+                    )}
                     <p className="text-sm text-gray-500">
                       {item.quantity || 1} {item.unit || 'pcs'} {item.estimated_price ? `• ${(item.estimated_price * (item.quantity || 1)).toFixed(2)} AZN` : ''}
                     </p>
@@ -153,7 +185,7 @@ export const ShoppingPage: React.FC = () => {
               className="flex-1"
             />
             <Button
-              onClick={() => setShowCompleteModal(true)}
+              onClick={handleOpenPurchaseModal}
               variant="primary"
               size="lg"
               disabled={completedItems === 0}
@@ -163,23 +195,14 @@ export const ShoppingPage: React.FC = () => {
           </div>
         </div>
 
-        {showCompleteModal && (
-          <div className="fixed inset-0 z-[60] bg-black/50 flex items-center justify-center p-4">
-            <Card className="max-w-sm w-full p-6 text-center">
-              <div className="text-4xl mb-4">🛍️</div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">Complete Purchase</h3>
-              <p className="text-sm text-gray-600 mb-4">
-                Save {completedItems} checked items as a purchase at <strong>{storeName || 'Unknown'}</strong>?
-              </p>
-              <div className="flex gap-3">
-                <Button onClick={() => setShowCompleteModal(false)} variant="secondary" className="flex-1" disabled={completing}>Cancel</Button>
-                <Button onClick={handleCompletePurchase} variant="primary" className="flex-1" disabled={completing}>
-                  {completing ? <Skeleton className="h-4 w-16" /> : 'Confirm'}
-                </Button>
-              </div>
-            </Card>
-          </div>
-        )}
+        <PurchaseConfirmModal
+          isOpen={showPurchaseModal}
+          items={purchaseItems}
+          storeName={storeName || 'Unknown'}
+          onConfirm={handleConfirmPurchase}
+          onCancel={() => setShowPurchaseModal(false)}
+          isLoading={completing}
+        />
       </div>
     );
   }

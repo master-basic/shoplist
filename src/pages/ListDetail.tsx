@@ -3,12 +3,14 @@ import { useParams, useLocation } from 'react-router-dom';
 import { Card, Button, EmptyState, Toast, Input, Select, Badge, SkeletonCard } from '../components/ui';
 import { useStore } from '../store/useStore';
 import { API_BASE } from '../config';
+import { authHeaders } from '@/api/client';
 import { GroceryItemCard } from '../components/GroceryItemCard';
 import { getUserLists, getListById, createListItem, deleteListItem as apiDeleteListItem, toggleItemCompletion, updateList, deleteList as apiDeleteList } from '../api/lists';
 import { getHouseholdMembers } from '../api/auth';
 import { AddItemModal } from '../components/AddItemModal';
 import { Skeleton } from '../components/Skeleton';
 import type { GroceryList, ListItem } from '../types';
+import { useLogRender } from '@/hooks/useLogRender';
 
 interface HouseholdMember {
   id: string;
@@ -17,6 +19,7 @@ interface HouseholdMember {
 }
 
 export const ListDetail: React.FC = () => {
+  useLogRender('ListDetail');
   const { id: routeListId } = useParams<{ id: string }>();
   const location = useLocation();
   const { user, lists, addList, deleteList: storeDeleteList, deleteListItem: storeDeleteListItem, addItemToList, updateItem, toggleItem, archiveList } = useStore();
@@ -68,7 +71,7 @@ export const ListDetail: React.FC = () => {
       try {
         const res = await fetch(`${API_BASE}/api/price-history/best-deals`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', ...authHeaders() },
           body: JSON.stringify({ itemNames: names }),
         });
         if (res.ok) {
@@ -99,7 +102,9 @@ export const ListDetail: React.FC = () => {
         user.id,
         itemData.assigned_to?.[0],
         itemData.unit,
-        itemData.notes
+        itemData.notes,
+        itemData.is_recurring,
+        itemData.recurrence_frequency
       );
       addItemToList(selectedList.id, {
         ...itemData,
@@ -107,7 +112,8 @@ export const ListDetail: React.FC = () => {
         list_id: selectedList.id,
         is_checked: newItem.is_checked || false,
         sort_order: newItem.sort_order || selectedList.items?.length || 0,
-        is_recurring: false,
+        is_recurring: itemData.is_recurring || false,
+        recurrence_frequency: itemData.recurrence_frequency,
         price_history: [],
         assigned_to: itemData.assigned_to || [],
       });

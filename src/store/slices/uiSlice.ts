@@ -1,4 +1,5 @@
 import type { StateCreator } from 'zustand';
+import log from '@/utils/debug';
 
 export interface UISlice {
   loading: boolean;
@@ -14,6 +15,12 @@ export const createUISlice: StateCreator<UISlice, [], [], UISlice> = (set) => ({
   error: null,
   toast: null,
   setLoading: (loading) => set({ loading }),
-  setError: (error) => set({ error }),
-  setToast: (toast) => set({ toast }),
+  setError: (error) => {
+    if (error) log.warn('Store setError', { error });
+    set({ error });
+  },
+  setToast: (toast) => {
+    if (toast) log.info('Store setToast', { toast });
+    set({ toast });
+  },
 });

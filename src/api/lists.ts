@@ -1,246 +1,116 @@
-import { API_BASE } from '@/config';
-import type { User as UserType } from '@/types';
+import { apiFetch } from './client';
+import type { ListItem } from '@/types';
+import log from '@/utils/debug';
 
-export async function createList(name: string, householdId: string, createdBy: string, items?: Array<{
-  name: string;
-  quantity?: number;
-  unitPrice?: number;
-  category?: string;
-  isChecked?: boolean;
-}>) {
-  const response = await fetch(`${API_BASE}/api/lists`, {
+export async function createList(name: string, householdId: string, createdBy: string, items?: Array<{ name: string; quantity: number; unitPrice: number; category: string }>) {
+  log.info('API createList', { name, householdId, createdBy, itemCount: items?.length });
+  const response = await apiFetch('/api/lists', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      householdId,
-      name,
-      items,
-      userId: createdBy,
-    }),
+    body: JSON.stringify({ name, householdId, userId: createdBy, items }),
   });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to create list');
-  }
-
   const data = await response.json();
-  return data.list;
+  log.info('API createList response', { ok: !!data.list, listId: data.list?.id });
+  return data;
 }
 
-/**
- * Get all lists for a user (across all households)
- */
 export async function getUserLists(userId: string) {
-  const response = await fetch(`${API_BASE}/api/lists/my?userId=${encodeURIComponent(userId)}`, {
-    method: 'GET',
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to get lists');
-  }
-
+  log.info('API getUserLists', { userId });
+  const response = await apiFetch(`/api/lists/my?userId=${userId}`);
   const data = await response.json();
+  log.info('API getUserLists response', { count: data.lists?.length });
   return data.lists || [];
 }
 
-/**
- * Get list by ID
- */
 export async function getListById(id: string, userId: string) {
-  const response = await fetch(`${API_BASE}/api/lists/${id}`, {
-    method: 'GET',
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to get list');
-  }
-
+  log.info('API getListById', { id, userId });
+  const response = await apiFetch(`/api/lists/${id}?userId=${userId}`);
   const data = await response.json();
-  return data.list || null;
+  log.info('API getListById response', { found: !!data.list });
+  return data;
 }
 
-/**
- * Update a list
- */
 export async function updateList(id: string, name?: string, householdId?: string, userId?: string) {
-  const response = await fetch(`${API_BASE}/api/lists/${id}`, {
+  log.info('API updateList', { id, name, userId });
+  const response = await apiFetch(`/api/lists/${id}`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ name, householdId }),
+    body: JSON.stringify({ name, householdId, userId }),
   });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to update list');
-  }
-
-  const data = await response.json();
-  return data.list;
+  return response.json();
 }
 
-/**
- * Delete a list
- */
 export async function deleteList(id: string, userId: string) {
-  const response = await fetch(`${API_BASE}/api/lists/${id}`, {
+  log.info('API deleteList', { id, userId });
+  await apiFetch(`/api/lists/${id}`, {
     method: 'DELETE',
+    body: JSON.stringify({ userId }),
   });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to delete list');
-  }
 }
 
-/**
- * Create a list item
- */
-export async function createListItem(
-  name: string,
-  quantity: number = 1,
-  unitPrice: number = 0,
-  category: string = 'Other',
-  listId: string,
-  userId: string,
-  assignedTo?: string,
-  unit?: string,
-  notes?: string
-) {
-  const response = await fetch(`${API_BASE}/api/lists/${listId}/items`, {
+export async function createListItem(name: string, quantity: number, estimatedPrice: number, category: string, listId: string, createdBy: string, assignedTo?: string, unit?: string, notes?: string, isRecurring?: boolean, recurrenceFrequency?: string) {
+  log.info('API createListItem', { name, quantity, listId, unit, notes, isRecurring });
+  const response = await apiFetch(`/api/lists/${listId}/items`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, quantity, unitPrice, category, createdBy: userId, assignedTo, unit, notes }),
+    body: JSON.stringify({ name, quantity, estimated_price: estimatedPrice, category, userId: createdBy, assigned_to: assignedTo, unit, notes, is_recurring: isRecurring, recurrence_frequency: recurrenceFrequency }),
   });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to create list item');
-  }
-
-  const data = await response.json();
-  return data.item;
+  return response.json();
 }
 
-/**
- * Get list items for a list
- */
 export async function getListItems(listId: string) {
-  const response = await fetch(`${API_BASE}/api/lists/${listId}/items`, {
-    method: 'GET',
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to get list items');
-  }
-
-  const data = await response.json();
-  return data.items || [];
+  log.info('API getListItems', { listId });
+  const response = await apiFetch(`/api/lists/${listId}/items`);
+  return response.json();
 }
 
-/**
- * Update a list item
- */
-export async function updateListItem(
-  id: string,
-  listId: string,
-  name?: string,
-  quantity?: number,
-  unitPrice?: number,
-  category?: string,
-  assignedTo?: string,
-  unit?: string,
-  notes?: string
-) {
-  const response = await fetch(`${API_BASE}/api/lists/${listId}/items/${id}`, {
+export async function updateListItem(id: string, listId: string, name?: string, quantity?: number, estimatedPrice?: number, category?: string) {
+  log.info('API updateListItem', { id, listId, name });
+  const response = await apiFetch(`/api/lists/${listId}/items/${id}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, quantity, unitPrice, category, assignedTo, unit, notes }),
+    body: JSON.stringify({ name, quantity, estimated_price: estimatedPrice, category }),
   });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to update list item');
-  }
-
-  const data = await response.json();
-  return data.item;
+  return response.json();
 }
 
-/**
- * Toggle item completion
- */
 export async function toggleItemCompletion(id: string, isCompleted: boolean, notBoughtReason?: string) {
-  const response = await fetch(`${API_BASE}/api/lists/items/${id}`, {
+  log.info('API toggleItemCompletion', { id, isCompleted });
+  const response = await apiFetch(`/api/lists/items/${id}`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      isChecked: isCompleted,
-      not_bought_reason: notBoughtReason || null,
-      not_bought_at: notBoughtReason ? new Date().toISOString() : null,
-    }),
+    body: JSON.stringify({ isChecked: isCompleted, notBoughtReason }),
   });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to toggle item');
-  }
-
-  const data = await response.json();
-  return data.item;
+  return response.json();
 }
 
-/**
- * Delete a list item
- */
 export async function deleteListItem(id: string, listId: string, userId: string) {
-  const response = await fetch(`${API_BASE}/api/lists/${listId}/items/${id}`, {
+  log.info('API deleteListItem', { id, listId });
+  await apiFetch(`/api/lists/${listId}/items/${id}`, {
     method: 'DELETE',
+    body: JSON.stringify({ userId }),
   });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to delete list item');
-  }
 }
 
-/**
- * Get list statistics
- */
 export async function getListStats(listId: string, userId: string) {
-  const response = await fetch(`${API_BASE}/api/lists/${listId}/stats`, {
-    method: 'GET',
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to get list stats');
-  }
-
-  const data = await response.json();
-  return data.stats;
+  log.info('API getListStats', { listId });
+  const response = await apiFetch(`/api/lists/${listId}/stats?userId=${userId}`);
+  return response.json();
 }
 
-/**
- * Get all items in a household
- */
 export async function getHouseholdItems(householdId: string, userId: string) {
-  const response = await fetch(`${API_BASE}/api/households/${householdId}/items`, {
-    method: 'GET',
-  });
+  log.info('API getHouseholdItems', { householdId });
+  const response = await apiFetch(`/api/lists/household/${householdId}?userId=${userId}`);
+  return response.json();
+}
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to get household items');
-  }
-
+export async function getRecurringItems(householdId: string) {
+  log.info('API getRecurringItems', { householdId });
+  const response = await apiFetch(`/api/lists/recurring/${householdId}`);
   const data = await response.json();
   return data.items || [];
+}
+
+export async function setItemRecurring(itemId: string, isRecurring: boolean) {
+  log.info('API setItemRecurring', { itemId, isRecurring });
+  const response = await apiFetch(`/api/lists/items/${itemId}/recurring`, {
+    method: 'PATCH',
+    body: JSON.stringify({ is_recurring: isRecurring }),
+  });
+  return response.json();
 }

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/useAuth';
+import { useWebSocket } from '@/hooks/useWebSocket';
 import { StoreProvider, useStore } from '@/store/useStore';
-import { getUserById } from '@/api/auth';
+import log from '@/utils/debug';
 
 // Pages
 import { HomePage } from './pages/HomePage.tsx';
@@ -16,6 +16,9 @@ import { ProfilePage } from './pages/ProfilePage.tsx';
 import { HouseholdPage } from './pages/HouseholdPage.tsx';
 import { AdminPage } from './pages/AdminPage.tsx';
 import { PriceCheckPage } from './pages/PriceCheckPage.tsx';
+import { DashboardPage } from './pages/DashboardPage.tsx';
+import { ItemPriceHistory } from './pages/ItemPriceHistory.tsx';
+import { SearchPage } from './pages/SearchPage.tsx';
 import NotFound from './pages/NotFound.tsx';
 
 // Auth Components
@@ -25,20 +28,17 @@ import { Register } from './components/auth/Register';
 // Layouts
 import { MainLayout } from './components/layout/MainLayout';
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      refetchOnWindowFocus: false,
-    },
-  },
-});
-
 // Public routes that don't require authentication
 const PUBLIC_ROUTES = ['/login', '/register', '/onboarding'];
 
+function WebSocketConnector() {
+  useWebSocket();
+  return null;
+}
+
 function App() {
   const location = useLocation();
+  log.info('App rendered', { path: location.pathname });
   
   // Check if current route is a public route
   const isPublicRoute = PUBLIC_ROUTES.some(route => location.pathname === route);
@@ -46,19 +46,25 @@ function App() {
   // Initialize auth - MUST be called unconditionally at top level
   const auth = useAuth();
   
+  log.info('Auth state', { isAuthenticated: auth.isAuthenticated, user: auth.user?.id, loading: auth.isLoading, error: auth.error });
+  
   // Use the auth user or localStorage fallback for display
   const user = React.useMemo(() => {
     if (auth.user) {
+      log.info('Using auth user', { id: auth.user.id, name: auth.user.name });
       return auth.user;
     }
+    const fallbackId = localStorage.getItem('user_id');
+    log.info('Using localStorage fallback', { id: fallbackId });
     return {
-      id: localStorage.getItem('user_id') || '',
+      id: fallbackId || '',
       name: localStorage.getItem('user_name') || 'User',
       email: localStorage.getItem('user_email') || '',
     };
   }, [auth.user]);
   
   const isAuthenticated = !!auth.user || !!localStorage.getItem('user_id');
+  log.info('isAuthenticated', { value: isAuthenticated });
 
   // Sync user to Zustand store
   useEffect(() => {
@@ -108,13 +114,20 @@ function App() {
         return <ReportsPage />;
       case '/price-check':
         return <PriceCheckPage />;
+      case '/dashboard':
+        return <DashboardPage />;
+      case '/price-history':
+        return <ItemPriceHistory />;
+      case '/global-search':
+        return <SearchPage />;
       default:
         return <NotFound />;
     }
   };
   
   return (
-    <QueryClientProvider client={queryClient}>
+    <>
+      <WebSocketConnector />
       <StoreProvider>
         <Routes>
           {/* Auth Routes */}
@@ -143,7 +156,7 @@ function App() {
           } />
         </Routes>
       </StoreProvider>
-    </QueryClientProvider>
+    </>
   );
 }
 

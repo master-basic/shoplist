@@ -6,8 +6,10 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { SkeletonCard } from '@/components/ui/Skeleton';
 import { getUserLists } from '@/api/lists';
+import { useLogRender } from '@/hooks/useLogRender';
 
 const ProfilePage: React.FC = () => {
+  useLogRender('ProfilePage');
   const { user, setUser } = useStore();
   const { households, loadUserHouseholds } = useHousehold();
   const [editedName, setEditedName] = useState('');

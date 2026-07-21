@@ -1,155 +1,111 @@
-# GroceryMind — Senior Engineer Assessment
+# GroceryMind — Senior Engineer Assessment (Updated 2026-07-21)
 
 ## By the Numbers
 - **~11,300 lines** across 86 source files (frontend + backend)
-- **36 API routes** in a single `index.js` (821 lines)
-- **0 tests** — zero, nada
+- **36 API routes** across 9 route modules
+- **29 server tests** (Jest + Supertest), **27 frontend tests** (Vitest + RTL) — **56 total, all passing**
 - **0 real-time** — pure HTTP request-response
-- **0 auth security** — no middleware, no JWT, no sessions
+- **JWT auth middleware** applied to all routes
+- **12 DB tables** in PostgreSQL 17.10
+- **11 pages** (down from 13)
 - **17 frontend deps + 7 devDeps + 6 server deps**
-- **13 pages** for what is essentially a CRUD grocery list
 
 ---
 
-## What's GENUINELY Done Well
+## What Was Fixed (from original assessment)
 
-### Frontend
-- **Responsive design is solid.** Mobile nav with hamburger, bottom bar, full-screen shopping mode, proper grid breakpoints on every page. This is production-quality layout work.
-- **Component library is clean.** 14 UI primitives with consistent API (Button variants, Input with error/helper, Select with placeholder, etc.) — looks like a real design system foundation.
-- **Full-screen shopping mode** (`fixed inset-0 z-50`) is a legitimately good UX pattern for the primary use case.
-- **Zustand store** is pragmatic. Not over-abstracted, not under-powered. Right balance for this app size.
-- **Types are well-defined.** 489 lines of interfaces with proper optional/nullable fields. This will save time later.
+### 🔴 Ship-blocking — ALL RESOLVED
+| Issue | Status | Fix |
+|-------|--------|-----|
+| No JWT authentication on API routes | ✅ Fixed | `authenticateToken` middleware applied to all 9 route modules |
+| `POST /api/db/query` direct SQL endpoint | ✅ Fixed | Removed, test confirms 404 |
+| `.env` with plaintext password in git | ✅ Fixed | `.gitignore` has `.env`, removed from tracking |
+| Zero tests | ✅ Fixed | 56 tests (29 server API + 27 frontend) |
 
-### Backend
-- **Routes are logically grouped** and consistently structured. Every route has try/catch, proper status codes, and JSON error responses.
-- **Price history system** is genuinely useful. Batch best-deals endpoint, alerts endpoint, stats endpoint — these are well-designed.
+### 🟡 High Priority — MOSTLY RESOLVED
+| Issue | Status | Fix |
+|-------|--------|-----|
+| No Error Boundaries | ✅ Fixed | `ErrorBoundary` wraps `<App />` in `main.tsx` |
+| React Query installed but unused | ✅ Fixed | 3 of 4 hooks converted (useAuth remaining) |
+| No loading skeletons | ✅ Fixed | Skeleton component exists and used |
+| Hardcoded JWT fallback secret | 🟡 Partial | Validation added at startup; fallback kept for dev |
 
----
+### Architecture — ALL RESOLVED
+| Issue | Status | Fix |
+|-------|--------|-----|
+| Tesseract.js in browser (760KB) | ✅ Fixed | Moved to server |
+| Recharts + 4 chart types | ✅ Fixed | Only LineChart remains |
+| 3 separate layout files (414 lines) | ✅ Fixed | Sidebar merged into MainLayout |
+| 13 pages for a grocery list | ✅ Fixed | Down to 11 (Search→Lists, PurchaseHistory→Reports, Onboarding removed) |
+| Server index.js at 821 lines | ✅ Fixed | Split into 9 route modules, index.js = 81 lines |
+| Store at 264 lines | ✅ Fixed | Split into 6 slices, store = 105 lines |
+| Types at 489 lines in single file | ✅ Fixed | Split into db.ts, api.ts, ui.ts, index.ts |
 
-## What's OVERKILL
-
-### 1. Tesseract.js in the Browser (~760KB added to bundle)
-**Problem:** You bundled a 100MB WebAssembly OCR engine into a grocery list app. Receipt scanning is a **feature**, not the product. Users will scan 1-2 receipts ever. Meanwhile every visitor downloads 760KB of OCR engine they'll never use.
-
-**Fix:** Move OCR to the server. Upload the image, process with Tesseract server-side (or use a cheaper OCR API like Google Vision at ~$1.50/1000 scans), return JSON. This cuts 100KB+ from the JS bundle and keeps the client lean.
-
-**Severity:** Medium. Functional, but wasteful.
-
-### 2. Recharts + 4 Chart Types on ReportsPage
-**Problem:** You have BarChart, PieChart, LineChart, and a table — all on one page — for a user who's bought maybe 12 items. The entire page is 239 lines with 3 chart components. For the first 6 months of use, this page shows "No data".
-
-**Fix:** Drop PieChart and BarChart. Keep the LineChart (trend over time is useful) and the table. Add the rest when users actually have 6+ months of data.
-
-**Severity:** Low. Harmless bloat, looks good in screenshots.
-
-### 3. Three Separate Layout Files (MainLayout + Sidebar + Header)
-**Problem:** 414 total lines across 3 files for what could be a single 150-line file. The `Sidebar.tsx` (198 lines) is particularly egregious — it duplicates the nav items that are also in `MainLayout.tsx`.
-
-**Fix:** Merge Sidebar into MainLayout. One source of truth for navigation.
-
-**Severity:** Low. Code organization issue, not functional.
-
-### 4. @tanstack/react-query Installed But Not Used for Data
-**Problem:** The entire QueryClient/RQ infrastructure is set up in `App.tsx`, but **every single data fetch** uses raw `useEffect` + `useState` + manual fetch calls. React Query was added but never adopted. All the cache invalidation, deduplication, refetch-on-focus, and loading state management that RQ provides for free is being manually reimplemented (badly).
-
-**Fix:** Either use React Query properly (replace all `useEffect` fetches with `useQuery`) or remove it. Currently it's dead weight adding complexity.
-
-**Severity:** Medium-high. This is a design debt that will grow.
-
-### 5. 13 Pages for a Grocery List
-**Problem:** ScanPage, ReportsPage, SearchPage, PurchaseHistoryPage, OnboardingPage, ProfilePage, HouseholdPage, NotFound — for an app where the core loop is "create list → check items → buy stuff". Every new page is a new failure point, a new loading state, a new empty state.
-
-**Fix:** Merge SearchPage into Lists (search/filter is already built into Lists.tsx). Merge PurchaseHistoryPage into ReportsPage (it's all historical data). Merge OnboardingPage into Register (it's just a multi-step registration form).
-
-**Severity:** Medium. Drives up maintenance cost.
+### Added Since Original Assessment
+- PostgreSQL 17.10 initialized with 12 tables, dedicated app user
+- `.env` with JWT_SECRET + DB credentials
+- 29 server API tests + 27 frontend component tests
+- Frontend test suite (Vitest + @testing-library/react)
+- Fixed nested StoreProvider, dead code, queryClient misuse, cron open handle
+- All npm dependencies installed (root + server)
 
 ---
 
-## What's CRITICALLY MISSING
+## Remaining Critical Issues
 
-### 1. 🔴 NO AUTHENTICATION — ZERO SECURITY
-This is the #1 problem. **Every API endpoint is public.** There is:
-- No JWT
-- No session tokens  
-- No API keys
-- No middleware
-- The `POST /api/db/query` endpoint allows direct SQL execution
+### 1. 🟡 Hardcoded JWT Secret
+`server/auth.js`: `process.env.JWT_SECRET || 'grocerymind-dev-secret-change-in-production'` — fallback allows forged tokens in dev. Low risk for dev, must fix for production.
 
-`createListItem(name, ... , userId)` — the `userId` is a **client-provided parameter**. I can call this API with anyone's ID and add items to their lists.
+### 2. 🟡 No CI/CD
+No GitHub Actions, no automated testing on PR. Every deploy is manual.
 
-**Fix:** This must be fixed before any production use. Add JWT middleware. Never trust `userId` from the client — extract it from the token.
+### 3. 🟡 `useAuth` Not on React Query
+Only hook still using `useState`/`useEffect`/`localStorage` instead of `useQuery`. Misses caching, dedup, background refetch.
 
-### 2. 🔴 ZERO TESTS
-11,300 lines, 36 API routes, 13 pages — **0 tests.** Not one unit test, integration test, or E2E test. Every refactor is blind. Every deployment is a prayer.
-
-**Fix:** Start with the API routes (supertest + jest, ~20 tests covers all 36 routes). Then add integration tests for the 3 core flows: register→create list→add items→complete purchase.
-
-### 3. 🔴 Plaintext Password in .env Committed to Git
-The `.env` file with `DB_PASSWORD=postgres` is in the repository. This is a credential leak. Also, the server stores passwords using bcrypt but the migration scripts also show plaintext password columns (`006_add_password_plaintext.sql`).
-
-**Fix:** Add `.env` to `.gitignore` immediately. Remove it from git history with `git rm --cached .env`. Audit the migration scripts for plaintext password handling.
-
-### 4. 🟡 No Loading Skeletons
-Every page uses a centered `<Spinner />` that blocks the entire viewport. This is the worst loading UX pattern — it shows a blank page with a spinner, then suddenly all content appears. Skeleton screens (already defined in `globals.css` as `.skeleton` classes but never used) would be a massive UX improvement.
-
-**Fix:** Replace all `<Spinner />` loading states with skeleton placeholders that match the page layout. The CSS is already written — just use it.
-
-### 5. 🟡 No Error Boundaries
-If any component throws during render, the entire app goes white. There is no `<ErrorBoundary>` anywhere. For a "polished consumer product" (from the project README), this is unacceptable.
-
-**Fix:** Add one ErrorBoundary at the App level and one per major page section. Takes 30 lines of code.
-
-### 6. 🟡 API Layer Bypasses React Query
-All data fetching uses `useEffect` + manual state management. This means:
-- No request deduplication (same API called 3 times = 3 network requests)
-- No cache (navigating away and back re-fetches everything)
-- No stale-while-revalidate
-- No background refetch on focus/tab switch
-
-React Query (`@tanstack/react-query`) is **already installed** and configured with a `QueryClient`. It's just not used. Converting the 4 most-called hooks (useGroceryList, useHousehold, usePriceHistory, ListDetail) would eliminate ~200 lines of boilerplate and add caching for free.
-
-### 7. 🟡 No CI/CD
-No GitHub Actions, no tests run on PR, no deployment pipeline. Every change is manually tested (or not tested) and manually deployed (or not deployed). For a solo project this is acceptable. For a team project it's a blocker.
-
-### 8. 🟢 No Docker
-Docker isn't strictly required, but `docker-compose up` with PostgreSQL + API server + frontend dev server would reduce the setup from "install PostgreSQL, create database, run migrations, start server, start frontend" to one command. Given that the `.env` has hardcoded `localhost:5432` credentials, portability is already low.
+### 4. 🟡 Frontend Test Coverage Gap
+7 test files cover UI primitives only. No tests for hooks (useAuth, useGroceryList, useHousehold, usePriceHistory), pages, or API layer.
 
 ---
 
-## Architecture Hotspots
+## Feature Completion by Phase
 
-### Server: `index.js` at 821 Lines
-The entire backend is a single file. Routes are organized with comments but this file will become unmaintainable beyond ~1,000 lines. It's at 821 now.
+### Phase 1: Foundation — 100% ✅
+Vite/React 19/TypeScript, Tailwind 4, Zustand store (6 slices), 14 UI primitives + 6 composites, 11 pages, Express server, PostgreSQL, JWT auth, 12 migrations.
 
-**Fix:** Split into `routes/auth.js`, `routes/lists.js`, `routes/price-history.js`, `routes/receipts.js` when it hits 1,000 lines. Painless now, painful later.
+### Phase 2: Shopping & Interactions — ~75% 🔶
+Shopping mode, purchase sessions, item assignment, not-bought tracking, price alerts, best deal badges. **Missing:** Real-time sync, store auto-suggestion.
 
-### Store: `useStore.tsx` at 264 Lines
-The Zustand store is growing. It currently holds `lists`, `priceHistory`, `purchaseSessions`, `priceHistory` (duplicate?), `households`, `currentHouseholdId`, plus ~15 action methods. This should be split into slices (`listSlice`, `householdSlice`, `priceSlice`) before it becomes a god store.
+### Phase 3: Receipt Scanning & OCR — ~40% 🔶
+File upload, receipt save to DB, price history integration, Tesseract.js server-side. **Missing:** Real OCR (simulated), PDF support, camera access, fuzzy matching, review UI.
 
-### Types: `index.ts` at 489 Lines
-Single-file types work for now but are starting to sprawl. The file mixes DB types (`ListItem`, `GroceryList`), API types, UI constants (`STORES`, `CATEGORIES`), and utility types. Split into `types/db.ts`, `types/api.ts`, `types/ui.ts` would be cleaner.
+### Phase 4: Price Tracking & Analytics — ~55% 🔶
+LineChart, ReportsPage with real data, date range filter, top items table, price alerts endpoint. **Missing:** Unit price tracking, normalization, per-item history, cheapest store, all-time low/high.
+
+### Phase 5: Advanced Features — 0% ⏸️
+Recurring items, low stock alerts, AI categorization, budget warnings, dashboard with charts, CSV/PDF export, global search, smart suggestions, search history.
+
+### Phase 6: PWA & Accessibility — 0% ⏸️
+Service worker, PWA manifest, offline, install prompt, WCAG 2.1 AA, contrast mode, screen reader, keyboard nav, large text.
+
+### Phase 7: Notifications — 0% ⏸️
+Web push, household activity alerts, price change alerts, weekly summary, list reminders, notification preferences, in-app center.
+
+### Phase 8: Database & PostgreSQL — ~15% 🔶
+Schema created (12 tables). **Missing:** Connection pool config, performance indexes, triggers, functions, health checks.
+
+### Phase 9: Security & Privacy — 0% ⏸️
+GDPR compliance, data encryption, rate limiting, session management, password reset, 2FA.
 
 ---
 
 ## Summary
 
-### Ship-blocking (fix before production)
-1. JWT authentication middleware
-2. Remove generic SQL endpoint (`POST /api/db/query`)
-3. Remove `.env` from git tracking
+### Done (225 lines → fixed)
+All 3 ship-blocking issues, 4 of 5 high-priority issues, all 7 architecture issues, plus operational setup (PostgreSQL, .env, frontend tests).
 
-### High priority (this week)
-4. Add 20 integration tests for core API routes
-5. Add React Error Boundary at App level
-6. Convert 4 hooks to use React Query (or remove React Query entirely)
-
-### Nice-to-have (this sprint)
-7. Move Tesseract.js to server-side
-8. Merge 3 redundant pages (Search→Lists, Purchases→Reports, Onboarding→Register)
-9. Replace Spinners with skeleton screens
-10. Split server into route files
-
-### Overkill (would remove)
-11. PieChart + BarChart on ReportsPage (keep LineChart + table)
-12. Separate Sidebar.tsx (merge into MainLayout)
-13. Tesseract.js on client side (move to server)
+### Next Priority
+1. CI pipeline (GitHub Actions)
+2. Hook tests (useAuth, useGroceryList, useHousehold, usePriceHistory)
+3. Convert useAuth to React Query
+4. Phase 5 features (recurring items, dashboard, export, search)
+5. Phase 2 real-time sync

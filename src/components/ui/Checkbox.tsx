@@ -2,7 +2,7 @@
 // Checkbox Component
 // =====================================================
 
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useRef, useLayoutEffect, useImperativeHandle } from 'react';
 
 export interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -12,14 +12,24 @@ export interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElemen
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   ({ className = '', label, indeterminate, id, checked, ...props }, ref) => {
     const checkboxId = id || props.name;
-    
+    const innerRef = useRef<HTMLInputElement>(null);
+
+    useImperativeHandle(ref, () => innerRef.current!);
+
+    useLayoutEffect(() => {
+      if (innerRef.current) {
+        innerRef.current.indeterminate = !!indeterminate;
+      }
+    }, [indeterminate]);
+
     return (
       <div className="flex items-center gap-3">
         <div className="relative">
           <input
-            ref={ref}
+            ref={innerRef}
             type="checkbox"
             id={checkboxId}
+            checked={checked}
             className={`
               h-5 w-5 cursor-pointer appearance-none rounded border border-gray-300
               checked:bg-green-600 checked:border-green-600

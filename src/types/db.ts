@@ -97,6 +97,7 @@ export interface ListItem {
   not_bought_at?: string;
   sort_order: number;
   is_recurring: boolean;
+  recurrence_frequency?: string;
   restock_threshold?: number;
   last_bought_at?: string;
   price_history: PriceHistoryItem[];

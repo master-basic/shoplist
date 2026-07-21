@@ -5,6 +5,7 @@
 import { useState, useEffect, useRef } from 'react';
 import type { ListItem } from '@/types';
 import { searchProducts, type CatalogProduct } from '@/data/productCatalog';
+import { Switch, Select } from './ui';
 
 interface HouseholdMember {
   id: string;
@@ -30,6 +31,8 @@ export function AddItemModal({ isOpen, onClose, onSubmit, existingItems = [], as
   const [preferredStore, setPreferredStore] = useState('');
   const [assignedTo, setAssignedTo] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isRecurring, setIsRecurring] = useState(false);
+  const [recurrenceFrequency, setRecurrenceFrequency] = useState<'weekly' | 'monthly'>('weekly');
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -89,7 +92,8 @@ export function AddItemModal({ isOpen, onClose, onSubmit, existingItems = [], as
       notes: notes.trim() || undefined,
       preferred_store: preferredStore.trim() || undefined,
       sort_order: 0,
-      is_recurring: false,
+      is_recurring: isRecurring,
+      recurrence_frequency: isRecurring ? recurrenceFrequency : undefined,
       checked_by: undefined,
       checked_at: undefined,
       is_checked: false,
@@ -112,6 +116,8 @@ export function AddItemModal({ isOpen, onClose, onSubmit, existingItems = [], as
     setEstimatedPrice('');
     setNotes('');
     setPreferredStore('');
+    setIsRecurring(false);
+    setRecurrenceFrequency('weekly');
   };
 
   const handleSuggestionClick = (item: ListItem) => {
@@ -251,6 +257,26 @@ export function AddItemModal({ isOpen, onClose, onSubmit, existingItems = [], as
                 className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
               />
             </div>
+          </div>
+
+          {/* Recurring */}
+          <div className="flex items-center justify-between">
+            <Switch
+              checked={isRecurring}
+              onChange={setIsRecurring}
+              label="Recurring item"
+            />
+            {isRecurring && (
+              <Select
+                value={recurrenceFrequency}
+                onChange={(e) => setRecurrenceFrequency(e.target.value as 'weekly' | 'monthly')}
+                options={[
+                  { value: 'weekly', label: 'Weekly' },
+                  { value: 'monthly', label: 'Monthly' },
+                ]}
+                className="w-36"
+              />
+            )}
           </div>
 
           {/* Preferred Store */}

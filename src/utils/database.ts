@@ -16,10 +16,12 @@ const DB_CONFIG = {
  */
 export async function query(text: string, params?: unknown[]): Promise<unknown> {
   try {
+    const token = localStorage.getItem('auth_token');
     const response = await fetch(`${DB_CONFIG.API_URL}/api/db/query`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
       body: JSON.stringify({ text, params }),
     });
