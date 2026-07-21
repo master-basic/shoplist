@@ -744,12 +744,11 @@ CREATE TABLE user_preferences (
 - [x] GroceryItemCard - fixed import to use @/types
 
 **Not Yet Done:**
-- [ ] Full-screen shopping mode with purchase confirmation
-- [ ] Track "Not bought" items with reasons
 - [ ] Real-time sync across household members
+- [ ] Track "Not bought" items with reasons
 - [ ] Item assignment to specific members
-- [ ] Purchase session management
-- [ ] Actual price tracking at point of purchase
+- [ ] Purchase session history view
+- [ ] PDF receipt support
 
 **Phase 3: Receipt Scanning & OCR - IN PROGRESS**
 
@@ -988,6 +987,17 @@ DB_PASSWORD=your_password_here
 
 **Status:** All audit items addressed. Phase 2 complete.
 
-**Status:** ScanPage now performs real OCR instead of simulating. Phase 2 continues.
+### [2026-07-21] Full-screen shopping mode with purchase confirmation
+**Changes Made:**
+- Added full-screen shopping mode overlay in `ShoppingPage.tsx` with `fixed inset-0 z-50`
+- Large tap-friendly item buttons with check circles, strikethrough on checked
+- Progress bar and "hide checked" toggle
+- Store name input in bottom bar
+- "Complete Purchase" button that calls `POST /api/purchase-sessions` with checked items
+- Completion celebration screen when all items are checked
+- Removed unused `GroceryItemCard` import and handler code
+- Updated build artifacts
+
+**Status:** Full-screen shopping mode implemented. Phase 2 features complete.
 
 ---
