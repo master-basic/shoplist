@@ -5,14 +5,21 @@
 import { useState, useEffect } from 'react';
 import type { ListItem } from '@/types';
 
+interface HouseholdMember {
+  id: string;
+  name: string;
+  email?: string;
+}
+
 interface AddItemModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (item: Omit<ListItem, 'id' | 'list_id' | 'created_at' | 'updated_at'>) => void;
   existingItems?: ListItem[];
+  assignees?: HouseholdMember[];
 }
 
-export function AddItemModal({ isOpen, onClose, onSubmit, existingItems = [] }: AddItemModalProps) {
+export function AddItemModal({ isOpen, onClose, onSubmit, existingItems = [], assignees = [] }: AddItemModalProps) {
   const [name, setName] = useState('');
   const [quantity, setQuantity] = useState('1');
   const [unit, setUnit] = useState('pcs');
@@ -20,6 +27,7 @@ export function AddItemModal({ isOpen, onClose, onSubmit, existingItems = [] }: 
   const [estimatedPrice, setEstimatedPrice] = useState('');
   const [notes, setNotes] = useState('');
   const [preferredStore, setPreferredStore] = useState('');
+  const [assignedTo, setAssignedTo] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Suggested items from history
@@ -51,7 +59,7 @@ export function AddItemModal({ isOpen, onClose, onSubmit, existingItems = [] }: 
       is_checked: false,
       actual_price: undefined,
       actual_quantity: undefined,
-      assigned_to: [],
+      assigned_to: assignedTo ? [assignedTo] : [],
       price_history: [],
     };
 
@@ -195,6 +203,25 @@ export function AddItemModal({ isOpen, onClose, onSubmit, existingItems = [] }: 
               className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
             />
           </div>
+
+          {/* Assignee */}
+          {assignees.length > 0 && (
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Assign To
+              </label>
+              <select
+                value={assignedTo}
+                onChange={(e) => setAssignedTo(e.target.value)}
+                className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              >
+                <option value="">Unassigned</option>
+                {assignees.map((a) => (
+                  <option key={a.id} value={a.id}>{a.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
 
           {/* Notes */}
           <div>

@@ -5,11 +5,18 @@
 import { useState } from 'react';
 import type { ListItem } from '@/types';
 
+interface HouseholdMember {
+  id: string;
+  name: string;
+}
+
 interface GroceryItemCardProps {
   item: ListItem;
   onToggle: (itemId: string) => void;
   onUpdate: (item: ListItem) => void;
   onRemove: (itemId: string) => void;
+  onNotBought?: (itemId: string, reason: string) => void;
+  members?: HouseholdMember[];
   readOnly?: boolean;
 }
 
@@ -18,10 +25,18 @@ export function GroceryItemCard({
   onToggle, 
   onUpdate, 
   onRemove,
+  onNotBought,
+  members = [],
   readOnly = false 
 }: GroceryItemCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState<ListItem>(item);
+  const [showNotBoughtInput, setShowNotBoughtInput] = useState(false);
+  const [notBoughtReason, setNotBoughtReason] = useState('');
+
+  const assigneeName = item.assigned_to?.length > 0
+    ? members.find(m => m.id === item.assigned_to[0])?.name || 'Unknown'
+    : null;
 
   const handleSave = () => {
     onUpdate(editForm);
@@ -88,6 +103,16 @@ export function GroceryItemCard({
                 )}
                 {item.notes && (
                   <p className="text-xs text-slate-400 mt-1">{item.notes}</p>
+                )}
+                {assigneeName && (
+                  <span className="inline-block mt-1 px-2 py-0.5 bg-blue-50 text-blue-700 text-xs rounded-full font-medium">
+                    {assigneeName}
+                  </span>
+                )}
+                {item.not_bought_reason && (
+                  <span className="inline-block mt-1 ml-1 px-2 py-0.5 bg-amber-50 text-amber-700 text-xs rounded-full font-medium">
+                    Not bought: {item.not_bought_reason}
+                  </span>
                 )}
               </div>
             </div>
@@ -211,6 +236,16 @@ export function GroceryItemCard({
                   {item.notes && (
                     <p className="text-xs text-slate-400 mt-1">{item.notes}</p>
                   )}
+                  {assigneeName && (
+                    <span className="inline-block mt-1 px-2 py-0.5 bg-blue-50 text-blue-700 text-xs rounded-full font-medium">
+                      {assigneeName}
+                    </span>
+                  )}
+                  {item.not_bought_reason && (
+                    <span className="inline-block mt-1 ml-1 px-2 py-0.5 bg-amber-50 text-amber-700 text-xs rounded-full font-medium">
+                      Not bought: {item.not_bought_reason}
+                    </span>
+                  )}
                 </div>
                 <button
                   onClick={() => setIsEditing(true)}
@@ -226,19 +261,56 @@ export function GroceryItemCard({
           )}
         </div>
 
-        {/* Remove button */}
-        {!item.checked_by && (
-          <button
-            onClick={() => onRemove(item.id)}
-            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-            title="Remove item"
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        )}
+        {/* Action buttons */}
+        <div className="flex items-center gap-1">
+          {!item.checked_by && onNotBought && (
+            <button
+              onClick={() => setShowNotBoughtInput(true)}
+              className="p-2 text-slate-400 hover:text-amber-500 hover:bg-amber-50 rounded-lg transition-colors"
+              title="Mark as not bought"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+              </svg>
+            </button>
+          )}
+          {!item.checked_by && (
+            <button
+              onClick={() => onRemove(item.id)}
+              className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+              title="Remove item"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
       </div>
+      {showNotBoughtInput && (
+        <div className="mt-3 flex gap-2">
+          <input
+            type="text"
+            value={notBoughtReason}
+            onChange={(e) => setNotBoughtReason(e.target.value)}
+            placeholder="Why wasn't this bought?"
+            className="flex-1 px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+            autoFocus
+          />
+          <button
+            onClick={() => { onNotBought?.(item.id, notBoughtReason); setShowNotBoughtInput(false); setNotBoughtReason(''); }}
+            className="px-4 py-2 bg-amber-500 text-white rounded-lg text-sm font-medium hover:bg-amber-600"
+          >
+            Save
+          </button>
+          <button
+            onClick={() => { setShowNotBoughtInput(false); setNotBoughtReason(''); }}
+            className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200"
+          >
+            Cancel
+          </button>
+        </div>
+      )}
     </div>
   );
 }

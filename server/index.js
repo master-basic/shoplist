@@ -404,11 +404,11 @@ app.get('/api/lists/:id/items', async (req, res) => {
 app.post('/api/lists/:id/items', async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, quantity, unitPrice, category, isChecked } = req.body;
+    const { name, quantity, unitPrice, category, isChecked, assignedTo, unit, notes } = req.body;
     const result = await pool.query(
-      `INSERT INTO list_items (list_id, name, quantity, unit_price, category, is_checked, created_by)
-       VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
-      [id, name, quantity || 1, unitPrice || 0, category || 'Other', isChecked || false, req.body.createdBy]
+      `INSERT INTO list_items (list_id, name, quantity, unit_price, category, is_checked, created_by, assigned_to, unit, notes)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
+      [id, name, quantity || 1, unitPrice || 0, category || 'Other', isChecked || false, req.body.createdBy, assignedTo || null, unit || 'pcs', notes || null]
     );
     res.status(201).json({ item: result.rows[0], message: 'Item added successfully' });
   } catch (error) {
@@ -420,13 +420,16 @@ app.post('/api/lists/:id/items', async (req, res) => {
 app.put('/api/lists/:listId/items/:itemId', async (req, res) => {
   try {
     const { listId, itemId } = req.params;
-    const { name, quantity, unitPrice, category, isChecked } = req.body;
+    const { name, quantity, unitPrice, category, isChecked, assignedTo, unit, notes, notBoughtReason, notBoughtAt } = req.body;
     const result = await pool.query(
       `UPDATE list_items SET name = COALESCE($1, name), quantity = COALESCE($2, quantity),
        unit_price = COALESCE($3, unit_price), category = COALESCE($4, category),
-       is_checked = COALESCE($5, is_checked), updated_at = CURRENT_TIMESTAMP
-       WHERE id = $6 AND list_id = $7 RETURNING *`,
-      [name, quantity, unitPrice, category, isChecked, itemId, listId]
+       is_checked = COALESCE($5, is_checked), assigned_to = COALESCE($6, assigned_to),
+       unit = COALESCE($7, unit), notes = COALESCE($8, notes),
+       not_bought_reason = COALESCE($9, not_bought_reason), not_bought_at = COALESCE($10, not_bought_at),
+       updated_at = CURRENT_TIMESTAMP
+       WHERE id = $11 AND list_id = $12 RETURNING *`,
+      [name, quantity, unitPrice, category, isChecked, assignedTo, unit, notes, notBoughtReason, notBoughtAt, itemId, listId]
     );
     if (result.rows.length === 0) return res.status(404).json({ error: 'Item not found' });
     res.json({ item: result.rows[0], message: 'Item updated successfully' });
@@ -450,12 +453,13 @@ app.delete('/api/lists/:listId/items/:itemId', async (req, res) => {
 app.patch('/api/lists/items/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { is_checked, isChecked } = req.body;
+    const { is_checked, isChecked, not_bought_reason, not_bought_at } = req.body;
     const checked = is_checked !== undefined ? is_checked : isChecked;
     const result = await pool.query(
-      `UPDATE list_items SET is_checked = $1, updated_at = CURRENT_TIMESTAMP
-       WHERE id = $2 RETURNING *`,
-      [checked, id]
+      `UPDATE list_items SET is_checked = $1, not_bought_reason = COALESCE($2, not_bought_reason),
+       not_bought_at = COALESCE($3, not_bought_at), updated_at = CURRENT_TIMESTAMP
+       WHERE id = $4 RETURNING *`,
+      [checked, not_bought_reason || null, not_bought_at || null, id]
     );
     if (result.rows.length === 0) return res.status(404).json({ error: 'Item not found' });
     res.json({ item: result.rows[0], message: 'Item toggled successfully' });

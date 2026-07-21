@@ -3,8 +3,15 @@ import { Card, Button, EmptyState, Toast, Input, Select, Badge, Spinner } from '
 import { useStore } from '../store/useStore';
 import { GroceryItemCard } from '../components/GroceryItemCard';
 import { getUserLists, getListById, createListItem, deleteListItem as apiDeleteListItem, toggleItemCompletion, updateList, deleteList as apiDeleteList } from '../api/lists';
+import { getHouseholdMembers } from '../api/auth';
 import { AddItemModal } from '../components/AddItemModal';
 import type { GroceryList, ListItem } from '../types';
+
+interface HouseholdMember {
+  id: string;
+  name: string;
+  email?: string;
+}
 
 export const ListDetail: React.FC = () => {
   const { user, lists, addList, deleteList: storeDeleteList, deleteListItem: storeDeleteListItem, addItemToList, updateItem, toggleItem, archiveList } = useStore();
@@ -12,6 +19,7 @@ export const ListDetail: React.FC = () => {
   const [showNewItemModal, setShowNewItemModal] = useState(false);
   const [notification, setNotification] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [members, setMembers] = useState<HouseholdMember[]>([]);
 
   useEffect(() => {
     const fetchLists = async () => {
@@ -31,12 +39,25 @@ export const ListDetail: React.FC = () => {
     fetchLists();
   }, [user?.id]);
 
+  const selectedList = lists.find((l) => l.id === selectedListId);
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      if (!selectedList?.household_id) return;
+      try {
+        const data = await getHouseholdMembers(selectedList.household_id);
+        setMembers(data || []);
+      } catch (err) {
+        console.error('Error fetching members:', err);
+      }
+    };
+    fetchMembers();
+  }, [selectedList?.household_id]);
+
   const showNotification = (message: string) => {
     setNotification(message);
     setTimeout(() => setNotification(null), 3000);
   };
-
-  const selectedList = lists.find((l) => l.id === selectedListId);
 
   const handleCreateItem = async (itemData: Omit<ListItem, 'id' | 'list_id' | 'created_at' | 'updated_at'>) => {
     if (!selectedList || !user?.id) return;
@@ -47,7 +68,10 @@ export const ListDetail: React.FC = () => {
         itemData.estimated_price,
         itemData.category,
         selectedList.id,
-        user.id
+        user.id,
+        itemData.assigned_to?.[0],
+        itemData.unit,
+        itemData.notes
       );
       addItemToList(selectedList.id, {
         ...itemData,
@@ -57,7 +81,7 @@ export const ListDetail: React.FC = () => {
         sort_order: newItem.sort_order || selectedList.items?.length || 0,
         is_recurring: false,
         price_history: [],
-        assigned_to: [],
+        assigned_to: itemData.assigned_to || [],
       });
       setShowNewItemModal(false);
       showNotification('Item added successfully');
@@ -87,6 +111,17 @@ export const ListDetail: React.FC = () => {
       } catch (err) {
         console.error('Error toggling item:', err);
       }
+    }
+  };
+
+  const handleNotBought = async (itemId: string, reason: string) => {
+    if (!selectedList) return;
+    try {
+      await toggleItemCompletion(itemId, true, reason);
+      toggleItem(selectedList.id, itemId);
+      showNotification(`Marked "${selectedList.items?.find(i => i.id === itemId)?.name}" as not bought`);
+    } catch (err) {
+      console.error('Error marking as not bought:', err);
     }
   };
 
@@ -191,7 +226,7 @@ export const ListDetail: React.FC = () => {
                 <h3 className="text-sm font-medium text-gray-600 mb-2">Completed ({items.filter((i) => i.is_checked).length})</h3>
                 <div className="space-y-2">
                   {items.filter((i) => i.is_checked).slice(0, 5).map((item) => (
-                    <GroceryItemCard key={item.id} item={item} onToggle={handleToggleItem} onUpdate={handleUpdateItem} onRemove={handleDeleteItem} readOnly />
+                    <GroceryItemCard key={item.id} item={item} onToggle={handleToggleItem} onUpdate={handleUpdateItem} onRemove={handleDeleteItem} members={members} readOnly />
                   ))}
                 </div>
               </div>
@@ -199,9 +234,9 @@ export const ListDetail: React.FC = () => {
             <div>
               <h3 className="text-sm font-medium text-gray-600 mb-2">To Buy ({items.filter((i) => !i.is_checked).length})</h3>
               <div className="space-y-2">
-                {items.filter((i) => !i.is_checked).map((item) => (
-                  <GroceryItemCard key={item.id} item={item} onToggle={handleToggleItem} onUpdate={handleUpdateItem} onRemove={handleDeleteItem} />
-                ))}
+                  {items.filter((i) => !i.is_checked).map((item) => (
+                    <GroceryItemCard key={item.id} item={item} onToggle={handleToggleItem} onUpdate={handleUpdateItem} onRemove={handleDeleteItem} onNotBought={handleNotBought} members={members} />
+                  ))}
               </div>
             </div>
           </div>

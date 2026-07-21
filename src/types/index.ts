@@ -149,6 +149,8 @@ export interface GroceryItem {
   preferred_store?: string;
   notes?: string;
   assigned_to?: string[];
+  not_bought_reason?: string;
+  not_bought_at?: string;
   is_recurring?: boolean;
   restock_threshold?: number;
 }
@@ -166,6 +168,8 @@ export interface ListItem {
   checked_by?: string; // user id who checked it off
   checked_at?: string;
   notes?: string;
+  not_bought_reason?: string;
+  not_bought_at?: string;
   sort_order: number;
   is_recurring: boolean;
   restock_threshold?: number;

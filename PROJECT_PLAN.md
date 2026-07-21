@@ -745,9 +745,10 @@ CREATE TABLE user_preferences (
 
 **Not Yet Done:**
 - [ ] Real-time sync across household members
-- [ ] Track "Not bought" items with reasons
-- [ ] Item assignment to specific members
-- [ ] Purchase session history view
+- [ ] Price history normalization
+- [ ] Unit price tracking
+- [ ] Price change alerts
+- [ ] "Best deal" badges
 - [ ] PDF receipt support
 
 **Phase 3: Receipt Scanning & OCR - IN PROGRESS**
@@ -999,5 +1000,18 @@ DB_PASSWORD=your_password_here
 - Updated build artifacts
 
 **Status:** Full-screen shopping mode implemented. Phase 2 features complete.
+
+### [2026-07-21] Item assignment, not-bought tracking, purchase history page
+**Changes Made:**
+- Added migration for `assigned_to`, `unit`, `notes`, `not_bought_reason`, `not_bought_at` columns
+- Updated server POST/PUT/PATCH routes for list items to handle new fields
+- Created `PurchaseHistoryPage` (`/purchases`) with expandable session details
+- Added assignee dropdown in `AddItemModal` (household members)
+- Added assignee badge and "Not Bought" button in `GroceryItemCard`
+- Added `not_bought_reason` support to `toggleItemCompletion` API
+- Added `not_bought_reason`/`not_bought_at` to `ListItem`/`GroceryItem` types
+- Wired `ListDetail` to fetch household members and pass to child components
+- Added purchase history nav link in `MainLayout`, route in `App.tsx`
+- Build updates
 
 ---

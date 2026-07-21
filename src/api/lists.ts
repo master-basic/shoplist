@@ -104,19 +104,21 @@ export async function deleteList(id: string, userId: string) {
 /**
  * Create a list item
  */
-export async function createListItem(name: string, quantity: number = 1, unitPrice: number = 0, category: string = 'Other', listId: string, userId: string) {
+export async function createListItem(
+  name: string,
+  quantity: number = 1,
+  unitPrice: number = 0,
+  category: string = 'Other',
+  listId: string,
+  userId: string,
+  assignedTo?: string,
+  unit?: string,
+  notes?: string
+) {
   const response = await fetch(`http://localhost:3001/api/lists/${listId}/items`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      name,
-      quantity,
-      unitPrice,
-      category,
-      createdBy: userId,
-    }),
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, quantity, unitPrice, category, createdBy: userId, assignedTo, unit, notes }),
   });
 
   if (!response.ok) {
@@ -148,13 +150,21 @@ export async function getListItems(listId: string) {
 /**
  * Update a list item
  */
-export async function updateListItem(id: string, listId: string, name?: string, quantity?: number, unitPrice?: number, category?: string) {
+export async function updateListItem(
+  id: string,
+  listId: string,
+  name?: string,
+  quantity?: number,
+  unitPrice?: number,
+  category?: string,
+  assignedTo?: string,
+  unit?: string,
+  notes?: string
+) {
   const response = await fetch(`http://localhost:3001/api/lists/${listId}/items/${id}`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ name, quantity, unitPrice, category }),
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, quantity, unitPrice, category, assignedTo, unit, notes }),
   });
 
   if (!response.ok) {
@@ -169,13 +179,15 @@ export async function updateListItem(id: string, listId: string, name?: string, 
 /**
  * Toggle item completion
  */
-export async function toggleItemCompletion(id: string, isCompleted: boolean) {
+export async function toggleItemCompletion(id: string, isCompleted: boolean, notBoughtReason?: string) {
   const response = await fetch(`http://localhost:3001/api/lists/items/${id}`, {
     method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ isChecked: isCompleted }),
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      isChecked: isCompleted,
+      not_bought_reason: notBoughtReason || null,
+      not_bought_at: notBoughtReason ? new Date().toISOString() : null,
+    }),
   });
 
   if (!response.ok) {
