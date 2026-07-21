@@ -8,8 +8,10 @@ import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
 import { EmptyState } from '../ui/EmptyState';
-import { Spinner } from '../ui/Spinner';
+import { Skeleton } from '../../components/Skeleton';
+import { loginUser } from '../../api/auth';
 import { useAuth } from '../../hooks/useAuth';
+import { useStore } from '../../store/useStore';
 
 export const Login: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -25,10 +27,15 @@ export const Login: React.FC = () => {
     setIsLoading(true);
 
     try {
-      await login(username, password);
+      const { user: userData, token } = await loginUser(username, password);
+      localStorage.setItem('user_id', userData.id);
+      localStorage.setItem('user_name', userData.name);
+      localStorage.setItem('user_email', userData.email);
+      localStorage.setItem('auth_token', token);
+      useStore.getState().setUser(userData);
       navigate('/');
     } catch (err) {
-      setError('Invalid username or password');
+      setError(err instanceof Error ? err.message : 'Invalid username or password');
     } finally {
       setIsLoading(false);
     }
@@ -69,7 +76,7 @@ export const Login: React.FC = () => {
 
           <div className="mt-4 text-center">
             <p className="text-xs text-gray-500">
-              Demo: Use username <code className="bg-gray-100 px-1 py-0.5 rounded">admin</code> with password <code className="bg-gray-100 px-1 py-0.5 rounded">admin123</code>
+              Demo: <code className="bg-gray-100 px-1 py-0.5 rounded">admin</code> / <code className="bg-gray-100 px-1 py-0.5 rounded">admin</code>
             </p>
           </div>
 
@@ -78,7 +85,7 @@ export const Login: React.FC = () => {
             className="w-full"
             disabled={isLoading}
           >
-            {isLoading ? <Spinner size="sm" /> : 'Sign In'}
+            {isLoading ? <Skeleton className="h-4 w-16" /> : 'Sign In'}
           </Button>
         </form>
 

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import { Card, Button, EmptyState, Toast, Input, Select, Badge, Spinner } from '../components/ui';
+import { Card, Button, EmptyState, Toast, Input, Select, Badge, SkeletonCard } from '../components/ui';
 import { useStore } from '../store/useStore';
+import { API_BASE } from '../config';
 import { GroceryItemCard } from '../components/GroceryItemCard';
 import { getUserLists, getListById, createListItem, deleteListItem as apiDeleteListItem, toggleItemCompletion, updateList, deleteList as apiDeleteList } from '../api/lists';
 import { getHouseholdMembers } from '../api/auth';
 import { AddItemModal } from '../components/AddItemModal';
+import { Skeleton } from '../components/Skeleton';
 import type { GroceryList, ListItem } from '../types';
 
 interface HouseholdMember {
@@ -64,7 +66,7 @@ export const ListDetail: React.FC = () => {
       if (!selectedList?.items?.length) { setBestDeals({}); return; }
       const names = [...new Set(selectedList.items.map((i: any) => i.name).filter(Boolean))];
       try {
-        const res = await fetch('http://localhost:3001/api/price-history/best-deals', {
+        const res = await fetch(`${API_BASE}/api/price-history/best-deals`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ itemNames: names }),
@@ -177,7 +179,7 @@ export const ListDetail: React.FC = () => {
   const completionPercentage = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
 
   if (loading) {
-    return <div className="flex justify-center py-12"><Spinner /></div>;
+    return <div className="space-y-4"><SkeletonCard /><SkeletonCard /><SkeletonCard /></div>;
   }
 
   if (!selectedListId) {

@@ -1,25 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card, EmptyState, Button, Input, Select, Spinner } from '../components/ui';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { Card, EmptyState, Button, Input, Select, SkeletonCard } from '../components/ui';
 import { Badge } from '../components/ui/Badge';
 import { GroceryItemCard } from '../components/GroceryItemCard';
 import { useStore } from '../store/useStore';
 import { getUserLists, createList, deleteList as apiDeleteList, createListItem, deleteListItem as apiDeleteListItem, toggleItemCompletion } from '../api/lists';
+import { getUserHouseholds } from '../api/auth';
 import type { GroceryList, ListItem } from '../types';
 
 export const Lists: React.FC = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchMode, setSearchMode] = useState<'lists' | 'items'>('lists');
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newListName, setNewListName] = useState('');
-  const { user, lists, addList, deleteList: storeDeleteList, toggleItem, updateItem, deleteListItem: storeDeleteListItem } = useStore();
+  const [error, setError] = useState('');
+  const { user, lists, priceHistory, addList, deleteList: storeDeleteList, toggleItem, updateItem, deleteListItem: storeDeleteListItem, currentHouseholdId, setCurrentHouseholdId } = useStore();
+  const [households, setHouseholds] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchLists = async () => {
       if (!user?.id) { setLoading(false); return; }
       try {
+        const hh = await getUserHouseholds(user.id);
+        setHouseholds(hh);
+        if (hh.length > 0 && !currentHouseholdId) setCurrentHouseholdId(hh[0].id);
         const fetchedLists = await getUserLists(user.id);
         for (const list of fetchedLists) {
           const existing = lists.find((l) => l.id === list.id);
@@ -36,15 +43,19 @@ export const Lists: React.FC = () => {
 
   const filteredLists = lists.filter((list) => {
     if (!list) return false;
+    if (currentHouseholdId && list.household_id !== currentHouseholdId) return false;
     const matchesSearch = list.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesFilter = filter === 'all' || list.status === filter;
     return matchesSearch && matchesFilter;
   });
 
   const handleCreateList = async () => {
-    if (!user?.id || !newListName.trim()) return;
+    setError('');
+    if (!user?.id) { setError('Please log in first'); return; }
+    if (!newListName.trim()) { setError('List name is required'); return; }
+    if (!currentHouseholdId) { setError('No household found.'); return; }
     try {
-      const newList = await createList(newListName.trim(), user.id, user.id);
+      const newList = await createList(newListName.trim(), currentHouseholdId, user.id);
       addList({
         ...newList,
         items: [],
@@ -54,7 +65,7 @@ export const Lists: React.FC = () => {
       setNewListName('');
       setShowCreateModal(false);
     } catch (err) {
-      console.error('Error creating list:', err);
+      setError(err instanceof Error ? err.message : 'Failed to create list');
     }
   };
 
@@ -89,6 +100,40 @@ export const Lists: React.FC = () => {
     }
   };
 
+  const smartSuggestions = useMemo(() => {
+    if (searchMode !== 'items') return [];
+    const frequentlyBought = priceHistory.reduce((acc, item) => {
+      acc[item.item_name] = (acc[item.item_name] || 0) + item.quantity;
+      return acc;
+    }, {} as Record<string, number>);
+    const activeListItems = new Set(
+      lists.find(l => l.status === 'active')?.items.map(i => i.name.toLowerCase()) || []
+    );
+    return Object.entries(frequentlyBought)
+      .filter(([name]) => !activeListItems.has(name.toLowerCase()))
+      .slice(0, 5)
+      .map(([name, qty]) => ({
+        item_name: name,
+        frequency: qty,
+        last_price: priceHistory.filter(item => item.item_name === name)
+          .sort((a, b) => new Date(b.purchased_at).getTime() - new Date(a.purchased_at).getTime())[0]?.unit_price || 0,
+      }));
+  }, [searchMode, priceHistory, lists]);
+
+  const itemSearchResults = useMemo(() => {
+    if (searchMode !== 'items' || !searchTerm.trim()) return [];
+    const q = searchTerm.toLowerCase();
+    const results: Array<{ id: string; name: string; listName: string; category: string; quantity: number }> = [];
+    lists.filter(l => l.status === 'active').forEach(list => {
+      list.items.forEach(item => {
+        if (item.name.toLowerCase().includes(q)) {
+          results.push({ id: item.id, name: item.name, listName: list.name, category: item.category, quantity: item.quantity });
+        }
+      });
+    });
+    return results;
+  }, [searchMode, searchTerm, lists]);
+
   const getCompletionPercentage = (items: ListItem[]) => {
     if (items.length === 0) return 0;
     return Math.round((items.filter((i) => i.is_checked).length / items.length) * 100);
@@ -103,39 +148,105 @@ export const Lists: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="flex justify-center py-12"><Spinner /></div>;
+    return <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><SkeletonCard /><SkeletonCard /><SkeletonCard /></div>;
   }
 
   return (
     <div>
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-3xl font-bold text-gray-800">My Lists</h1>
-          <Button onClick={() => setShowCreateModal(true)} className="gap-2">
-            <span>+</span> New List
-          </Button>
+          <div className="flex items-center gap-4">
+            <h1 className="text-3xl font-bold text-gray-800">
+              {households.length > 1 && currentHouseholdId
+                ? `${households.find(h => h.id === currentHouseholdId)?.name || 'My'} Lists`
+                : 'My Lists'}
+            </h1>
+            <div className="flex bg-gray-100 rounded-lg p-1">
+              <button onClick={() => setSearchMode('lists')} className={`px-3 py-1.5 text-sm rounded-md font-medium transition-colors ${searchMode === 'lists' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-600 hover:text-gray-900'}`}>Lists</button>
+              <button onClick={() => setSearchMode('items')} className={`px-3 py-1.5 text-sm rounded-md font-medium transition-colors ${searchMode === 'items' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-600 hover:text-gray-900'}`}>Items</button>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            {households.length > 1 && (
+              <select
+                value={currentHouseholdId || ''}
+                onChange={(e) => setCurrentHouseholdId(e.target.value || null)}
+                className="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white"
+              >
+                {households.map((hh: any) => (
+                  <option key={hh.id} value={hh.id}>{hh.name}</option>
+                ))}
+              </select>
+            )}
+            {households.length === 0 && (
+              <Link to="/household" className="text-sm text-green-600 hover:underline">Create household</Link>
+            )}
+            {searchMode === 'lists' && (
+              <Button onClick={() => setShowCreateModal(true)} className="gap-2"><span>+</span> New List</Button>
+            )}
+          </div>
         </div>
         <div className="flex flex-col sm:flex-row gap-4">
           <input
             type="text"
-            placeholder="Search lists..."
+            placeholder={searchMode === 'lists' ? "Search lists by name..." : "Search items across all lists..."}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
           />
-          <select
-            value={filter}
-            onChange={(e) => setFilter(e.target.value as any)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-          >
-            <option value="all">All Lists</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
-          </select>
+          {searchMode === 'lists' && (
+            <select
+              value={filter}
+              onChange={(e) => setFilter(e.target.value as any)}
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            >
+              <option value="all">All Lists</option>
+              <option value="active">Active</option>
+              <option value="completed">Completed</option>
+            </select>
+          )}
         </div>
       </div>
 
-      {filteredLists.length === 0 && (
+      {searchMode === 'items' && smartSuggestions.length > 0 && (
+        <Card className="p-6 mb-6 bg-blue-50 border-blue-200">
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">Items You Might Need</h2>
+          <div className="space-y-3">
+            {smartSuggestions.map((s, i) => (
+              <div key={i} className="flex justify-between items-center bg-white p-3 rounded-lg">
+                <div>
+                  <p className="font-medium text-gray-800">{s.item_name}</p>
+                  <p className="text-sm text-gray-600">Bought {s.frequency} time(s)</p>
+                </div>
+                <Button onClick={async () => { const activeList = lists.find(l => l.status === 'active'); if (activeList && user?.id) { await createListItem(s.item_name, 1, 0, 'Other', activeList.id, user.id); } }} variant="primary" size="sm">Add to List</Button>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+
+      {searchMode === 'items' && searchTerm.trim() && (
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-gray-800 mb-3">Search Results</h2>
+          {itemSearchResults.length === 0 ? (
+            <EmptyState title="No items found" description="Try a different search term" />
+          ) : (
+            <div className="space-y-2">
+              {itemSearchResults.map(r => (
+                <Card key={r.id} className="p-3 flex items-center justify-between">
+                  <div>
+                    <p className="font-medium text-gray-800">{r.name}</p>
+                    <p className="text-sm text-gray-500">in <button onClick={() => navigate(`/list/${lists.find(l => l.name === r.listName)?.id}`)} className="text-green-600 hover:underline">{r.listName}</button> &middot; {r.category}</p>
+                  </div>
+                  <Badge variant="secondary">Qty: {r.quantity}</Badge>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {searchMode === 'lists' && filteredLists.length === 0 && (
         <EmptyState
           title={lists.length === 0 ? 'No Lists Yet' : 'No Matching Lists'}
           description={lists.length === 0 ? 'Create your first grocery list to get started' : 'Try adjusting your search or filters'}
@@ -145,6 +256,7 @@ export const Lists: React.FC = () => {
         />
       )}
 
+      {searchMode === 'lists' && (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredLists.map((list) => {
           const items = list.items || [];
@@ -197,11 +309,13 @@ export const Lists: React.FC = () => {
           );
         })}
       </div>
+      )}
 
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <Card className="w-full max-w-md mx-4 p-6">
             <h3 className="text-lg font-semibold mb-4">Create New List</h3>
+            {error && <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">{error} <button onClick={() => navigate('/household')} className="underline font-medium">Create or join one here</button></div>}
             <Input
               label="List Name"
               value={newListName}
@@ -211,7 +325,7 @@ export const Lists: React.FC = () => {
             />
             <div className="flex gap-2 mt-4">
               <Button onClick={handleCreateList} className="flex-1">Create</Button>
-              <Button variant="secondary" onClick={() => setShowCreateModal(false)} className="flex-1">Cancel</Button>
+              <Button variant="secondary" onClick={() => { setShowCreateModal(false); setError(''); }} className="flex-1">Cancel</Button>
             </div>
           </Card>
         </div>

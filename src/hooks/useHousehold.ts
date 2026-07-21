@@ -1,9 +1,8 @@
-import { useState, useCallback } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useStore } from '@/store/useStore';
+import { API_BASE } from '@/config';
 import { getUserHouseholds, createHousehold as apiCreateHousehold, addUserToHousehold, removeUserFromHousehold, getHouseholdMembers } from '@/api/auth';
 import type { Household, HouseholdMember } from '@/types';
-
-const API_BASE = 'http://localhost:3001';
 
 function mapApiHousehold(h: any): Household {
   return {
@@ -27,165 +26,138 @@ function mapApiHousehold(h: any): Household {
 
 export const useHousehold = () => {
   const { user, currentHouseholdId, setCurrentHouseholdId, households, addHousehold, updateHousehold } = useStore();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const loadCurrentHousehold = useCallback(async () => {
+  const queryClient = useQueryClient();
+
+  const loadCurrentHousehold = async () => {
     if (!currentHouseholdId) return;
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(`${API_BASE}/api/households/${currentHouseholdId}`);
-      if (!response.ok) throw new Error('Failed to load household');
-      const data = await response.json();
-      addHousehold(mapApiHousehold(data.household));
-    } catch (err) {
-      console.error('Error loading household:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load household');
-    } finally {
-      setLoading(false);
-    }
-  }, [currentHouseholdId, addHousehold]);
+    const response = await fetch(`${API_BASE}/api/households/${currentHouseholdId}`);
+    if (!response.ok) throw new Error('Failed to load household');
+    const data = await response.json();
+    return mapApiHousehold(data.household);
+  };
 
-  const loadUserHouseholds = useCallback(async () => {
+  const loadUserHouseholds = async () => {
     if (!user?.id) return;
-    setLoading(true);
-    setError(null);
-    try {
-      const householdsData = await getUserHouseholds(user.id);
-      householdsData.forEach((h: any) => addHousehold(mapApiHousehold(h)));
-    } catch (err) {
-      console.error('Error loading user households:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load households');
-    } finally {
-      setLoading(false);
-    }
-  }, [user?.id, addHousehold]);
+    const householdsData = await getUserHouseholds(user.id);
+    return householdsData.map((h: any) => mapApiHousehold(h));
+  };
 
-  const createHouseholdAction = async (name: string, currency: string = 'AZN') => {
-    if (!user?.id) throw new Error('User not logged in');
-    setLoading(true);
-    setError(null);
-    try {
+  const householdsQuery = useQuery({
+    queryKey: ['households', user?.id],
+    queryFn: loadUserHouseholds,
+    enabled: !!user?.id,
+  });
+
+  const currentHouseholdQuery = useQuery({
+    queryKey: ['currentHousehold', currentHouseholdId],
+    queryFn: loadCurrentHousehold,
+    enabled: !!currentHouseholdId,
+  });
+
+  const createHouseholdMutation = useMutation({
+    mutationFn: async (name: string) => {
+      if (!user?.id) throw new Error('User not logged in');
       const household = await apiCreateHousehold(name, '', user.id);
       addHousehold(mapApiHousehold(household));
       setCurrentHouseholdId(household.id);
       return household;
-    } catch (err) {
-      console.error('Error creating household:', err);
-      setError(err instanceof Error ? err.message : 'Failed to create household');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['households', user?.id] });
+    },
+  });
 
-  const joinHousehold = async (householdId: string) => {
-    if (!user?.id) throw new Error('User not logged in');
-    setLoading(true);
-    setError(null);
-    try {
+  const joinHouseholdMutation = useMutation({
+    mutationFn: async (householdId: string) => {
+      if (!user?.id) throw new Error('User not logged in');
       await addUserToHousehold(user.id, householdId, 'member');
-      await loadUserHouseholds();
+      queryClient.invalidateQueries({ queryKey: ['households', user?.id] });
       setCurrentHouseholdId(householdId);
-    } catch (err) {
-      console.error('Error joining household:', err);
-      setError(err instanceof Error ? err.message : 'Failed to join household');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+  });
 
-  const inviteMember = async (householdId: string, email: string) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(`${API_BASE}/api/households/${householdId}/members`, {
+  const inviteMemberMutation = useMutation({
+    mutationFn: async (args: { householdId: string; email: string }) => {
+      const response = await fetch(`${API_BASE}/api/households/${args.householdId}/members`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, role: 'member' }),
+        body: JSON.stringify({ email: args.email, role: 'member' }),
       });
       if (!response.ok) {
         const errData = await response.json();
         throw new Error(errData.error || 'Failed to invite member');
       }
-    } catch (err) {
-      console.error('Error inviting member:', err);
-      setError(err instanceof Error ? err.message : 'Failed to invite member');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+  });
 
-  const removeMember = async (householdId: string, memberId: string) => {
-    setLoading(true);
-    setError(null);
-    try {
-      await removeUserFromHousehold(memberId, householdId);
-    } catch (err) {
-      console.error('Error removing member:', err);
-      setError(err instanceof Error ? err.message : 'Failed to remove member');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
+  const removeMemberMutation = useMutation({
+    mutationFn: async (args: { householdId: string; memberId: string }) => {
+      await removeUserFromHousehold(args.memberId, args.householdId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['households', user?.id] });
+    },
+  });
 
-  const updateMemberRole = async (householdId: string, memberId: string, role: 'owner' | 'admin' | 'member') => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(`${API_BASE}/api/households/${householdId}/members`, {
+  const updateMemberRoleMutation = useMutation({
+    mutationFn: async (args: { householdId: string; memberId: string; role: 'owner' | 'admin' | 'member' }) => {
+      const response = await fetch(`${API_BASE}/api/households/${args.householdId}/members`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: memberId, role }),
+        body: JSON.stringify({ userId: args.memberId, role: args.role }),
       });
       if (!response.ok) {
         const errData = await response.json();
         throw new Error(errData.error || 'Failed to update member role');
       }
-    } catch (err) {
-      console.error('Error updating member role:', err);
-      setError(err instanceof Error ? err.message : 'Failed to update member role');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+  });
 
-  const getMembers = async (householdId: string): Promise<HouseholdMember[]> => {
-    try {
-      const members = await getHouseholdMembers(householdId);
+  const getMembersQuery = useQuery({
+    queryKey: ['householdMembers', currentHouseholdId],
+    queryFn: async (): Promise<HouseholdMember[]> => {
+      if (!currentHouseholdId) return [];
+      const members = await getHouseholdMembers(currentHouseholdId);
       return members.map((m: any) => ({
         user_id: m.id,
-        household_id: householdId,
+        household_id: currentHouseholdId,
         role: m.role,
         is_owner: m.is_owner,
         joined_at: m.joined_at,
         name: m.name,
         email: m.email,
       }));
-    } catch (err) {
-      console.error('Error getting members:', err);
-      return [];
-    }
+    },
+    enabled: !!currentHouseholdId,
+  });
+
+  const fetchMembers = async (householdId: string): Promise<HouseholdMember[]> => {
+    const members = await getHouseholdMembers(householdId);
+    return members.map((m: any) => ({
+      user_id: m.id,
+      household_id: householdId,
+      role: m.role,
+      is_owner: m.is_owner,
+      joined_at: m.joined_at,
+      name: m.name,
+      email: m.email,
+    }));
   };
 
   return {
     currentHouseholdId,
     setCurrentHouseholdId,
-    households,
-    loading,
-    error,
-    loadCurrentHousehold,
-    loadUserHouseholds,
-    createHousehold: createHouseholdAction,
-    joinHousehold,
-    inviteMember,
-    removeMember,
-    updateMemberRole,
-    getMembers,
+    households: householdsQuery.data || [],
+    loading: householdsQuery.isLoading || currentHouseholdQuery.isLoading,
+    error: householdsQuery.error as Error | null,
+    loadUserHouseholds: () => queryClient.invalidateQueries({ queryKey: ['households', user?.id] }),
+    createHousehold: (name: string) => createHouseholdMutation.mutateAsync(name),
+    joinHousehold: (householdId: string) => joinHouseholdMutation.mutateAsync(householdId),
+    inviteMember: (householdId: string, email: string) => inviteMemberMutation.mutateAsync({ householdId, email }),
+    removeMember: (householdId: string, memberId: string) => removeMemberMutation.mutateAsync({ householdId, memberId }),
+    updateMemberRole: (householdId: string, memberId: string, role: 'owner' | 'admin' | 'member') => updateMemberRoleMutation.mutateAsync({ householdId, memberId, role }),
+    getMembers: getMembersQuery.data || [],
+    fetchMembers,
   };
 };

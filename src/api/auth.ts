@@ -1,11 +1,8 @@
-import { query, queryOne } from '@/utils/database';
+import { API_BASE } from '@/config';
 import { User as UserType } from '@/types';
 
-/**
- * Register a new user
- */
-export async function registerUser(name: string, email: string, password: string): Promise<UserType> {
-  const response = await fetch('http://localhost:3001/api/auth/register', {
+export async function registerUser(name: string, email: string, password: string): Promise<{ user: UserType; token: string }> {
+  const response = await fetch(`${API_BASE}/api/auth/register`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -19,14 +16,14 @@ export async function registerUser(name: string, email: string, password: string
   }
 
   const data = await response.json();
-  return data.user;
+  return { user: { ...data.user, isAdmin: data.user.is_admin ?? false }, token: data.token };
 }
 
 /**
  * Login user - accepts USERNAME (not email)
  */
-export async function loginUser(username: string, password: string): Promise<UserType> {
-  const response = await fetch('http://localhost:3001/api/auth/login', {
+export async function loginUser(username: string, password: string): Promise<{ user: UserType; token: string }> {
+  const response = await fetch(`${API_BASE}/api/auth/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -40,14 +37,14 @@ export async function loginUser(username: string, password: string): Promise<Use
   }
 
   const data = await response.json();
-  return data.user;
+  return { user: { ...data.user, isAdmin: data.user.is_admin ?? false }, token: data.token };
 }
 
 /**
  * Get user by ID
  */
 export async function getUserById(id: string): Promise<UserType | null> {
-  const response = await fetch(`http://localhost:3001/api/auth/user/${id}`, {
+  const response = await fetch(`${API_BASE}/api/auth/user/${id}`, {
     method: 'GET',
   });
 
@@ -64,7 +61,7 @@ export async function getUserById(id: string): Promise<UserType | null> {
  * Get user households
  */
 export async function getUserHouseholds(userId: string) {
-  const response = await fetch(`http://localhost:3001/api/auth/user/${userId}/households`, {
+  const response = await fetch(`${API_BASE}/api/auth/user/${userId}/households`, {
     method: 'GET',
   });
 
@@ -81,7 +78,7 @@ export async function getUserHouseholds(userId: string) {
  * Create a new household
  */
 export async function createHousehold(name: string, description: string, userId: string) {
-  const response = await fetch('http://localhost:3001/api/auth/households', {
+  const response = await fetch(`${API_BASE}/api/auth/households`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -102,7 +99,7 @@ export async function createHousehold(name: string, description: string, userId:
  * Add user to household
  */
 export async function addUserToHousehold(userId: string, householdId: string, role: string = 'member') {
-  const response = await fetch(`http://localhost:3001/api/households/${householdId}/members`, {
+  const response = await fetch(`${API_BASE}/api/households/${householdId}/members`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -120,7 +117,7 @@ export async function addUserToHousehold(userId: string, householdId: string, ro
  * Remove user from household
  */
 export async function removeUserFromHousehold(userId: string, householdId: string) {
-  const response = await fetch(`http://localhost:3001/api/households/${householdId}/members/${userId}`, {
+  const response = await fetch(`${API_BASE}/api/households/${householdId}/members/${userId}`, {
     method: 'DELETE',
   });
 
@@ -134,7 +131,7 @@ export async function removeUserFromHousehold(userId: string, householdId: strin
  * Get household members
  */
 export async function getHouseholdMembers(householdId: string) {
-  const response = await fetch(`http://localhost:3001/api/households/${householdId}/members`, {
+  const response = await fetch(`${API_BASE}/api/households/${householdId}/members`, {
     method: 'GET',
   });
 

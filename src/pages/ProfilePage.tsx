@@ -4,7 +4,7 @@ import { useHousehold } from '@/hooks/useHousehold';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { Spinner } from '@/components/ui/Spinner';
+import { SkeletonCard } from '@/components/ui/Skeleton';
 import { getUserLists } from '@/api/lists';
 
 const ProfilePage: React.FC = () => {
@@ -54,7 +54,7 @@ const ProfilePage: React.FC = () => {
   }
 
   if (loading) {
-    return <div className="flex justify-center py-12"><Spinner /></div>;
+    return <div className="max-w-2xl mx-auto space-y-4"><SkeletonCard /><SkeletonCard /><SkeletonCard /></div>;
   }
 
   return (
@@ -111,7 +111,7 @@ const ProfilePage: React.FC = () => {
             <p className="text-gray-500">No households yet. Create or join one from the Household page.</p>
           ) : (
             <div className="space-y-3">
-              {households.map((h) => (
+              {households.map((h: any) => (
                 <div key={h.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div>
                     <p className="font-medium text-gray-800">{h.name}</p>

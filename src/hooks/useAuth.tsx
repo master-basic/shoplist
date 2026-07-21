@@ -37,11 +37,11 @@ export function useAuth(): UseAuthReturn {
 
   const loadUser = useCallback(async () => {
     try {
-      // Get user from localStorage
       const userId = localStorage.getItem('user_id');
       if (!userId) {
         setUser(null);
         setHouseholds([]);
+        setIsLoading(false);
         return;
       }
 
@@ -83,9 +83,10 @@ export function useAuth(): UseAuthReturn {
       localStorage.removeItem('user_name');
       localStorage.removeItem('user_email');
 
-      const userData = await loginUser(username, password);
+      const { user: userData, token } = await loginUser(username, password);
       localStorage.setItem('user_id', userData.id);
       localStorage.setItem('user_name', userData.name);
+      localStorage.setItem('auth_token', token);
 
       setUser(userData);
 
@@ -106,10 +107,11 @@ export function useAuth(): UseAuthReturn {
       setError(null);
       setIsLoading(true);
 
-      const userData = await registerUser(name, email, password);
+      const { user: userData, token } = await registerUser(name, email, password);
       localStorage.setItem('user_id', userData.id);
       localStorage.setItem('user_email', userData.email);
       localStorage.setItem('user_name', userData.name);
+      localStorage.setItem('auth_token', token);
 
       setUser(userData);
 
@@ -129,6 +131,7 @@ export function useAuth(): UseAuthReturn {
     localStorage.removeItem('user_id');
     localStorage.removeItem('user_email');
     localStorage.removeItem('user_name');
+    localStorage.removeItem('auth_token');
     setUser(null);
     setHouseholds([]);
   }, []);

@@ -31,10 +31,13 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     { path: '/lists', label: 'My Lists', icon: '🛒' },
     { path: '/shopping', label: 'Shopping', icon: '📋' },
     { path: '/purchases', label: 'Purchases', icon: '🧾' },
+    { path: '/price-check', label: 'Price Check', icon: '💰' },
     { path: '/scan', label: 'Scan', icon: '📷' },
     { path: '/reports', label: 'Reports', icon: '📊' },
     { path: '/search', label: 'Search', icon: '🔍' },
+    { path: '/household', label: 'Household', icon: '👨‍👩‍👧‍👦' },
     { path: '/profile', label: 'Profile', icon: '👤' },
+    { path: '/admin', label: 'Admin', icon: '⚙️' },
   ];
 
   const isActive = (path: string) => location.pathname === path;

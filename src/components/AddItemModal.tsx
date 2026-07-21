@@ -2,8 +2,9 @@
 // GroceryMind - Add Item Modal Component
 // =====================================================
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { ListItem } from '@/types';
+import { searchProducts, type CatalogProduct } from '@/data/productCatalog';
 
 interface HouseholdMember {
   id: string;
@@ -29,6 +30,41 @@ export function AddItemModal({ isOpen, onClose, onSubmit, existingItems = [], as
   const [preferredStore, setPreferredStore] = useState('');
   const [assignedTo, setAssignedTo] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
+  const nameInputRef = useRef<HTMLInputElement>(null);
+
+  const searchResults = name.trim().length >= 1
+    ? searchProducts(name.trim()).slice(0, 8)
+    : [];
+
+  const handleSelectProduct = (product: CatalogProduct) => {
+    setName(product.name);
+    setCategory(product.category);
+    setUnit(product.unit);
+    if (product.typicalPrice) {
+      setEstimatedPrice(product.typicalPrice.toString());
+    }
+    setShowSuggestions(false);
+    setSelectedSuggestionIndex(-1);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!showSuggestions || searchResults.length === 0) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSelectedSuggestionIndex(i => Math.min(i + 1, searchResults.length - 1));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSelectedSuggestionIndex(i => Math.max(i - 1, 0));
+    } else if (e.key === 'Enter' && selectedSuggestionIndex >= 0) {
+      e.preventDefault();
+      handleSelectProduct(searchResults[selectedSuggestionIndex]);
+    } else if (e.key === 'Escape') {
+      setShowSuggestions(false);
+      setSelectedSuggestionIndex(-1);
+    }
+  };
 
   // Suggested items from history
   const suggestedItems = existingItems.slice(0, 5);
@@ -113,14 +149,39 @@ export function AddItemModal({ isOpen, onClose, onSubmit, existingItems = [], as
             <label className="block text-sm font-medium text-slate-700 mb-1">
               Item Name <span className="text-red-500">*</span>
             </label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g., Milk, Eggs, Bread"
-              className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              autoFocus
-            />
+            <div className="relative">
+              <input
+                ref={nameInputRef}
+                type="text"
+                value={name}
+                onChange={(e) => { setName(e.target.value); setShowSuggestions(true); setSelectedSuggestionIndex(-1); }}
+                onFocus={() => setShowSuggestions(true)}
+                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                onKeyDown={handleKeyDown}
+                placeholder="e.g., Milk, Eggs, Bread"
+                className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                autoFocus
+              />
+              {showSuggestions && searchResults.length > 0 && (
+                <div className="absolute z-10 w-full mt-1 bg-white border border-slate-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                  {searchResults.map((product, idx) => (
+                    <div
+                      key={`${product.name}-${product.store}`}
+                      onMouseDown={() => handleSelectProduct(product)}
+                      className={`flex items-center justify-between px-4 py-2.5 cursor-pointer text-sm ${
+                        idx === selectedSuggestionIndex ? 'bg-green-50 text-green-700' : 'hover:bg-slate-50'
+                      }`}
+                    >
+                      <div>
+                        <span className="font-medium">{product.name}</span>
+                        <span className="ml-2 text-xs text-slate-400 capitalize">{product.category}</span>
+                      </div>
+                      <span className="text-xs text-slate-500">{product.typicalPrice.toFixed(2)} AZN</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Quantity and Unit */}
@@ -168,9 +229,11 @@ export function AddItemModal({ isOpen, onClose, onSubmit, existingItems = [], as
                 <option value="meat">Meat</option>
                 <option value="bakery">Bakery</option>
                 <option value="frozen">Frozen</option>
-                <option value="household">Household</option>
+                <option value="pantry">Pantry</option>
                 <option value="beverages">Beverages</option>
                 <option value="snacks">Snacks</option>
+                <option value="household">Household</option>
+                <option value="personal_care">Personal Care</option>
                 <option value="other">Other</option>
               </select>
             </div>

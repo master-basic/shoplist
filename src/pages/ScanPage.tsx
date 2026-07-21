@@ -1,71 +1,12 @@
 import React, { useState } from 'react';
-import { createWorker } from 'tesseract.js';
 import { useStore } from '@/store/useStore';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { Spinner } from '@/components/ui/Spinner';
+import { Skeleton } from '@/components/Skeleton';
+import { API_BASE } from '@/config';
 import { createListItem } from '@/api/lists';
-
-const API_BASE = 'http://localhost:3001';
-
-function parseReceiptText(text: string) {
-  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-  const items: { id: string; name: string; quantity: number; unitPrice: number; totalPrice: number }[] = [];
-  let storeName = lines[0] || 'Unknown Store';
-  let subtotal = 0;
-  let tax = 0;
-  let total = 0;
-  let idCounter = 0;
-
-  const priceRegex = /^(\d+[.,]\d{2})$/;
-  const lineItemRegex = /^(.+?)\s+(\d+[.,]\d{2})\s*$/;
-  const qtyItemRegex = /^(.+?)\s+(\d+)\s*x\s*(\d+[.,]\d{2})\s+(\d+[.,]\d{2})\s*$/i;
-  const totalLabelRegex = /^(subtotal|sub total|tax|total|vat|sale total|amount due)/i;
-
-  for (let i = 1; i < lines.length; i++) {
-    const line = lines[i];
-
-    const totalMatch = line.match(totalLabelRegex);
-    if (totalMatch) {
-      const label = totalMatch[1].toLowerCase().replace(/\s+/g, '');
-      const numMatch = line.match(priceRegex);
-      const value = numMatch ? parseFloat(numMatch[1].replace(',', '.')) : 0;
-      if (label.includes('subtotal') || label === 'subtotal') subtotal = value;
-      else if (label === 'tax' || label === 'vat') tax = value;
-      else if (label === 'total' || label === 'saletotal' || label === 'amountdue') total = value;
-      continue;
-    }
-
-    const qtyMatch = line.match(qtyItemRegex);
-    if (qtyMatch) {
-      idCounter++;
-      const name = qtyMatch[1].trim();
-      const quantity = parseInt(qtyMatch[2], 10);
-      const unitPrice = parseFloat(qtyMatch[3].replace(',', '.'));
-      const totalPrice = parseFloat(qtyMatch[4].replace(',', '.'));
-      items.push({ id: `item-${idCounter}`, name, quantity, unitPrice, totalPrice });
-      continue;
-    }
-
-    const itemMatch = line.match(lineItemRegex);
-    if (itemMatch) {
-      const name = itemMatch[1].trim();
-      const price = parseFloat(itemMatch[2].replace(',', '.'));
-      if (name.length > 1 && !name.match(/^\d+$/)) {
-        idCounter++;
-        items.push({ id: `item-${idCounter}`, name, quantity: 1, unitPrice: price, totalPrice: price });
-      }
-    }
-  }
-
-  if (total === 0 && items.length > 0) {
-    total = items.reduce((sum, i) => sum + i.totalPrice, 0);
-  }
-
-  return { storeName, date: new Date().toISOString(), items, subtotal, tax, total, confidence: 0, imageUrl: null };
-}
 
 const ScanPage: React.FC = () => {
   const { lists, user } = useStore();
@@ -95,18 +36,16 @@ const ScanPage: React.FC = () => {
     try {
       const formData = new FormData();
       formData.append('image', imageFile);
-      const uploadRes = await fetch(`${API_BASE}/api/receipts/upload`, { method: 'POST', body: formData });
-      const uploadData = uploadRes.ok ? await uploadRes.json() : null;
 
-      const worker = await createWorker('eng');
-      const { data } = await worker.recognize(imageFile);
-      await worker.terminate();
+      const ocrRes = await fetch(`${API_BASE}/api/receipts/ocr`, {
+        method: 'POST',
+        body: formData
+      });
 
-      const parsed = parseReceiptText(data.text);
-      parsed.imageUrl = uploadData?.url || null;
-      parsed.confidence = data.confidence || 0;
+      if (!ocrRes.ok) throw new Error('OCR processing failed');
 
-      setOcrResult(parsed);
+      const ocrData = await ocrRes.json();
+      setOcrResult(ocrData.ocrResult);
     } catch (err) {
       console.error('Scan error:', err);
     } finally {
@@ -270,7 +209,7 @@ const ScanPage: React.FC = () => {
         {scanning && (
           <div className="mb-6">
             <div className="border-4 border-green-200 rounded-lg p-8 text-center">
-              <Spinner size="lg" />
+              <Skeleton className="h-12 w-12" />
               <p className="text-gray-600 mt-4">Scanning receipt...</p>
             </div>
           </div>
@@ -279,7 +218,7 @@ const ScanPage: React.FC = () => {
         {saving && (
           <div className="mb-6">
             <div className="border-4 border-blue-200 rounded-lg p-8 text-center">
-              <Spinner size="lg" />
+              <Skeleton className="h-12 w-12" />
               <p className="text-gray-600 mt-4">Saving to database...</p>
             </div>
           </div>

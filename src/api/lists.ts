@@ -1,8 +1,6 @@
-import { User as UserType } from '@/types';
+import { API_BASE } from '@/config';
+import type { User as UserType } from '@/types';
 
-/**
- * Create a new grocery list
- */
 export async function createList(name: string, householdId: string, createdBy: string, items?: Array<{
   name: string;
   quantity?: number;
@@ -10,7 +8,7 @@ export async function createList(name: string, householdId: string, createdBy: s
   category?: string;
   isChecked?: boolean;
 }>) {
-  const response = await fetch('http://localhost:3001/api/lists', {
+  const response = await fetch(`${API_BASE}/api/lists`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -36,7 +34,7 @@ export async function createList(name: string, householdId: string, createdBy: s
  * Get all lists for a user (across all households)
  */
 export async function getUserLists(userId: string) {
-  const response = await fetch(`http://localhost:3001/api/lists/my?userId=${encodeURIComponent(userId)}`, {
+  const response = await fetch(`${API_BASE}/api/lists/my?userId=${encodeURIComponent(userId)}`, {
     method: 'GET',
   });
 
@@ -53,7 +51,7 @@ export async function getUserLists(userId: string) {
  * Get list by ID
  */
 export async function getListById(id: string, userId: string) {
-  const response = await fetch(`http://localhost:3001/api/lists/${id}`, {
+  const response = await fetch(`${API_BASE}/api/lists/${id}`, {
     method: 'GET',
   });
 
@@ -70,7 +68,7 @@ export async function getListById(id: string, userId: string) {
  * Update a list
  */
 export async function updateList(id: string, name?: string, householdId?: string, userId?: string) {
-  const response = await fetch(`http://localhost:3001/api/lists/${id}`, {
+  const response = await fetch(`${API_BASE}/api/lists/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -91,7 +89,7 @@ export async function updateList(id: string, name?: string, householdId?: string
  * Delete a list
  */
 export async function deleteList(id: string, userId: string) {
-  const response = await fetch(`http://localhost:3001/api/lists/${id}`, {
+  const response = await fetch(`${API_BASE}/api/lists/${id}`, {
     method: 'DELETE',
   });
 
@@ -115,7 +113,7 @@ export async function createListItem(
   unit?: string,
   notes?: string
 ) {
-  const response = await fetch(`http://localhost:3001/api/lists/${listId}/items`, {
+  const response = await fetch(`${API_BASE}/api/lists/${listId}/items`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, quantity, unitPrice, category, createdBy: userId, assignedTo, unit, notes }),
@@ -134,7 +132,7 @@ export async function createListItem(
  * Get list items for a list
  */
 export async function getListItems(listId: string) {
-  const response = await fetch(`http://localhost:3001/api/lists/${listId}/items`, {
+  const response = await fetch(`${API_BASE}/api/lists/${listId}/items`, {
     method: 'GET',
   });
 
@@ -161,7 +159,7 @@ export async function updateListItem(
   unit?: string,
   notes?: string
 ) {
-  const response = await fetch(`http://localhost:3001/api/lists/${listId}/items/${id}`, {
+  const response = await fetch(`${API_BASE}/api/lists/${listId}/items/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, quantity, unitPrice, category, assignedTo, unit, notes }),
@@ -180,7 +178,7 @@ export async function updateListItem(
  * Toggle item completion
  */
 export async function toggleItemCompletion(id: string, isCompleted: boolean, notBoughtReason?: string) {
-  const response = await fetch(`http://localhost:3001/api/lists/items/${id}`, {
+  const response = await fetch(`${API_BASE}/api/lists/items/${id}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -203,7 +201,7 @@ export async function toggleItemCompletion(id: string, isCompleted: boolean, not
  * Delete a list item
  */
 export async function deleteListItem(id: string, listId: string, userId: string) {
-  const response = await fetch(`http://localhost:3001/api/lists/${listId}/items/${id}`, {
+  const response = await fetch(`${API_BASE}/api/lists/${listId}/items/${id}`, {
     method: 'DELETE',
   });
 
@@ -217,7 +215,7 @@ export async function deleteListItem(id: string, listId: string, userId: string)
  * Get list statistics
  */
 export async function getListStats(listId: string, userId: string) {
-  const response = await fetch(`http://localhost:3001/api/lists/${listId}/stats`, {
+  const response = await fetch(`${API_BASE}/api/lists/${listId}/stats`, {
     method: 'GET',
   });
 
@@ -234,7 +232,7 @@ export async function getListStats(listId: string, userId: string) {
  * Get all items in a household
  */
 export async function getHouseholdItems(householdId: string, userId: string) {
-  const response = await fetch(`http://localhost:3001/api/households/${householdId}/items`, {
+  const response = await fetch(`${API_BASE}/api/households/${householdId}/items`, {
     method: 'GET',
   });
 

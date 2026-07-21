@@ -5,13 +5,14 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
-import { Spinner } from '@/components/ui/Spinner';
+import { SkeletonCard } from '@/components/ui/Skeleton';
+import { Skeleton } from '@/components/Skeleton';
 import { EmptyState } from '@/components/ui/EmptyState';
 import type { Household, HouseholdMember } from '@/types';
 
 const HouseholdPage: React.FC = () => {
-  const { user, households, currentHouseholdId, setCurrentHouseholdId, addHousehold } = useStore();
-  const { loading, loadUserHouseholds, createHousehold, getMembers, inviteMember, removeMember } = useHousehold();
+  const { user, currentHouseholdId, setCurrentHouseholdId } = useStore();
+  const { loading, households, loadUserHouseholds, createHousehold, getMembers, fetchMembers, inviteMember, removeMember } = useHousehold();
   const [members, setMembers] = useState<HouseholdMember[]>([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showInviteModal, setShowInviteModal] = useState(false);
@@ -19,7 +20,7 @@ const HouseholdPage: React.FC = () => {
   const [inviteEmail, setInviteEmail] = useState('');
   const [membersLoading, setMembersLoading] = useState(false);
 
-  const currentHousehold = households.find((h) => h.id === currentHouseholdId);
+  const currentHousehold = households.find((h: Household) => h.id === currentHouseholdId);
 
   useEffect(() => {
     const loadData = async () => {
@@ -34,7 +35,7 @@ const HouseholdPage: React.FC = () => {
       if (!currentHouseholdId) { setMembers([]); return; }
       setMembersLoading(true);
       try {
-        const m = await getMembers(currentHouseholdId);
+        const m = await fetchMembers(currentHouseholdId);
         setMembers(m);
       } catch (err) {
         console.error('Error loading members:', err);
@@ -63,7 +64,7 @@ const HouseholdPage: React.FC = () => {
       await inviteMember(currentHouseholdId, inviteEmail.trim());
       setInviteEmail('');
       setShowInviteModal(false);
-      const m = await getMembers(currentHouseholdId);
+      const m = await fetchMembers(currentHouseholdId);
       setMembers(m);
     } catch (err) {
       console.error('Error inviting member:', err);
@@ -95,7 +96,7 @@ const HouseholdPage: React.FC = () => {
   }
 
   if (loading) {
-    return <div className="flex justify-center py-12"><Spinner /></div>;
+    return <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><SkeletonCard /><SkeletonCard /></div>;
   }
 
   if (!currentHouseholdId || !currentHousehold) {
@@ -115,7 +116,7 @@ const HouseholdPage: React.FC = () => {
             <Card className="p-6 mt-6">
               <h2 className="text-lg font-semibold mb-4">Your Households</h2>
               <div className="space-y-3">
-                {households.map((h) => (
+                {households.map((h: Household) => (
                   <div key={h.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div>
                       <p className="font-medium text-gray-800">{h.name}</p>
@@ -191,7 +192,7 @@ const HouseholdPage: React.FC = () => {
         <Card className="p-6 mb-6">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">Members</h2>
           {membersLoading ? (
-            <Spinner />
+            <div className="flex justify-center py-4"><Skeleton className="h-8 w-8" /></div>
           ) : members.length === 0 ? (
             <p className="text-gray-500">No members found.</p>
           ) : (

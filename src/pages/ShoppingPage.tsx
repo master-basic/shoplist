@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, EmptyState, Badge, Spinner, Input } from '../components/ui';
+import { Card, Button, EmptyState, Badge, Input, SkeletonCard } from '../components/ui';
+import { Skeleton } from '../components/Skeleton';
 import { useStore } from '../store/useStore';
+import { API_BASE } from '../config';
 import { getUserLists } from '../api/lists';
 
 export const ShoppingPage: React.FC = () => {
@@ -50,7 +52,7 @@ export const ShoppingPage: React.FC = () => {
         listItemId: i.id, name: i.name, quantity: i.quantity || 1,
         unitPrice: i.estimated_price || 0, totalPrice: i.estimated_price || 0,
       }));
-      await fetch('http://localhost:3001/api/purchase-sessions', {
+      await fetch(`${API_BASE}/api/purchase-sessions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ listId: selectedListId, storeName: storeName || 'Unknown', userId: user.id, items }),
@@ -172,7 +174,7 @@ export const ShoppingPage: React.FC = () => {
               <div className="flex gap-3">
                 <Button onClick={() => setShowCompleteModal(false)} variant="secondary" className="flex-1" disabled={completing}>Cancel</Button>
                 <Button onClick={handleCompletePurchase} variant="primary" className="flex-1" disabled={completing}>
-                  {completing ? <Spinner size="sm" /> : 'Confirm'}
+                  {completing ? <Skeleton className="h-4 w-16" /> : 'Confirm'}
                 </Button>
               </div>
             </Card>
@@ -197,11 +199,7 @@ export const ShoppingPage: React.FC = () => {
   }
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <Spinner />
-      </div>
-    );
+    return <div className="space-y-4"><SkeletonCard /><SkeletonCard /><SkeletonCard /></div>;
   }
 
   return (

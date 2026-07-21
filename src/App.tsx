@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/useAuth';
-import { StoreProvider } from '@/store/useStore';
+import { StoreProvider, useStore } from '@/store/useStore';
 import { getUserById } from '@/api/auth';
 
 // Pages
@@ -12,11 +12,10 @@ import { ListDetail } from './pages/ListDetail.tsx';
 import { ShoppingPage } from './pages/ShoppingPage.tsx';
 import { ScanPage } from './pages/ScanPage.tsx';
 import { ReportsPage } from './pages/ReportsPage.tsx';
-import { SearchPage } from './pages/SearchPage.tsx';
 import { ProfilePage } from './pages/ProfilePage.tsx';
 import { HouseholdPage } from './pages/HouseholdPage.tsx';
-import { PurchaseHistoryPage } from './pages/PurchaseHistoryPage.tsx';
-import { OnboardingPage } from './pages/OnboardingPage.tsx';
+import { AdminPage } from './pages/AdminPage.tsx';
+import { PriceCheckPage } from './pages/PriceCheckPage.tsx';
 import NotFound from './pages/NotFound.tsx';
 
 // Auth Components
@@ -59,8 +58,26 @@ function App() {
     };
   }, [auth.user]);
   
-  const isAuthenticated = !!auth.user;
-  
+  const isAuthenticated = !!auth.user || !!localStorage.getItem('user_id');
+
+  // Sync user to Zustand store
+  useEffect(() => {
+    if (auth.user) {
+      useStore.getState().setUser(auth.user);
+    } else if (localStorage.getItem('user_id')) {
+      useStore.getState().setUser({
+        id: localStorage.getItem('user_id') || '',
+        name: localStorage.getItem('user_name') || '',
+        email: localStorage.getItem('user_email') || '',
+        isAdmin: false,
+        created_at: '',
+        preferred_currency: '',
+        notification_preferences: { push_notifications: false, price_change_alerts: false, weekly_summary: false, list_updates: false, reminders: false },
+        households: [],
+      });
+    }
+  }, [auth.user]);
+
   // Determine which page to render based on route
   const renderPage = () => {
     const path = location.pathname;
@@ -71,6 +88,7 @@ function App() {
       case '/':
         return <HomePage />;
       case '/lists':
+      case '/search':
         return <Lists />;
       case '/list/':
         return <ListDetail />;
@@ -80,14 +98,16 @@ function App() {
         return <ScanPage />;
       case '/reports':
         return <ReportsPage />;
-      case '/search':
-        return <SearchPage />;
       case '/household':
         return <HouseholdPage />;
       case '/profile':
         return <ProfilePage />;
+      case '/admin':
+        return <AdminPage />;
       case '/purchases':
-        return <PurchaseHistoryPage />;
+        return <ReportsPage />;
+      case '/price-check':
+        return <PriceCheckPage />;
       default:
         return <NotFound />;
     }
@@ -100,7 +120,7 @@ function App() {
           {/* Auth Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/onboarding" element={<OnboardingPage />} />
+          <Route path="/onboarding" element={<Register />} />
           
           {/* Main App Routes - only accessible when authenticated */}
           <Route

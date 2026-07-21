@@ -1,3 +1,4 @@
+import { API_BASE } from '@/config';
 import { ReceiptFile, OCRData } from '@/types';
 
 export interface CreateReceiptParams {
@@ -23,7 +24,7 @@ export interface CreateReceiptItemParams {
  * Create a new receipt
  */
 export async function createReceipt(params: CreateReceiptParams): Promise<ReceiptFile> {
-  const response = await fetch('http://localhost:3001/api/receipts', {
+  const response = await fetch(`${API_BASE}/api/receipts`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -52,7 +53,7 @@ export async function createReceiptItems(params: CreateReceiptItemParams[]): Pro
   total_price: number;
   created_at: string;
 }[]> {
-  const response = await fetch('http://localhost:3001/api/receipts/batch-items', {
+  const response = await fetch(`${API_BASE}/api/receipts/batch-items`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -73,7 +74,7 @@ export async function createReceiptItems(params: CreateReceiptItemParams[]): Pro
  * Update receipt status
  */
 export async function updateReceiptStatus(receiptId: string, status: string): Promise<ReceiptFile> {
-  const response = await fetch(`http://localhost:3001/api/receipts/${receiptId}/status`, {
+  const response = await fetch(`${API_BASE}/api/receipts/${receiptId}/status`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -94,7 +95,7 @@ export async function updateReceiptStatus(receiptId: string, status: string): Pr
  * Get receipt by ID
  */
 export async function getReceiptById(receiptId: string): Promise<ReceiptFile | null> {
-  const response = await fetch(`http://localhost:3001/api/receipts/${receiptId}`, {
+  const response = await fetch(`${API_BASE}/api/receipts/${receiptId}`, {
     method: 'GET',
   });
 
@@ -111,7 +112,7 @@ export async function getReceiptById(receiptId: string): Promise<ReceiptFile | n
  * Get user receipts
  */
 export async function getUserReceipts(userId: string, householdId?: string): Promise<ReceiptFile[]> {
-  let url = `http://localhost:3001/api/receipts/user/${userId}`;
+  let url = `${API_BASE}/api/receipts/user/${userId}`;
   const queryParams = new URLSearchParams();
 
   if (householdId) {
@@ -147,7 +148,7 @@ export async function getReceiptItems(receiptId: string): Promise<
     created_at: string;
   }[]
 > {
-  const response = await fetch(`http://localhost:3001/api/receipts/${receiptId}/items`, {
+  const response = await fetch(`${API_BASE}/api/receipts/${receiptId}/items`, {
     method: 'GET',
   });
 
@@ -164,7 +165,7 @@ export async function getReceiptItems(receiptId: string): Promise<
  * Delete a receipt
  */
 export async function deleteReceipt(receiptId: string): Promise<void> {
-  const response = await fetch(`http://localhost:3001/api/receipts/${receiptId}`, {
+  const response = await fetch(`${API_BASE}/api/receipts/${receiptId}`, {
     method: 'DELETE',
   });
 
