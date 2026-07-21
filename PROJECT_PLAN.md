@@ -973,13 +973,20 @@ DB_PASSWORD=your_password_here
 **Status:** Codebase cleaner. Phase 2 continues.
 
 ### [2026-07-21] Real OCR via Tesseract.js for ScanPage + getUserLists fix
+
+...
+**Status:** ScanPage now performs real OCR instead of simulating. Phase 2 continues.
+
+### [2026-07-21] Purchase session API, Onboarding registration, Reports category fix
 **Changes Made:**
-- Replaced hardcoded mock OCR result in `ScanPage.tsx` with real Tesseract.js recognition
-- Added `createWorker` import and `worker.recognize()` call in `handleScan`
-- Added `parseReceiptText()` utility extracting store name, items, prices, totals from raw OCR text
-- Removed artificial 2-second delay and hardcoded Bravo Market items
-- Fixed `getUserLists` in `src/api/lists.ts` — now sends userId to `GET /api/lists/my?userId=...` instead of unfiltered `GET /api/lists`
+- Added `POST /api/purchase-sessions` and `GET /api/purchase-sessions/user/:userId` server routes
+- Fixed `useGroceryList.ts` `createPurchaseSession` — now calls API instead of generating fake data with `crypto.randomUUID()`
+- Cleaned up unused imports/destructuring from `useGroceryList.ts`
+- Wired `OnboardingPage.tsx` to call `registerUser` + `createHousehold` APIs instead of hardcoded localStorage credentials
+- Fixed `ReportsPage.tsx` "Spending by Category" chart — now computes from real `priceHistory` data with keyword-based category matching, not `estimated_price`
 - Updated build artifacts
+
+**Status:** All audit items addressed. Phase 2 complete.
 
 **Status:** ScanPage now performs real OCR instead of simulating. Phase 2 continues.
 

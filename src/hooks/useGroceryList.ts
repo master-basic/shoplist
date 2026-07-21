@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { useStore } from '@/store/useStore';
 import { useHousehold } from './useHousehold';
 import { useAuth } from './useAuth';
-import type { ListItem, GroceryList, GroceryItem, PriceHistoryItem, OCRData, PurchasedItem, PurchaseSession } from '@/types';
+import type { ListItem, GroceryList, OCRData } from '@/types';
 import {
   getUserLists,
   getListById,
@@ -15,17 +15,9 @@ import {
   createList as apiCreateList,
   getHouseholdItems
 } from '@/api/lists';
-import {
-  createReceipt,
-  createReceiptItems,
-  updateReceiptStatus,
-  getUserReceipts,
-  getReceiptItems as getReceiptItemsApi,
-  deleteReceipt
-} from '@/api/receipts';
 
 export const useGroceryList = () => {
-  const { lists, addItemToList, updateItem, duplicateList, archiveList: storeArchiveList, reorderItems: reorderItemsAction, addPurchaseSession, addPurchasedItem, addPriceHistory } = useStore();
+  const { lists, addItemToList, updateItem, duplicateList, archiveList: storeArchiveList, reorderItems: reorderItemsAction } = useStore();
   const { currentHouseholdId } = useHousehold();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -401,65 +393,42 @@ export const useGroceryList = () => {
     listId: string,
     userId: string,
     ocrData?: OCRData
-  ): Promise<{ session: PurchaseSession; items: PurchasedItem[] }> => {
+  ): Promise<{ session: any; items: any[] }> => {
     setLoading(true);
     setError(null);
     
     try {
       const list = lists.find((l: GroceryList) => l.id === listId);
       if (!list) throw new Error('List not found');
-      
-      const purchasedItems: PurchasedItem[] = [];
-      const priceHistoryItems: PriceHistoryItem[] = [];
-      
-      // Process list items
-      for (const item of list.items) {
-        const purchasedItem: PurchasedItem = {
-          id: crypto.randomUUID(),
-          session_id: crypto.randomUUID(),
-          name: item.name,
-          category: item.category,
-          quantity: item.quantity || 1,
-          unit: item.unit || 'pcs',
-          unit_price: item.estimated_price || 0,
-          total_price: item.estimated_price || 0,
-          is_on_list: true,
-          created_at: new Date().toISOString(),
-          ocr_raw_text: undefined,
-          ocr_confidence: undefined
-        };
-        
-        purchasedItems.push(purchasedItem);
-        priceHistoryItems.push({
-          id: crypto.randomUUID(),
-          item_name: item.name,
-          store_name: storeName,
-          unit_price: item.estimated_price || 0,
-          purchased_at: new Date().toISOString(),
-          session_id: crypto.randomUUID(),
-          bought_by: userId,
-          quantity: item.quantity || 1
-        });
+
+      const items = list.items.map(item => ({
+        listItemId: item.id,
+        name: item.name,
+        quantity: item.quantity || 1,
+        unitPrice: item.estimated_price || 0,
+        totalPrice: item.estimated_price || 0,
+      }));
+
+      const res = await fetch('http://localhost:3001/api/purchase-sessions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          listId,
+          storeName,
+          userId,
+          householdId: list.household_id,
+          items,
+          ocrData,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Failed to create purchase session');
       }
-      
-      // Add to store
-      const session: PurchaseSession = {
-        id: crypto.randomUUID(),
-        list_id: listId,
-        bought_by: userId,
-        store_name: storeName,
-        purchase_date: new Date().toISOString(),
-        total_paid: 0,
-        created_at: new Date().toISOString(),
-        items: purchasedItems
-      };
-      
-      addPurchaseSession(session);
-      for (const ph of priceHistoryItems) {
-        addPriceHistory(ph);
-      }
-      
-      return { session, items: purchasedItems };
+
+      const data = await res.json();
+      return { session: data.session, items: data.session.items || [] };
     } catch (err) {
       console.error('Error creating purchase session:', err);
       setError(err instanceof Error ? err.message : 'Failed to create purchase session');

@@ -4,6 +4,9 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { Spinner } from '@/components/ui/Spinner';
+import { registerUser } from '@/api/auth';
+import { createHousehold } from '@/api/auth';
 import { STORES, CATEGORIES } from '@/types';
 
 const OnboardingPage: React.FC = () => {
@@ -17,6 +20,8 @@ const OnboardingPage: React.FC = () => {
     currency: 'TRY',
     demoMode: false,
   });
+  const [submitting, setSubmitting] = useState(false);
+  const [registerError, setRegisterError] = useState('');
 
   // Check if user is already logged in
   useEffect(() => {
@@ -46,19 +51,26 @@ const OnboardingPage: React.FC = () => {
     }
   };
 
-  const handleComplete = () => {
-    // In a real app, this would create the user and household
-    console.log('Onboarding completed:', formData);
-    
-    if (formData.demoMode) {
-      // Create demo data
-      localStorage.setItem('user_id', 'demo-user-123');
-      localStorage.setItem('user_name', 'Demo User');
-      localStorage.setItem('user_email', 'demo@example.com');
-      localStorage.setItem('user_password', formData.password);
+  const handleComplete = async () => {
+    setSubmitting(true);
+    setRegisterError('');
+    try {
+      const user = await registerUser(formData.name, formData.email, formData.password);
+      await createHousehold(`${formData.name}'s Household`, '', user.id);
+      localStorage.setItem('user_id', user.id);
+      localStorage.setItem('user_name', user.name);
+      localStorage.setItem('user_email', user.email);
+
+      if (formData.demoMode) {
+        localStorage.setItem('demo_mode', 'true');
+      }
+
+      navigate('/lists');
+    } catch (err) {
+      setRegisterError(err instanceof Error ? err.message : 'Registration failed');
+    } finally {
+      setSubmitting(false);
     }
-    
-    navigate('/lists');
   };
 
   const renderStep = () => {
@@ -256,6 +268,12 @@ const OnboardingPage: React.FC = () => {
 
         {renderStep()}
 
+        {registerError && (
+          <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-sm text-red-700">{registerError}</p>
+          </div>
+        )}
+
         <div className="flex gap-4 mt-8">
           {step > 1 && (
             <Button onClick={handlePrevious} variant="secondary" className="flex-1">
@@ -266,9 +284,9 @@ const OnboardingPage: React.FC = () => {
             onClick={step === 4 ? handleComplete : handleNext}
             variant="primary"
             className="flex-1"
-            disabled={step === 1 && !formData.name}
+            disabled={(step === 1 && !formData.name) || submitting}
           >
-            {step === 4 ? 'Create Account' : 'Next'}
+            {submitting ? <Spinner size="sm" /> : step === 4 ? 'Create Account' : 'Next'}
           </Button>
         </div>
       </Card>

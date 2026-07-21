@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Spinner } from '@/components/ui/Spinner';
 import { getUserLists } from '@/api/lists';
+import { CATEGORIES } from '@/types';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend,
@@ -86,10 +87,13 @@ const ReportsPage: React.FC = () => {
     .map(([date, total]) => ({ date, total: Math.round(total * 100) / 100 }))
     .sort((a, b) => a.date.localeCompare(b.date));
 
-  const allItems = lists.flatMap((l) => l.items || []);
-  const byCategory = allItems.reduce((acc: Record<string, number>, i: any) => {
-    const cat = i.category || 'Other';
-    acc[cat] = (acc[cat] || 0) + (i.estimated_price || 0) * (i.quantity || 1);
+  const byCategory = filteredHistory.reduce((acc: Record<string, number>, h: any) => {
+    const name = (h.item_name || '').toLowerCase();
+    let cat = 'Other';
+    for (const c of CATEGORIES) {
+      if (name.includes(c.toLowerCase())) { cat = c; break; }
+    }
+    acc[cat] = (acc[cat] || 0) + (h.unit_price || 0) * (h.quantity || 1);
     return acc;
   }, {});
   const categoryData = Object.entries(byCategory)
