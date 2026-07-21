@@ -1,0 +1,27 @@
+{
+  "extractedAt": "2026-07-21T11:18:28.941Z",
+  "totalProducts": 0,
+  "products": [],
+  "sources": [
+    {
+      "error": "venue-assortment not found",
+      "source": "C:\\Users\\admin\\.local\\share\\opencode\\tool-output\\tool_f84388a49001g73dg8D2tbTAV5"
+    },
+    {
+      "error": "Expected ',' or '}' after property value in JSON at position 55 (line 2 column 1)",
+      "source": "C:\\Users\\admin\\.local\\share\\opencode\\tool-output\\tool_f843040ef001y9AGh09XmbcZRD"
+    },
+    {
+      "error": "Bad control character in string literal in JSON at position 18 (line 1 column 19)",
+      "source": "C:\\Users\\admin\\.local\\share\\opencode\\tool-output\\tool_f8431fa37001hES8aBOkS6g41B"
+    },
+    {
+      "error": "Expected ',' or '}' after property value in JSON at position 55 (line 2 column 1)",
+      "source": "C:\\Users\\admin\\.local\\share\\opencode\\tool-output\\tool_f8438c3310015L0nqwWdmmgFK5"
+    },
+    {
+      "error": "venue-assortment not found",
+      "source": "C:\\Users\\admin\\.local\\share\\opencode\\tool-output\\tool_f843db4a3001lv8Jhsj279pbYy"
+    }
+  ]
+}
