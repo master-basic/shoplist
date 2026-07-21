@@ -98,6 +98,13 @@ GDPR compliance, data encryption, rate limiting, session management, password re
 
 ---
 
+## Session 2026-07-21 Fixes
+- **Purchase FK violation** — `listSlice.ts` no longer overrides item `id` with `uuidv4()` when a real DB ID is provided
+- **ListDetail.tsx API response handling** — Extracts `newItem.item` instead of spreading the wrapper object
+- **Stale persisted lists** — Zustand `partialize` no longer persists `lists`/`priceHistory`; pages always update from API
+- **price_history INSERT** — Updated to include all required NOT NULL columns (`item_name`, `store_name`, etc.)
+- **server managed via PM2** — `ecosystem.config.json` for persistent process management
+
 ## Summary
 
 ### Done (225 lines → fixed)

@@ -1,6 +1,6 @@
 # GroceryMind - Development Log
-**Current Session:** June 3, 2026  
-**Session Purpose:** Verify project functionality and track all changes
+**Current Session:** July 21, 2026  
+**Session Purpose:** Bug fixes — purchase FK error, price_history INSERT, stale persisted UUIDs
 
 ---
 

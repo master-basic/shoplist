@@ -1,6 +1,13 @@
 # Bug Report
 
-## Fixed Bugs (this session)
+## Fixed Bugs (current session — Jul 21)
+- **Purchase fails with FK violation on receipt_items** — `addItemToList` in `listSlice.ts` always generated `uuidv4()` overriding the real DB ID. Fixed to preserve `item.id` when provided.
+- **New items got fake UUIDs in store** — `ListDetail.tsx` spread `createListItem` response wrapper (`{ item: {...}, message: "..." }`) instead of `newItem.item`, so the real DB `id` was nested and never reached the store. Fixed.
+- **Stale persisted lists survived refresh** — Zustand `persist` saved fake UUIDs to localStorage. `ShoppingPage.tsx` only added missing lists (`if (!existing)`), never replaced stale ones. Fixed to always update from API. Also removed `lists` and `priceHistory` from `partialize` so only `user` is persisted.
+- **Price_history INSERT missing NOT NULL columns** — `purchases.js` INSERT only targeted migration-008 columns, missing `item_name`, `store_name`, `unit_price`, `quantity`, `session_id`, `bought_by` from the original schema. Fixed.
+- **debug.ts included auth header on log POST** — Caused CORS preflight. Reverted.
+
+## Fixed Bugs (previous session)
 - **Empty item created on list creation** — `useGroceryList.ts:41` called `addItemToList` with empty name immediately after creating a list. Removed the spurious item creation.
 - **Store user not persisted** — User state wasn't included in Zustand `partialize`, causing page refreshes to lose auth. Added `user` to persisted fields.
 - **Hardcoded `localhost:3001` in 9+ files** — Created `src/config.ts` with `import.meta.env.VITE_API_URL || 'http://localhost:3001'` and updated all API files, hooks, and pages to import `API_BASE` from config.
