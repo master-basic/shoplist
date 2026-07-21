@@ -17,6 +17,7 @@ interface GroceryItemCardProps {
   onRemove: (itemId: string) => void;
   onNotBought?: (itemId: string, reason: string) => void;
   members?: HouseholdMember[];
+  bestDeal?: { store: string; price: number } | null;
   readOnly?: boolean;
 }
 
@@ -27,6 +28,7 @@ export function GroceryItemCard({
   onRemove,
   onNotBought,
   members = [],
+  bestDeal,
   readOnly = false 
 }: GroceryItemCardProps) {
   const [isEditing, setIsEditing] = useState(false);
@@ -112,6 +114,11 @@ export function GroceryItemCard({
                 {item.not_bought_reason && (
                   <span className="inline-block mt-1 ml-1 px-2 py-0.5 bg-amber-50 text-amber-700 text-xs rounded-full font-medium">
                     Not bought: {item.not_bought_reason}
+                  </span>
+                )}
+                {bestDeal && (
+                  <span className="inline-block mt-1 ml-1 px-2 py-0.5 bg-purple-50 text-purple-700 text-xs rounded-full font-medium">
+                    Best at {bestDeal.store} ({bestDeal.price.toFixed(2)})
                   </span>
                 )}
               </div>
@@ -244,6 +251,11 @@ export function GroceryItemCard({
                   {item.not_bought_reason && (
                     <span className="inline-block mt-1 ml-1 px-2 py-0.5 bg-amber-50 text-amber-700 text-xs rounded-full font-medium">
                       Not bought: {item.not_bought_reason}
+                    </span>
+                  )}
+                  {bestDeal && (
+                    <span className="inline-block mt-1 ml-1 px-2 py-0.5 bg-purple-50 text-purple-700 text-xs rounded-full font-medium">
+                      Best at {bestDeal.store} ({bestDeal.price.toFixed(2)})
                     </span>
                   )}
                 </div>

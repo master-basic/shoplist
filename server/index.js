@@ -601,6 +601,31 @@ app.get('/api/price-history/stats', async (req, res) => {
   }
 });
 
+app.post('/api/price-history/best-deals', async (req, res) => {
+  try {
+    const { itemNames } = req.body;
+    if (!itemNames || !Array.isArray(itemNames) || itemNames.length === 0) {
+      return res.json({ deals: {} });
+    }
+    const uniqueNames = [...new Set(itemNames.map((n: string) => n.toLowerCase().trim()).filter(Boolean))];
+    const deals: Record<string, { store: string; price: number }> = {};
+    for (const name of uniqueNames) {
+      const result = await pool.query(
+        `SELECT DISTINCT ON (item_name) item_name, store_name, unit_price FROM price_history
+         WHERE LOWER(item_name) = $1 ORDER BY item_name, unit_price ASC LIMIT 1`,
+        [name]
+      );
+      if (result.rows.length > 0) {
+        deals[name] = { store: result.rows[0].store_name, price: parseFloat(result.rows[0].unit_price) };
+      }
+    }
+    res.json({ deals });
+  } catch (error) {
+    console.error('Get best deals error:', error);
+    res.status(500).json({ error: 'Failed to get best deals', message: error.message });
+  }
+});
+
 // =====================================================
 // RECEIPT ROUTES
 // =====================================================

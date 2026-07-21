@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, EmptyState, Button, Input, Select, Spinner } from '../components/ui';
 import { Badge } from '../components/ui/Badge';
 import { GroceryItemCard } from '../components/GroceryItemCard';
@@ -7,6 +8,7 @@ import { getUserLists, createList, deleteList as apiDeleteList, createListItem, 
 import type { GroceryList, ListItem } from '../types';
 
 export const Lists: React.FC = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
   const [loading, setLoading] = useState(true);
@@ -151,7 +153,9 @@ export const Lists: React.FC = () => {
             <Card key={list.id} className="h-full flex flex-col">
               <div className="flex items-start justify-between mb-3">
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-gray-800 truncate">{list.name}</h3>
+                  <button onClick={() => navigate(`/list/${list.id}`)} className="text-left">
+                    <h3 className="font-semibold text-gray-800 truncate hover:text-green-600">{list.name}</h3>
+                  </button>
                   <p className="text-sm text-gray-600 truncate">{list.description || 'No description'}</p>
                 </div>
                 <Badge variant={getStatusVariant(list.status)}>{list.status}</Badge>

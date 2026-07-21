@@ -748,7 +748,6 @@ CREATE TABLE user_preferences (
 - [ ] Price history normalization
 - [ ] Unit price tracking
 - [ ] Price change alerts
-- [ ] "Best deal" badges
 - [ ] PDF receipt support
 
 **Phase 3: Receipt Scanning & OCR - IN PROGRESS**
@@ -1000,6 +999,16 @@ DB_PASSWORD=your_password_here
 - Updated build artifacts
 
 **Status:** Full-screen shopping mode implemented. Phase 2 features complete.
+
+### [2026-07-21] Route fix, best deal badges, purchase history improvements
+**Changes Made:**
+- Fixed `/list/` route to support `/list/:id` with `useParams` and `useLocation`
+- Added explicit `<Route path="/list/:id">` in App.tsx before the wildcard catch-all
+- Updated Lists.tsx to navigate to `/list/:id` on list name click
+- Added `POST /api/price-history/best-deals` server endpoint (batch cheapest store lookup)
+- Added "Best at {store} ({price})" badge on GroceryItemCard showing cheapest historical store
+- Wired ListDetail to fetch best deals for visible items
+- Build updates
 
 ### [2026-07-21] Item assignment, not-bought tracking, purchase history page
 **Changes Made:**

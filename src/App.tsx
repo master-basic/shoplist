@@ -63,7 +63,11 @@ function App() {
   
   // Determine which page to render based on route
   const renderPage = () => {
-    switch (location.pathname) {
+    const path = location.pathname;
+    if (path.startsWith('/list/') && path.length > 6) {
+      return <ListDetail />;
+    }
+    switch (path) {
       case '/':
         return <HomePage />;
       case '/lists':
@@ -107,6 +111,7 @@ function App() {
                 : <Navigate to="/login" replace />
             }
           >
+            <Route path="/list/:id" element={<ListDetail />} />
             <Route path="*" element={renderPage()} />
           </Route>
           

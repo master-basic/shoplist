@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
 import { Card, Button, EmptyState, Toast, Input, Select, Badge, Spinner } from '../components/ui';
 import { useStore } from '../store/useStore';
 import { GroceryItemCard } from '../components/GroceryItemCard';
@@ -14,12 +15,16 @@ interface HouseholdMember {
 }
 
 export const ListDetail: React.FC = () => {
+  const { id: routeListId } = useParams<{ id: string }>();
+  const location = useLocation();
   const { user, lists, addList, deleteList: storeDeleteList, deleteListItem: storeDeleteListItem, addItemToList, updateItem, toggleItem, archiveList } = useStore();
-  const [selectedListId, setSelectedListId] = useState<string | null>(null);
+  const pathId = location.pathname.startsWith('/list/') ? location.pathname.slice(6) : null;
+  const [selectedListId, setSelectedListId] = useState<string | null>(routeListId || pathId || null);
   const [showNewItemModal, setShowNewItemModal] = useState(false);
   const [notification, setNotification] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [members, setMembers] = useState<HouseholdMember[]>([]);
+  const [bestDeals, setBestDeals] = useState<Record<string, { store: string; price: number }>>({});
 
   useEffect(() => {
     const fetchLists = async () => {
@@ -53,6 +58,27 @@ export const ListDetail: React.FC = () => {
     };
     fetchMembers();
   }, [selectedList?.household_id]);
+
+  useEffect(() => {
+    const fetchBestDeals = async () => {
+      if (!selectedList?.items?.length) { setBestDeals({}); return; }
+      const names = [...new Set(selectedList.items.map((i: any) => i.name).filter(Boolean))];
+      try {
+        const res = await fetch('http://localhost:3001/api/price-history/best-deals', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ itemNames: names }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setBestDeals(data.deals || {});
+        }
+      } catch (err) {
+        console.error('Error fetching best deals:', err);
+      }
+    };
+    fetchBestDeals();
+  }, [selectedList?.items?.length, selectedList?.items?.map((i: any) => i.name).join(',')]);
 
   const showNotification = (message: string) => {
     setNotification(message);
@@ -226,7 +252,8 @@ export const ListDetail: React.FC = () => {
                 <h3 className="text-sm font-medium text-gray-600 mb-2">Completed ({items.filter((i) => i.is_checked).length})</h3>
                 <div className="space-y-2">
                   {items.filter((i) => i.is_checked).slice(0, 5).map((item) => (
-                    <GroceryItemCard key={item.id} item={item} onToggle={handleToggleItem} onUpdate={handleUpdateItem} onRemove={handleDeleteItem} members={members} readOnly />
+                    <GroceryItemCard key={item.id} item={item} onToggle={handleToggleItem} onUpdate={handleUpdateItem} onRemove={handleDeleteItem} members={members} bestDeal={bestDeals[item.name?.toLowerCase()] || null} readOnly />
+
                   ))}
                 </div>
               </div>
@@ -235,7 +262,7 @@ export const ListDetail: React.FC = () => {
               <h3 className="text-sm font-medium text-gray-600 mb-2">To Buy ({items.filter((i) => !i.is_checked).length})</h3>
               <div className="space-y-2">
                   {items.filter((i) => !i.is_checked).map((item) => (
-                    <GroceryItemCard key={item.id} item={item} onToggle={handleToggleItem} onUpdate={handleUpdateItem} onRemove={handleDeleteItem} onNotBought={handleNotBought} members={members} />
+                    <GroceryItemCard key={item.id} item={item} onToggle={handleToggleItem} onUpdate={handleUpdateItem} onRemove={handleDeleteItem} onNotBought={handleNotBought} members={members} bestDeal={bestDeals[item.name?.toLowerCase()] || null} />
                   ))}
               </div>
             </div>
