@@ -30,6 +30,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     { path: '/', label: 'Home', icon: '🏠' },
     { path: '/lists', label: 'My Lists', icon: '🛒' },
     { path: '/shopping', label: 'Shopping', icon: '📋' },
+    { path: '/purchases', label: 'Purchases', icon: '🧾' },
     { path: '/scan', label: 'Scan', icon: '📷' },
     { path: '/reports', label: 'Reports', icon: '📊' },
     { path: '/search', label: 'Search', icon: '🔍' },

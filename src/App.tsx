@@ -15,6 +15,7 @@ import { ReportsPage } from './pages/ReportsPage.tsx';
 import { SearchPage } from './pages/SearchPage.tsx';
 import { ProfilePage } from './pages/ProfilePage.tsx';
 import { HouseholdPage } from './pages/HouseholdPage.tsx';
+import { PurchaseHistoryPage } from './pages/PurchaseHistoryPage.tsx';
 import { OnboardingPage } from './pages/OnboardingPage.tsx';
 import NotFound from './pages/NotFound.tsx';
 
@@ -81,6 +82,8 @@ function App() {
         return <HouseholdPage />;
       case '/profile':
         return <ProfilePage />;
+      case '/purchases':
+        return <PurchaseHistoryPage />;
       default:
         return <NotFound />;
     }
