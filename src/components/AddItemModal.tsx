@@ -27,6 +27,8 @@ export function AddItemModal({ isOpen, onClose, onSubmit, existingItems = [], as
   const [unit, setUnit] = useState('pcs');
   const [category, setCategory] = useState('produce');
   const [estimatedPrice, setEstimatedPrice] = useState('');
+  const [actualPrice, setActualPrice] = useState('');
+  const [unitPrice, setUnitPrice] = useState('');
   const [notes, setNotes] = useState('');
   const [preferredStore, setPreferredStore] = useState('');
   const [assignedTo, setAssignedTo] = useState('');
@@ -89,6 +91,8 @@ export function AddItemModal({ isOpen, onClose, onSubmit, existingItems = [], as
       unit: unit.trim(),
       category,
       estimated_price: estimatedPrice ? parseFloat(estimatedPrice) : 0,
+      actual_price: actualPrice ? parseFloat(actualPrice) : undefined,
+      unit_price: unitPrice ? parseFloat(unitPrice) : undefined,
       notes: notes.trim() || undefined,
       preferred_store: preferredStore.trim() || undefined,
       sort_order: 0,
@@ -97,7 +101,6 @@ export function AddItemModal({ isOpen, onClose, onSubmit, existingItems = [], as
       checked_by: undefined,
       checked_at: undefined,
       is_checked: false,
-      actual_price: undefined,
       actual_quantity: undefined,
       assigned_to: assignedTo ? [assignedTo] : [],
       price_history: [],
@@ -219,45 +222,61 @@ export function AddItemModal({ isOpen, onClose, onSubmit, existingItems = [], as
             </div>
           </div>
 
-          {/* Category and Price */}
-          <div className="flex gap-3">
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Category
-              </label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
-              >
-                <option value="produce">Produce</option>
-                <option value="dairy">Dairy</option>
-                <option value="meat">Meat</option>
-                <option value="bakery">Bakery</option>
-                <option value="frozen">Frozen</option>
-                <option value="pantry">Pantry</option>
-                <option value="beverages">Beverages</option>
-                <option value="snacks">Snacks</option>
-                <option value="household">Household</option>
-                <option value="personal_care">Personal Care</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Estimated Price (AZN)
-              </label>
-              <input
-                type="number"
-                value={estimatedPrice}
-                onChange={(e) => setEstimatedPrice(e.target.value)}
-                min="0"
-                step="0.01"
-                placeholder="0.00"
-                className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-            </div>
-          </div>
+           {/* Category and Price */}
+           <div className="flex gap-3">
+             <div className="flex-1">
+               <label className="block text-sm font-medium text-slate-700 mb-1">
+                 Category
+               </label>
+               <select
+                 value={category}
+                 onChange={(e) => setCategory(e.target.value)}
+                 className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+               >
+                 <option value="produce">Produce</option>
+                 <option value="dairy">Dairy</option>
+                 <option value="meat">Meat</option>
+                 <option value="bakery">Bakery</option>
+                 <option value="frozen">Frozen</option>
+                 <option value="pantry">Pantry</option>
+                 <option value="beverages">Beverages</option>
+                 <option value="snacks">Snacks</option>
+                 <option value="household">Household</option>
+                 <option value="personal_care">Personal Care</option>
+                 <option value="other">Other</option>
+               </select>
+             </div>
+             <div className="flex-1">
+               <label className="block text-sm font-medium text-slate-700 mb-1">
+                 Actual Price (AZN)
+               </label>
+               <input
+                 type="number"
+                 value={actualPrice}
+                 onChange={(e) => setActualPrice(e.target.value)}
+                 min="0"
+                 step="0.01"
+                 placeholder="0.00"
+                 className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+               />
+             </div>
+           </div>
+
+           {/* Unit Price */}
+           <div>
+             <label className="block text-sm font-medium text-slate-700 mb-1">
+               Unit Price (AZN)
+             </label>
+             <input
+               type="number"
+               value={unitPrice}
+               onChange={(e) => setUnitPrice(e.target.value)}
+               min="0"
+               step="0.01"
+               placeholder="0.00"
+               className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+             />
+           </div>
 
           {/* Recurring */}
           <div className="flex items-center justify-between">

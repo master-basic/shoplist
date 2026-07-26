@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, EmptyState, Badge, Input, SkeletonCard } from '../components/ui';
+import { Card, Button, EmptyState, Badge, Input, SkeletonCard, Toast } from '../components/ui';
 import { PurchaseConfirmModal } from '../components/PurchaseConfirmModal';
+import { ConfirmationModal } from '../components/ConfirmationModal';
 import { useStore } from '../store/useStore';
 import { getUserLists } from '../api/lists';
 import { useLogRender } from '@/hooks/useLogRender';
@@ -19,6 +20,9 @@ export const ShoppingPage: React.FC = () => {
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [purchaseItems, setPurchaseItems] = useState<any[]>([]);
   const [itemPrices, setItemPrices] = useState<Record<string, number>>({});
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [itemsToConfirm, setItemsToConfirm] = useState<any[]>([]);
+  const [notification, setNotification] = useState('');
 
   useEffect(() => {
     const fetchLists = async () => {
@@ -53,14 +57,22 @@ export const ShoppingPage: React.FC = () => {
     if (!selectedListId || !user?.id) return;
     const list = lists.find((l) => l.id === selectedListId);
     if (!list) return;
-    const items = list.items.filter((i: any) => i.is_checked).map((i: any) => ({
-      listItemId: i.id,
+    
+    const uncheckedItems = list.items.filter((i: any) => i.is_checked);
+    if (uncheckedItems.length === 0) return;
+    
+    const items = uncheckedItems.map((i: any) => ({
+      id: i.id,
       name: i.name,
       quantity: i.quantity || 1,
-      unitPrice: itemPrices[i.id] !== undefined ? itemPrices[i.id] : (i.estimated_price || 0),
     }));
-    setPurchaseItems(items);
-    setShowPurchaseModal(true);
+    setItemsToConfirm(items);
+    setShowConfirmation(true);
+  };
+
+  const showNotification = (message: string) => {
+    setNotification(message);
+    setTimeout(() => setNotification(''), 3000);
   };
 
   const handleConfirmPurchase = async (updatedItems: any[]) => {
@@ -78,15 +90,45 @@ export const ShoppingPage: React.FC = () => {
       });
       if (!res.ok) {
         log.error('ShoppingPage: complete purchase failed', { status: res.status });
+        throw new Error('Failed to complete purchase');
       }
+      log.info('Purchase completed successfully', { itemCount: updatedItems.length });
+      showNotification(`Purchase completed! ${updatedItems.length} item${updatedItems.length !== 1 ? 's' : ''} added.`);
       setShowPurchaseModal(false);
       setShoppingMode(false);
       setSelectedListId(null);
+      setStoreName('');
+      setItemPrices({});
     } catch (err) {
-      console.error('Error completing purchase:', err);
+      const error = err instanceof Error ? err.message : 'Unknown error';
+      log.error('Error completing purchase:', err);
+      showNotification(`Error: ${error}`);
     } finally {
       setCompleting(false);
     }
+  };
+
+  const handleMarkAsBought = async () => {
+    if (!selectedListId || !user?.id || itemsToConfirm.length === 0) return;
+    
+    // Show confirmation with items list
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmMarkAsBought = async () => {
+    if (itemsToConfirm.length === 0) return;
+    
+    // Update all checked items
+    const updatedItems = itemsToConfirm.map((item: any) => ({
+      ...item,
+      is_checked: true,
+    }));
+    
+    setShowConfirmation(false);
+    setItemsToConfirm([]);
+    
+    // Call complete purchase
+    await handleConfirmPurchase(updatedItems);
   };
 
   const selectedList = lists.find((l) => l.id === selectedListId);
@@ -126,6 +168,8 @@ export const ShoppingPage: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {notification && <Toast variant="success" message={notification} onClose={() => setNotification('')} />}
 
         <div className="flex-1 overflow-y-auto px-4 py-4 max-w-2xl mx-auto w-full">
           {visibleItems.length === 0 ? (
@@ -187,15 +231,27 @@ export const ShoppingPage: React.FC = () => {
               className="flex-1"
             />
             <Button
-              onClick={handleOpenPurchaseModal}
+              onClick={handleMarkAsBought}
               variant="primary"
               size="lg"
               disabled={completedItems === 0}
             >
-              Complete Purchase ({completedItems})
+              Mark as Bought ({completedItems})
             </Button>
           </div>
         </div>
+
+        {showConfirmation && (
+          <ConfirmationModal
+            title="Confirm Purchase"
+            message={`You're about to mark ${itemsToConfirm.length} item${itemsToConfirm.length !== 1 ? 's' : ''} as bought. Continue?`}
+            items={itemsToConfirm}
+            onConfirm={handleConfirmMarkAsBought}
+            onCancel={() => setShowConfirmation(false)}
+            variant="success"
+            isLoading={completing}
+          />
+        )}
 
         <PurchaseConfirmModal
           isOpen={showPurchaseModal}
