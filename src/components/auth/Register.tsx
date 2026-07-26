@@ -108,7 +108,7 @@ const Register: React.FC = () => {
             </div>
             <div className="flex gap-4">
               <Button onClick={handlePrevious} variant="secondary" className="flex-1">Back</Button>
-              <Button onClick={handleNext} className="flex-1">Next: Currency</Button>
+              <Button onClick={handleNext} className="flex-1" disabled={!formData.preferredStore}>Next: Currency</Button>
             </div>
           </div>
         )}
@@ -128,7 +128,7 @@ const Register: React.FC = () => {
             ))}
             <div className="flex gap-4">
               <Button onClick={handlePrevious} variant="secondary" className="flex-1">Back</Button>
-              <Button onClick={handleNext} className="flex-1">Next: Finalize</Button>
+              <Button onClick={handleNext} className="flex-1" disabled={!formData.currency}>Next: Finalize</Button>
             </div>
           </div>
         )}
@@ -153,7 +153,7 @@ const Register: React.FC = () => {
             </label>
             <div className="flex gap-4">
               <Button onClick={handlePrevious} variant="secondary" className="flex-1">Back</Button>
-              <Button onClick={handleSubmit} className="flex-1" disabled={isLoading}>
+              <Button onClick={handleSubmit} className="flex-1" disabled={!formData.name || !formData.email || !formData.password || !formData.currency}>
                 {isLoading ? <Skeleton className="h-4 w-20" /> : 'Create Account'}
               </Button>
             </div>

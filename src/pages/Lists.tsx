@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Card, EmptyState, Button, Input, Select, SkeletonCard } from '../components/ui';
+import { Card, EmptyState, Button, Input, Select, SkeletonCard, Toast } from '../components/ui';
 import { Badge } from '../components/ui/Badge';
 import { GroceryItemCard } from '../components/GroceryItemCard';
 import { StockBadge } from '../components/StockBadge';
@@ -70,8 +70,10 @@ export const Lists: React.FC = () => {
       });
       setNewListName('');
       setShowCreateModal(false);
+      log.info('List created successfully', { newListName, householdId: currentHouseholdId });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create list');
+      log.error('Failed to create list', err);
     }
   };
 
@@ -79,6 +81,7 @@ export const Lists: React.FC = () => {
     try {
       await apiDeleteList(listId, user?.id || '');
       storeDeleteList(listId);
+      log.info('List deleted successfully', { listId });
     } catch (err) {
       console.error('Error deleting list:', err);
     }
@@ -321,11 +324,13 @@ export const Lists: React.FC = () => {
       </div>
       )}
 
+      {notification && <Toast variant="success" message={notification} onClose={() => setNotification(null)} />}
+      {error && notification && <Toast variant="error" message={error} onClose={() => setNotification(null)} />}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <Card className="w-full max-w-md mx-4 p-6">
             <h3 className="text-lg font-semibold mb-4">Create New List</h3>
-            {error && <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">{error} <button onClick={() => navigate('/household')} className="underline font-medium">Create or join one here</button></div>}
+            {error && !notification && <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">{error} <button onClick={() => navigate('/household')} className="underline font-medium">Create or join one here</button></div>}
             <Input
               label="List Name"
               value={newListName}
