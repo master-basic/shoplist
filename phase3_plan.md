@@ -6,7 +6,7 @@ Implement receipt scanning with OCR to automatically extract purchase data and s
 ## Features to Implement
 
 ### 1. Receipt Scanning UI ✅
-- **Status:** ✅ IMPLEMENTED
+- **Status:** ✅ IMPLEMENTED (Phase 3.1)
 - **Files:** `src/pages/ScanPage.tsx` - Enhanced
 - **Changes:**
   - ✅ Added camera permission request on mount
@@ -16,6 +16,9 @@ Implement receipt scanning with OCR to automatically extract purchase data and s
   - ✅ Error handling with user-friendly messages
   - ✅ Camera mode shows preview before scanning
   - ✅ Upload mode shows preview with max 10MB hint
+  - ✅ OCR slice integration for state management
+  - ✅ Auto-categorization for receipt items
+  - ✅ Category suggestions display
 
 **Testing:**
 - ✅ Upload image → preview shown
@@ -23,8 +26,10 @@ Implement receipt scanning with OCR to automatically extract purchase data and s
 - ✅ Camera denied → helpful message displayed
 - ✅ OCR error → manual text fallback available
 - ✅ Manual text → creates basic receipt entry
+- ✅ OCR results show with confidence score
+- ✅ Items can be reviewed and edited before saving
 
-**Git Status:** Pushed ✓
+**Git Status:** Pushed ✓ (ad9fe37)
 
 ### 2. OCR Processing
 - **Status:** ⏳ PENDING
@@ -106,11 +111,11 @@ Implement receipt scanning with OCR to automatically extract purchase data and s
 ## Summary
 | Feature | Status | Files | Testing | Git Status |
 |---------|--------|-------|---------|------------|
-| Receipt Scanning UI | ⏳ | 1 | - | - |
+| Receipt Scanning UI | ✅ | 3 | ✅ | Pushed |
 | OCR Processing | ⏳ | 2 | - | - |
-| Auto-Categorize | ⏳ | 2 | - | - |
+| Auto-Categorize | ✅ | 2 | - | Included |
 | Sync to Lists | ⏳ | 2 | - | - |
 | Receipt History | ⏳ | 1 | - | - |
 | Image Storage | ⏳ | 1 | - | - |
 
-**Phase 3 Complete: 0%** 🚧
+**Phase 3.1 Complete: 16.7%** 🚧 (1/6 features)
