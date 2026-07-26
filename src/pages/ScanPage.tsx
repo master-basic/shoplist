@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { useStore } from '@/store/useStore';
+import { useOCRSlice } from '@/store/slices/ocrSlice';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
+import { Input, Select } from '@/components/ui';
 
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Skeleton } from '@/components/Skeleton';
@@ -12,52 +13,49 @@ import { createListItem } from '@/api/lists';
 import { useLogRender } from '@/hooks/useLogRender';
 import { ScanReview } from '@/components/ScanReview';
 import type { OCRItem } from '@/components/ScanReview';
+import { categorizeItem, getAllCategories } from '@/data/itemCategories';
 
 const ScanPage: React.FC = () => {
   useLogRender('ScanPage');
   const { lists, user } = useStore();
-  const [scanMode, setScanMode] = useState<'upload' | 'camera'>('upload');
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [scanning, setScanning] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [ocrResult, setOcrResult] = useState<any>(null);
   const [reviewMode, setReviewMode] = useState(false);
   const [selectedListId, setSelectedListId] = useState<string | null>(null);
   const [manualText, setManualText] = useState('');
-  const [ocrError, setOcrError] = useState<string | null>(null);
-  const [isCameraAllowed, setIsCameraAllowed] = useState<boolean | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [categorySuggestions, setCategorySuggestions] = useState<{ category: string; items: string[] }[]>([]);
+  const [autoCategorize, setAutoCategorize] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const ocr = useOCRSlice();
 
   // Request camera permission
   React.useEffect(() => {
-    if (scanMode === 'camera' && isCameraAllowed === null && typeof navigator !== 'undefined') {
+    if (ocr.scanMode === 'camera' && ocr.isCameraAllowed === null && typeof navigator !== 'undefined') {
       (navigator as any).permissions?.({ name: 'camera' })
-        .then(result => {
+        .then((result: any) => {
           if (result.state === 'granted') {
-            setIsCameraAllowed(true);
+            ocr.setIsCameraAllowed(true);
           } else if (result.state === 'denied') {
-            setIsCameraAllowed(false);
+            ocr.setIsCameraAllowed(false);
           }
         })
-        .catch(() => setIsCameraAllowed(false));
+        .catch(() => ocr.setIsCameraAllowed(false));
     }
-  }, [scanMode]);
+  }, [ocr.scanMode, ocr.setIsCameraAllowed]);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setImageFile(file);
+      ocr.setImageFile(file);
       const reader = new FileReader();
-      reader.onloadend = () => setImagePreview(reader.result as string);
+      reader.onloadend = () => ocr.setImagePreview(reader.result as string);
       reader.readAsDataURL(file);
     }
   };
 
   const handleManualTextSubmit = () => {
     if (manualText.trim()) {
-      setOcrResult({
-        items: [{ name: manualText.trim(), quantity: 1, unitPrice: 0, totalPrice: 0 } as OCRItem],
+      ocr.setOcrResult({
+        items: [{ name: manualText.trim(), quantity: 1, unitPrice: 0, totalPrice: 0, category: 'Other' } as OCRItem],
         storeName: 'Manual',
         date: new Date().toISOString(),
         subtotal: 0,
@@ -72,13 +70,13 @@ const ScanPage: React.FC = () => {
   };
 
   const handleScan = async () => {
-    if (!imageFile) return;
-    setScanning(true);
-    setOcrError(null);
+    if (!ocr.imageFile) return;
+    ocr.setIsLoading(true);
+    ocr.setError(null);
 
     try {
       const formData = new FormData();
-      formData.append('image', imageFile);
+      formData.append('image', ocr.imageFile);
 
       const token = localStorage.getItem('auth_token');
       const authHeader: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
@@ -94,54 +92,46 @@ const ScanPage: React.FC = () => {
       }
 
       const ocrData = await ocrRes.json();
-      setOcrResult(ocrData.ocrResult);
+      ocr.setOcrResult(ocrData.ocrResult);
     } catch (err) {
       const error = err instanceof Error ? err.message : 'Unknown error';
-      setOcrError(error);
+      ocr.setError(error);
       console.error('Scan error:', err);
     } finally {
-      setScanning(false);
-    }
-  };
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setImageFile(e.target.files[0]);
-    }
-  };
-
-  const handleScan = async () => {
-    if (!imageFile) return;
-    setScanning(true);
-
-    try {
-      const formData = new FormData();
-      formData.append('image', imageFile);
-
-      const token = localStorage.getItem('auth_token');
-      const authHeader = token ? { Authorization: `Bearer ${token}` } : {};
-      const ocrRes = await fetch(`${API_BASE}/api/receipts/ocr`, {
-        method: 'POST',
-        headers: authHeader,
-        body: formData
-      });
-
-      if (!ocrRes.ok) throw new Error('OCR processing failed');
-
-      const ocrData = await ocrRes.json();
-      setOcrResult(ocrData.ocrResult);
-    } catch (err) {
-      console.error('Scan error:', err);
-    } finally {
-      setScanning(false);
+      ocr.setIsLoading(false);
     }
   };
 
   const handleSaveReceipt = async (itemsOverride?: OCRItem[]) => {
-    const items = itemsOverride ?? ocrResult?.items ?? [];
-    if (!ocrResult || !user?.id) return;
+    const items = itemsOverride ?? ocr.ocrResult?.items ?? [];
+    if (!ocr.ocrResult || !user?.id) return;
     setSaving(true);
     try {
+      // Auto-categorize items
+      let categorizedItems = items;
+      if (autoCategorize) {
+        categorizedItems = items.map((item: OCRItem) => {
+          const { category, confidence } = categorizeItem(item.name);
+          return {
+            ...item,
+            category,
+            categoryConfidence: confidence,
+          };
+        });
+
+        // Show category suggestions
+        const categories = new Set<string>();
+        for (const item of categorizedItems) {
+          const { category } = categorizeItem(item.name);
+          categories.add(category);
+        }
+
+        setCategorySuggestions(Array.from(categories).map(cat => ({
+          category: cat,
+          items: categorizedItems.filter((i: OCRItem) => i.category === cat).map(i => i.name),
+        })).sort((a, b) => a.category.localeCompare(b.category)));
+      }
+
       const receiptRes = await fetch(`${API_BASE}/api/receipts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...authHeaders() },
@@ -149,49 +139,52 @@ const ScanPage: React.FC = () => {
           userId: user.id,
           householdId: null,
           listId: selectedListId,
-          name: `Receipt - ${ocrResult.storeName} - ${new Date().toLocaleDateString()}`,
-          totalAmount: ocrResult.total,
+          name: `Receipt - ${ocr.ocrResult.storeName} - ${new Date().toLocaleDateString()}`,
+          totalAmount: ocr.ocrResult.total,
           currency: 'AZN',
-          imageUrl: ocrResult.imageUrl,
-          ocrData: ocrResult,
+          imageUrl: ocr.ocrResult.imageUrl,
+          ocrData: ocr.ocrResult,
           status: 'processed',
-          items: items.map((item: OCRItem) => ({
+          items: categorizedItems.map((item: OCRItem) => ({
             listItemId: null,
             quantity: item.quantity,
             unitPrice: item.unitPrice,
             totalPrice: item.totalPrice,
+            category: autoCategorize ? item.category : undefined,
           })),
         }),
       });
       if (!receiptRes.ok) throw new Error('Failed to save receipt');
 
-      for (const item of items) {
+      for (const item of categorizedItems) {
         await fetch(`${API_BASE}/api/price-history`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', ...authHeaders() },
           body: JSON.stringify({
             itemName: item.name,
-            storeName: ocrResult.storeName,
+            storeName: ocr.ocrResult.storeName,
             unitPrice: item.unitPrice,
             currency: 'AZN',
             quantity: item.quantity,
             purchasedAt: new Date().toISOString(),
+            category: autoCategorize ? item.category : undefined,
           }),
         });
 
         if (selectedListId) {
           try {
-            await createListItem(item.name, item.quantity, item.unitPrice, 'Other', selectedListId, user.id);
+            await createListItem(item.name, item.quantity, item.unitPrice, autoCategorize ? item.category : 'Other', selectedListId, user.id);
           } catch (e) {
             console.error('Error adding item to list:', e);
           }
         }
       }
 
-      setOcrResult(null);
-      setImageFile(null);
+      ocr.setOcrResult(null);
+      ocr.setImageFile(null);
       setReviewMode(false);
       setSelectedListId(null);
+      setCategorySuggestions([]);
     } catch (err) {
       console.error('Error saving receipt:', err);
     } finally {
@@ -204,8 +197,8 @@ const ScanPage: React.FC = () => {
   };
 
   const handleDiscardReview = () => {
-    setOcrResult(null);
-    setImageFile(null);
+    ocr.setOcrResult(null);
+    ocr.setImageFile(null);
     setReviewMode(false);
     setSelectedListId(null);
   };
@@ -224,11 +217,11 @@ const ScanPage: React.FC = () => {
         <h1 className="text-2xl font-bold text-gray-800 mb-4">Receipt Scanner</h1>
 
         <div className="flex gap-4 mb-6">
-          <Button onClick={() => setScanMode('upload')} variant={scanMode === 'upload' ? 'primary' : 'outline'}>Upload</Button>
-          <Button onClick={() => setScanMode('camera')} variant={scanMode === 'camera' ? 'primary' : 'outline'} className="flex items-center gap-2">📷 Camera</Button>
+          <Button onClick={() => ocr.setScanMode('upload')} variant={ocr.scanMode === 'upload' ? 'primary' : 'outline'}>Upload</Button>
+          <Button onClick={() => ocr.setScanMode('camera')} variant={ocr.scanMode === 'camera' ? 'primary' : 'outline'} className="flex items-center gap-2">📷 Camera</Button>
         </div>
 
-        {scanMode === 'upload' && (
+        {ocr.scanMode === 'upload' && (
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">Upload Receipt Image</label>
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
@@ -240,9 +233,9 @@ const ScanPage: React.FC = () => {
                 className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
               />
               <p className="text-sm text-gray-500 mt-2">Supports JPG, PNG, and PDF (max 10MB)</p>
-              {imagePreview && (
+              {ocr.imagePreview && (
                 <div className="mt-4">
-                  <img src={imagePreview} alt="Receipt preview" className="mx-auto max-h-64 rounded-lg shadow-lg" />
+                  <img src={ocr.imagePreview} alt="Receipt preview" className="mx-auto max-h-64 rounded-lg shadow-lg" />
                   <p className="text-xs text-gray-400 mt-2">Image preview</p>
                 </div>
               )}
@@ -250,13 +243,13 @@ const ScanPage: React.FC = () => {
           </div>
         )}
 
-        {scanMode === 'camera' && isCameraAllowed === false && (
+        {ocr.scanMode === 'camera' && ocr.isCameraAllowed === false && (
           <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
             <p className="text-sm text-yellow-800">Camera access denied. Please enable camera permissions in your browser settings or use the Upload option.</p>
           </div>
         )}
 
-        {scanMode === 'camera' && isCameraAllowed !== false && (
+        {ocr.scanMode === 'camera' && ocr.isCameraAllowed !== false && (
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               <span className="flex items-center gap-2">
@@ -273,9 +266,9 @@ const ScanPage: React.FC = () => {
                 onChange={handleFileUpload}
                 className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
               />
-              {imagePreview && (
+              {ocr.imagePreview && (
                 <div className="mt-4">
-                  <img src={imagePreview} alt="Receipt preview" className="mx-auto max-h-64 rounded-lg shadow-lg" />
+                  <img src={ocr.imagePreview} alt="Receipt preview" className="mx-auto max-h-64 rounded-lg shadow-lg" />
                   <p className="text-xs text-gray-400 mt-2">Live preview</p>
                 </div>
               )}
@@ -283,29 +276,28 @@ const ScanPage: React.FC = () => {
           </div>
         )}
 
-        {!ocrResult && !scanning && !ocrError && (
+        {!ocr.ocrResult && !ocr.isLoading && !ocr.error && (
           <div className="mb-6">
-            <Button onClick={handleScan} disabled={!imageFile}>Scan Receipt</Button>
+            <Button onClick={handleScan} disabled={!ocr.imageFile}>Scan Receipt</Button>
           </div>
         )}
 
-        {ocrError && !ocrResult && (
+        {ocr.error && !ocr.ocrResult && (
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
             <p className="text-sm text-red-800 font-medium">OCR Error</p>
-            <p className="text-sm text-red-600 mt-1">{ocrError}</p>
+            <p className="text-sm text-red-600 mt-1">{ocr.error}</p>
             <p className="text-sm text-red-600 mt-2">Fallback: Enter receipt data manually below</p>
             <div className="mt-3">
               <Input
                 placeholder="Paste receipt text or enter item details..."
                 value={manualText}
                 onChange={(e) => setManualText(e.target.value)}
-                rows={4}
               />
               <div className="flex gap-2 mt-2">
                 <Button onClick={handleManualTextSubmit} disabled={!manualText.trim()}>
                   Use Manual Text
                 </Button>
-                <Button onClick={() => setOcrError(null)} variant="secondary">
+                <Button onClick={() => ocr.setError(null)} variant="secondary">
                   Try Again
                 </Button>
               </div>
@@ -313,7 +305,7 @@ const ScanPage: React.FC = () => {
           </div>
         )}
 
-        {scanning && (
+        {ocr.isLoading && (
           <div className="mb-6">
             <div className="border-4 border-green-200 rounded-lg p-8 text-center">
               <Skeleton className="h-12 w-12" />
@@ -331,18 +323,18 @@ const ScanPage: React.FC = () => {
           </div>
         )}
 
-        {ocrResult && !reviewMode && (
+        {ocr.ocrResult && !reviewMode && (
           <div className="mb-6">
             <h2 className="text-lg font-semibold text-gray-800 mb-4">Scan Results</h2>
             <div className="bg-gray-50 rounded-lg p-4 mb-4">
-              <p className="text-sm text-gray-600">Store: <span className="font-medium text-gray-800">{ocrResult.storeName}</span></p>
-              <p className="text-sm text-gray-600">Date: <span className="font-medium text-gray-800">{new Date(ocrResult.date).toLocaleDateString()}</span></p>
-              <p className="text-sm text-gray-600">Confidence: <span className="font-medium text-gray-800">{(ocrResult.confidence * 100).toFixed(0)}%</span></p>
+              <p className="text-sm text-gray-600">Store: <span className="font-medium text-gray-800">{ocr.ocrResult.storeName}</span></p>
+              <p className="text-sm text-gray-600">Date: <span className="font-medium text-gray-800">{new Date(ocr.ocrResult.date).toLocaleDateString()}</span></p>
+              <p className="text-sm text-gray-600">Confidence: <span className="font-medium text-gray-800">{(ocr.ocrResult.confidence * 100).toFixed(0)}%</span></p>
             </div>
             <div className="bg-gray-50 rounded-lg p-4 mb-4">
-              <div className="flex justify-between mb-2"><span className="text-gray-600">Subtotal:</span><span className="font-medium">{formatCurrency(ocrResult.subtotal)}</span></div>
-              <div className="flex justify-between mb-2"><span className="text-gray-600">Tax:</span><span className="font-medium">{formatCurrency(ocrResult.tax)}</span></div>
-              <div className="flex justify-between border-t pt-2"><span className="font-medium">Total:</span><span className="font-bold text-green-600">{formatCurrency(ocrResult.total)}</span></div>
+              <div className="flex justify-between mb-2"><span className="text-gray-600">Subtotal:</span><span className="font-medium">{formatCurrency(ocr.ocrResult.subtotal)}</span></div>
+              <div className="flex justify-between mb-2"><span className="text-gray-600">Tax:</span><span className="font-medium">{formatCurrency(ocr.ocrResult.tax)}</span></div>
+              <div className="flex justify-between border-t pt-2"><span className="font-medium">Total:</span><span className="font-bold text-green-600">{formatCurrency(ocr.ocrResult.total)}</span></div>
             </div>
             <div className="flex gap-2">
               <Button onClick={() => setReviewMode(true)}>Review Items</Button>
@@ -351,7 +343,7 @@ const ScanPage: React.FC = () => {
           </div>
         )}
 
-        {reviewMode && ocrResult && (
+        {reviewMode && ocr.ocrResult && (
           <div className="mb-6">
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">Add to List</label>
@@ -363,13 +355,13 @@ const ScanPage: React.FC = () => {
               </select>
             </div>
             <ScanReview
-              items={ocrResult.items.map((item: any) => ({
+              items={ocr.ocrResult.items.map((item: OCRItem) => ({
                 name: item.name,
                 quantity: item.quantity,
                 unitPrice: item.unitPrice,
                 totalPrice: item.totalPrice,
               }))}
-              storeName={ocrResult.storeName}
+              storeName={ocr.ocrResult.storeName}
               onSave={handleSaveReview}
               onDiscard={handleDiscardReview}
               isLoading={saving}

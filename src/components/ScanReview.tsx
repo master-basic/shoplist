@@ -9,6 +9,8 @@ export interface OCRItem {
   quantity: number;
   unitPrice: number;
   totalPrice: number;
+  category?: string;
+  categoryConfidence?: number;
 }
 
 interface EditableItem extends OCRItem {

@@ -3,8 +3,8 @@
 // =====================================================
 
 import React from 'react';
-import { Button } from './Button';
-import { Card } from './Card';
+import { Button } from './ui/Button';
+import { Card } from './ui/Card';
 
 interface ConfirmationModalProps {
   title: string;
@@ -114,5 +114,3 @@ export function ConfirmationModal({
     </div>
   );
 }
-
-export { ConfirmationModal };

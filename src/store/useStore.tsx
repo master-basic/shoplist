@@ -51,8 +51,6 @@ interface StoreContextType {
   getPriceHistory: (itemName: string, days?: number) => PriceHistoryItem[];
   loading: boolean;
   setLoading: (loading: boolean) => void;
-  error: string | null;
-  setError: (error: string | null) => void;
   toast: string | null;
   setToast: (toast: string | null) => void;
 }

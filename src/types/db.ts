@@ -88,6 +88,8 @@ export interface ListItem {
   quantity: number;
   unit: string;
   estimated_price: number;
+  actual_price?: number;
+  unit_price?: number;
   preferred_store?: string;
   assigned_to: string[];
   checked_by?: string;
@@ -102,7 +104,6 @@ export interface ListItem {
   last_bought_at?: string;
   price_history: PriceHistoryItem[];
   is_checked: boolean;
-  actual_price?: number;
   actual_quantity?: number;
 }
 
