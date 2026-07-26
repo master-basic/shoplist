@@ -1,0 +1,2530 @@
+Failed to extract pgsql/share/errcodes.txt: Exception calling "ExtractToFile" with "3" argument(s): "Access to the path 'C:\Program Files\PostgreSQL\17\share\errcodes.txt' is denied."
+Failed to extract pgsql/share/information_schema.sql: Exception calling "ExtractToFile" with "3" argument(s): "Access to the path 'C:\Program Files\PostgreSQL\17\share\information_schema.sql' is denied."
+Failed to extract pgsql/share/pg_hba.conf.sample: Exception calling "ExtractToFile" with "3" argument(s): "Access to the path 'C:\Program Files\PostgreSQL\17\share\pg_hba.conf.sample' is denied."
+Failed to extract pgsql/share/pg_ident.conf.sample: Exception calling "ExtractToFile" with "3" argument(s): "Access to the path 'C:\Program Files\PostgreSQL\17\share\pg_ident.conf.sample' is denied."
+Failed to extract pgsql/share/pg_service.conf.sample: Exception calling "ExtractToFile" with "3" argument(s): "Access to the path 'C:\Program Files\PostgreSQL\17\share\pg_service.conf.sample' is denied."
+Failed to extract pgsql/share/postgres.bki: Exception calling "ExtractToFile" with "3" argument(s): "Access to the path 'C:\Program Files\PostgreSQL\17\share\postgres.bki' is denied."
+Failed to extract pgsql/share/postgresql.conf.sample: Exception calling "ExtractToFile" with "3" argument(s): "Access to the path 'C:\Program Files\PostgreSQL\17\share\postgresql.conf.sample' is denied."
+Failed to extract pgsql/share/psqlrc.sample: Exception calling "ExtractToFile" with "3" argument(s): "Access to the path 'C:\Program Files\PostgreSQL\17\share\psqlrc.sample' is denied."
+Failed to extract pgsql/share/snowball_create.sql: Exception calling "ExtractToFile" with "3" argument(s): "Access to the path 'C:\Program Files\PostgreSQL\17\share\snowball_create.sql' is denied."
+Failed to extract pgsql/share/sql_features.txt: Exception calling "ExtractToFile" with "3" argument(s): "Access to the path 'C:\Program Files\PostgreSQL\17\share\sql_features.txt' is denied."
+Failed to extract pgsql/share/system_constraints.sql: Exception calling "ExtractToFile" with "3" argument(s): "Access to the path 'C:\Program Files\PostgreSQL\17\share\system_constraints.sql' is denied."
+Failed to extract pgsql/share/system_functions.sql: Exception calling "ExtractToFile" with "3" argument(s): "Access to the path 'C:\Program Files\PostgreSQL\17\share\system_functions.sql' is denied."
+Failed to extract pgsql/share/system_views.sql: Exception calling "ExtractToFile" with "3" argument(s): "Access to the path 'C:\Program Files\PostgreSQL\17\share\system_views.sql' is denied."
+New-Item : Access to the path 'doc' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program Files\PostgreSQL\17\share\doc:String) [New-Item], Unauthor 
+   izedAccessException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+Failed to extract pgsql/share/doc/extension/autoinc.example: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\doc\extension\autoinc.example'."
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...e\doc\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'doc' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program Files\PostgreSQL\17\share\doc:String) [New-Item], Unauthor 
+   izedAccessException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
+Failed to extract pgsql/share/doc/extension/insert_username.example: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\doc\extension\insert_username.example'."
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...e\doc\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'doc' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program Files\PostgreSQL\17\share\doc:String) [New-Item], Unauthor 
+   izedAccessException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
+Failed to extract pgsql/share/doc/extension/moddatetime.example: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\doc\extension\moddatetime.example'."
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...e\doc\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'doc' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program Files\PostgreSQL\17\share\doc:String) [New-Item], Unauthor 
+   izedAccessException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
+Failed to extract pgsql/share/doc/extension/refint.example: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\doc\extension\refint.example'."
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...e\doc\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/amcheck--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\amcheck--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+Failed to extract pgsql/share/extension/amcheck--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\amcheck--1.0.sql'."
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/amcheck--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\amcheck--1.1--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+Failed to extract pgsql/share/extension/amcheck--1.2--1.3.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\amcheck--1.2--1.3.sql'."
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/amcheck--1.3--1.4.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\amcheck--1.3--1.4.sql'."
+New-Item : Access to the path 'extension' is denied.
+Failed to extract pgsql/share/extension/amcheck.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\amcheck.control'."
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/autoinc--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\autoinc--1.0.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/autoinc.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\autoinc.control'."
+New-Item : Access to the path 'extension' is denied.
+Failed to extract pgsql/share/extension/bloom--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\bloom--1.0.sql'."
+Failed to extract pgsql/share/extension/bloom.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\bloom.control'."
+Failed to extract pgsql/share/extension/bool_plperl--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\bool_plperl--1.0.sql'."
+Failed to extract pgsql/share/extension/bool_plperl.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\bool_plperl.control'."
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/bool_plperlu--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\bool_plperlu--1.0.sql'."
+New-Item : Access to the path 'extension' is denied.
+Failed to extract pgsql/share/extension/bool_plperlu.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\bool_plperlu.control'."
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/btree_gin--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\btree_gin--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/btree_gin--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\btree_gin--1.0.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/btree_gin--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\btree_gin--1.1--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/btree_gin--1.2--1.3.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\btree_gin--1.2--1.3.sql'."
+New-Item : Access to the path 'extension' is denied.
+Failed to extract pgsql/share/extension/btree_gin.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\btree_gin.control'."
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/btree_gist--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\btree_gist--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/btree_gist--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\btree_gist--1.1--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+Failed to extract pgsql/share/extension/btree_gist--1.2--1.3.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\btree_gist--1.2--1.3.sql'."
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/btree_gist--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\btree_gist--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/btree_gist--1.3--1.4.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\btree_gist--1.3--1.4.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/btree_gist--1.4--1.5.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\btree_gist--1.4--1.5.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/btree_gist--1.5--1.6.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\btree_gist--1.5--1.6.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/btree_gist--1.6--1.7.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\btree_gist--1.6--1.7.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/btree_gist.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\btree_gist.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/citext--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\citext--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/citext--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\citext--1.1--1.2.sql'."
+Failed to extract pgsql/share/extension/citext--1.2--1.3.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\citext--1.2--1.3.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/citext--1.3--1.4.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\citext--1.3--1.4.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/citext--1.4--1.5.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\citext--1.4--1.5.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/citext--1.4.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\citext--1.4.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/citext--1.5--1.6.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\citext--1.5--1.6.sql'."
+Failed to extract pgsql/share/extension/citext.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\citext.control'."
+Failed to extract pgsql/share/extension/cube--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\cube--1.0--1.1.sql'."
+Failed to extract pgsql/share/extension/cube--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\cube--1.1--1.2.sql'."
+Failed to extract pgsql/share/extension/cube--1.2--1.3.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\cube--1.2--1.3.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/cube--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\cube--1.2.sql'."
+Failed to extract pgsql/share/extension/cube--1.3--1.4.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\cube--1.3--1.4.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/cube--1.4--1.5.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\cube--1.4--1.5.sql'."
+New-Item : Access to the path 'extension' is denied.
+Failed to extract pgsql/share/extension/cube.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\cube.control'."
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/dblink--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\dblink--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/dblink--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\dblink--1.1--1.2.sql'."
+Failed to extract pgsql/share/extension/dblink--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\dblink--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Failed to extract pgsql/share/extension/dblink.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\dblink.control'."
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/dict_int--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\dict_int--1.0.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/dict_int.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\dict_int.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/dict_xsyn--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\dict_xsyn--1.0.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/dict_xsyn.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\dict_xsyn.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/earthdistance--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\earthdistance--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/earthdistance--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\earthdistance--1.1--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/earthdistance--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\earthdistance--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/earthdistance.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\earthdistance.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/file_fdw--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\file_fdw--1.0.sql'."
+Failed to extract pgsql/share/extension/file_fdw.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\file_fdw.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/fuzzystrmatch--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\fuzzystrmatch--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/fuzzystrmatch--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\fuzzystrmatch--1.1--1.2.sql'."
+Failed to extract pgsql/share/extension/fuzzystrmatch--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\fuzzystrmatch--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
+Failed to extract pgsql/share/extension/fuzzystrmatch.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\fuzzystrmatch.control'."
+Failed to extract pgsql/share/extension/hstore_plperl--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\hstore_plperl--1.0.sql'."
+Failed to extract pgsql/share/extension/hstore_plperl.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\hstore_plperl.control'."
+Failed to extract pgsql/share/extension/hstore_plperlu--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\hstore_plperlu--1.0.sql'."
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/hstore_plperlu.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\hstore_plperlu.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/hstore_plpython3u--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\hstore_plpython3u--1.0.sql'."
+Failed to extract pgsql/share/extension/hstore_plpython3u.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\hstore_plpython3u.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/hstore--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\hstore--1.1--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/hstore--1.2--1.3.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\hstore--1.2--1.3.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/hstore--1.3--1.4.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\hstore--1.3--1.4.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/hstore--1.4--1.5.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\hstore--1.4--1.5.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/hstore--1.4.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\hstore--1.4.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/hstore--1.5--1.6.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\hstore--1.5--1.6.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/hstore--1.6--1.7.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\hstore--1.6--1.7.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/hstore--1.7--1.8.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\hstore--1.7--1.8.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/hstore.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\hstore.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/insert_username--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\insert_username--1.0.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/insert_username.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\insert_username.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/intagg--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\intagg--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+Failed to extract pgsql/share/extension/intagg--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\intagg--1.1.sql'."
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/intagg.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\intagg.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/intarray--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\intarray--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/intarray--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\intarray--1.1--1.2.sql'."
+Failed to extract pgsql/share/extension/intarray--1.2--1.3.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\intarray--1.2--1.3.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/intarray--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\intarray--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/intarray--1.3--1.4.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\intarray--1.3--1.4.sql'."
+Failed to extract pgsql/share/extension/intarray--1.4--1.5.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\intarray--1.4--1.5.sql'."
+Failed to extract pgsql/share/extension/intarray.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\intarray.control'."
+Failed to extract pgsql/share/extension/isn--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\isn--1.0--1.1.sql'."
+Failed to extract pgsql/share/extension/isn--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\isn--1.1--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/isn--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\isn--1.1.sql'."
+Failed to extract pgsql/share/extension/isn.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\isn.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/jsonb_plperl--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\jsonb_plperl--1.0.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/jsonb_plperl.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\jsonb_plperl.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/jsonb_plperlu--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\jsonb_plperlu--1.0.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/jsonb_plperlu.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\jsonb_plperlu.control'."
+Failed to extract pgsql/share/extension/jsonb_plpython3u--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\jsonb_plpython3u--1.0.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/jsonb_plpython3u.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\jsonb_plpython3u.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/lo--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\lo--1.0--1.1.sql'."
+Failed to extract pgsql/share/extension/lo--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\lo--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/lo.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\lo.control'."
+Failed to extract pgsql/share/extension/ltree_plpython3u--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\ltree_plpython3u--1.0.sql'."
+Failed to extract pgsql/share/extension/ltree_plpython3u.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\ltree_plpython3u.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/ltree--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\ltree--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/ltree--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\ltree--1.1--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/ltree--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\ltree--1.1.sql'."
+Failed to extract pgsql/share/extension/ltree--1.2--1.3.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\ltree--1.2--1.3.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/ltree.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\ltree.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/moddatetime--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\moddatetime--1.0.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/moddatetime.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\moddatetime.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pageinspect--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pageinspect--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pageinspect--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pageinspect--1.1--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pageinspect--1.10--1.11.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pageinspect--1.10--1.11.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pageinspect--1.11--1.12.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pageinspect--1.11--1.12.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pageinspect--1.2--1.3.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pageinspect--1.2--1.3.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+Failed to extract pgsql/share/extension/pageinspect--1.3--1.4.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pageinspect--1.3--1.4.sql'."
+Failed to extract pgsql/share/extension/pageinspect--1.4--1.5.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pageinspect--1.4--1.5.sql'."
+Failed to extract pgsql/share/extension/pageinspect--1.5--1.6.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pageinspect--1.5--1.6.sql'."
+Failed to extract pgsql/share/extension/pageinspect--1.5.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pageinspect--1.5.sql'."
+Failed to extract pgsql/share/extension/pageinspect--1.6--1.7.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pageinspect--1.6--1.7.sql'."
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pageinspect--1.7--1.8.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pageinspect--1.7--1.8.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pageinspect--1.8--1.9.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pageinspect--1.8--1.9.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Failed to extract pgsql/share/extension/pageinspect--1.9--1.10.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pageinspect--1.9--1.10.sql'."
+Failed to extract pgsql/share/extension/pageinspect.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pageinspect.control'."
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_buffercache--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_buffercache--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_buffercache--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_buffercache--1.1--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_buffercache--1.2--1.3.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_buffercache--1.2--1.3.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_buffercache--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_buffercache--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_buffercache--1.3--1.4.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_buffercache--1.3--1.4.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
+Failed to extract pgsql/share/extension/pg_buffercache--1.4--1.5.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_buffercache--1.4--1.5.sql'."
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_buffercache.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_buffercache.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_freespacemap--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_freespacemap--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_freespacemap--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_freespacemap--1.1--1.2.sql'."
+Failed to extract pgsql/share/extension/pg_freespacemap--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_freespacemap--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_freespacemap.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_freespacemap.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_prewarm--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_prewarm--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_prewarm--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_prewarm--1.1--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_prewarm--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_prewarm--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_prewarm.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_prewarm.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_stat_statements--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_stat_statements--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+Failed to extract pgsql/share/extension/pg_stat_statements--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_stat_statements--1.1--1.2.sql'."
+Failed to extract pgsql/share/extension/pg_stat_statements--1.10--1.11.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_stat_statements--1.10--1.11.sql'."
+Failed to extract pgsql/share/extension/pg_stat_statements--1.2--1.3.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_stat_statements--1.2--1.3.sql'."
+Failed to extract pgsql/share/extension/pg_stat_statements--1.3--1.4.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_stat_statements--1.3--1.4.sql'."
+Failed to extract pgsql/share/extension/pg_stat_statements--1.4--1.5.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_stat_statements--1.4--1.5.sql'."
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_stat_statements--1.4.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_stat_statements--1.4.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_stat_statements--1.5--1.6.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_stat_statements--1.5--1.6.sql'."
+New-Item : Access to the path 'extension' is denied.
+Failed to extract pgsql/share/extension/pg_stat_statements--1.6--1.7.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_stat_statements--1.6--1.7.sql'."
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_stat_statements--1.7--1.8.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_stat_statements--1.7--1.8.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+Failed to extract pgsql/share/extension/pg_stat_statements--1.8--1.9.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_stat_statements--1.8--1.9.sql'."
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_stat_statements--1.9--1.10.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_stat_statements--1.9--1.10.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_stat_statements.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_stat_statements.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_surgery--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_surgery--1.0.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_surgery.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_surgery.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_trgm--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_trgm--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_trgm--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_trgm--1.1--1.2.sql'."
+Failed to extract pgsql/share/extension/pg_trgm--1.2--1.3.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_trgm--1.2--1.3.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_trgm--1.3--1.4.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_trgm--1.3--1.4.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_trgm--1.3.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_trgm--1.3.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_trgm--1.4--1.5.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_trgm--1.4--1.5.sql'."
+Failed to extract pgsql/share/extension/pg_trgm--1.5--1.6.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_trgm--1.5--1.6.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_trgm.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_trgm.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_visibility--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_visibility--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_visibility--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_visibility--1.1--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pg_visibility--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_visibility--1.1.sql'."
+Failed to extract pgsql/share/extension/pg_visibility.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_visibility.control'."
+Failed to extract pgsql/share/extension/pg_walinspect--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_walinspect--1.0--1.1.sql'."
+Failed to extract pgsql/share/extension/pg_walinspect--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_walinspect--1.0.sql'."
+Failed to extract pgsql/share/extension/pg_walinspect.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pg_walinspect.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pgcrypto--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pgcrypto--1.0--1.1.sql'."
+Failed to extract pgsql/share/extension/pgcrypto--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pgcrypto--1.1--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pgcrypto--1.2--1.3.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pgcrypto--1.2--1.3.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pgcrypto--1.3.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pgcrypto--1.3.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pgcrypto.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pgcrypto.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pgrowlocks--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pgrowlocks--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pgrowlocks--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pgrowlocks--1.1--1.2.sql'."
+Failed to extract pgsql/share/extension/pgrowlocks--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pgrowlocks--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pgrowlocks.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pgrowlocks.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pgstattuple--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pgstattuple--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pgstattuple--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pgstattuple--1.1--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pgstattuple--1.2--1.3.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pgstattuple--1.2--1.3.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pgstattuple--1.3--1.4.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pgstattuple--1.3--1.4.sql'."
+New-Item : Access to the path 'extension' is denied.
+Failed to extract pgsql/share/extension/pgstattuple--1.4--1.5.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pgstattuple--1.4--1.5.sql'."
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pgstattuple--1.4.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pgstattuple--1.4.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pgstattuple.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pgstattuple.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pldbgapi--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pldbgapi--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pldbgapi--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pldbgapi--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pldbgapi--unpackaged--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pldbgapi--unpackaged--1.1.sql'."
+Failed to extract pgsql/share/extension/pldbgapi.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pldbgapi.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/plperl--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\plperl--1.0.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/plperl.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\plperl.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/plperlu--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\plperlu--1.0.sql'."
+Failed to extract pgsql/share/extension/plperlu.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\plperlu.control'."
+Failed to extract pgsql/share/extension/plpgsql--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\plpgsql--1.0.sql'."
+Failed to extract pgsql/share/extension/plpgsql.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\plpgsql.control'."
+Failed to extract pgsql/share/extension/plpython3u--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\plpython3u--1.0.sql'."
+Failed to extract pgsql/share/extension/plpython3u.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\plpython3u.control'."
+Failed to extract pgsql/share/extension/pltcl--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pltcl--1.0.sql'."
+Failed to extract pgsql/share/extension/pltcl.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pltcl.control'."
+Failed to extract pgsql/share/extension/pltclu--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pltclu--1.0.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/pltclu.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\pltclu.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/postgres_fdw--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\postgres_fdw--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/postgres_fdw--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\postgres_fdw--1.0.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/postgres_fdw.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\postgres_fdw.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/refint--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\refint--1.0.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/refint.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\refint.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/seg--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\seg--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/seg--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\seg--1.1--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/seg--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\seg--1.1.sql'."
+Failed to extract pgsql/share/extension/seg--1.2--1.3.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\seg--1.2--1.3.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/seg--1.3--1.4.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\seg--1.3--1.4.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/seg.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\seg.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/sslinfo--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\sslinfo--1.0--1.1.sql'."
+Failed to extract pgsql/share/extension/sslinfo--1.1--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\sslinfo--1.1--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/sslinfo--1.2.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\sslinfo--1.2.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/sslinfo.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\sslinfo.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/tablefunc--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\tablefunc--1.0.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/tablefunc.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\tablefunc.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/tcn--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\tcn--1.0.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/tcn.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\tcn.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/tsm_system_rows--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\tsm_system_rows--1.0.sql'."
+Failed to extract pgsql/share/extension/tsm_system_rows.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\tsm_system_rows.control'."
+Failed to extract pgsql/share/extension/tsm_system_time--1.0.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\tsm_system_time--1.0.sql'."
+Failed to extract pgsql/share/extension/tsm_system_time.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\tsm_system_time.control'."
+Failed to extract pgsql/share/extension/unaccent--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\unaccent--1.0--1.1.sql'."
+Failed to extract pgsql/share/extension/unaccent--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\unaccent--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/unaccent.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\unaccent.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/uuid-ossp--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\uuid-ossp--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/uuid-ossp--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\uuid-ossp--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/uuid-ossp.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\uuid-ossp.control'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/xml2--1.0--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\xml2--1.0--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/xml2--1.1.sql: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\xml2--1.1.sql'."
+New-Item : Access to the path 'extension' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...share\extension:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/extension/xml2.control: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\extension\xml2.control'."
+New-Item : Access to the path 'timezonesets' is denied.
+Failed to extract pgsql/share/timezonesets/Africa.txt: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\timezonesets\Africa.txt'."
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\timezonesets:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/timezonesets/America.txt: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\timezonesets\America.txt'."
+New-Item : Access to the path 'timezonesets' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\timezonesets:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/timezonesets/Antarctica.txt: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\timezonesets\Antarctica.txt'."
+New-Item : Access to the path 'timezonesets' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\timezonesets:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'timezonesets' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\timezonesets:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/timezonesets/Asia.txt: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\timezonesets\Asia.txt'."
+New-Item : Access to the path 'timezonesets' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\timezonesets:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/timezonesets/Atlantic.txt: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\timezonesets\Atlantic.txt'."
+Failed to extract pgsql/share/timezonesets/Australia: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\timezonesets\Australia'."
+New-Item : Access to the path 'timezonesets' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\timezonesets:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/timezonesets/Australia.txt: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\timezonesets\Australia.txt'."
+New-Item : Access to the path 'timezonesets' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\timezonesets:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/timezonesets/Default: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\timezonesets\Default'."
+New-Item : Access to the path 'timezonesets' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\timezonesets:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/timezonesets/Etc.txt: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\timezonesets\Etc.txt'."
+New-Item : Access to the path 'timezonesets' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\timezonesets:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/timezonesets/Europe.txt: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\timezonesets\Europe.txt'."
+New-Item : Access to the path 'timezonesets' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\timezonesets:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'timezonesets' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\timezonesets:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/timezonesets/India: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\timezonesets\India'."
+New-Item : Access to the path 'timezonesets' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\timezonesets:String) [New-Item], UnauthorizedAcc 
+   essException
+Failed to extract pgsql/share/timezonesets/Indian.txt: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\timezonesets\Indian.txt'."
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'timezonesets' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\timezonesets:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/timezonesets/Pacific.txt: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\timezonesets\Pacific.txt'."
+Failed to extract pgsql/share/tsearch_data/danish.stop: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\danish.stop'."
+Failed to extract pgsql/share/tsearch_data/dutch.stop: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\dutch.stop'."
+Failed to extract pgsql/share/tsearch_data/english.stop: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\english.stop'."
+Failed to extract pgsql/share/tsearch_data/finnish.stop: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\finnish.stop'."
+Failed to extract pgsql/share/tsearch_data/french.stop: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\french.stop'."
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/tsearch_data/german.stop: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\german.stop'."
+Failed to extract pgsql/share/tsearch_data/hungarian.stop: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\hungarian.stop'."
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/tsearch_data/hunspell_sample_long.affix: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\hunspell_sample_long.affix'."
+New-Item : Access to the path 'tsearch_data' is denied.
+Failed to extract pgsql/share/tsearch_data/hunspell_sample_long.dict: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\hunspell_sample_long.dict'."
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Failed to extract pgsql/share/tsearch_data/hunspell_sample_num.affix: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\hunspell_sample_num.affix'."
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/tsearch_data/hunspell_sample_num.dict: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\hunspell_sample_num.dict'."
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/tsearch_data/hunspell_sample.affix: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\hunspell_sample.affix'."
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/tsearch_data/ispell_sample.affix: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\ispell_sample.affix'."
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/tsearch_data/ispell_sample.dict: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\ispell_sample.dict'."
+New-Item : Access to the path 'tsearch_data' is denied.
+Failed to extract pgsql/share/tsearch_data/italian.stop: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\italian.stop'."
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/tsearch_data/nepali.stop: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\nepali.stop'."
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/tsearch_data/norwegian.stop: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\norwegian.stop'."
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/tsearch_data/portuguese.stop: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\portuguese.stop'."
+Failed to extract pgsql/share/tsearch_data/russian.stop: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\russian.stop'."
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/tsearch_data/spanish.stop: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\spanish.stop'."
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/tsearch_data/swedish.stop: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\swedish.stop'."
+New-Item : Access to the path 'tsearch_data' is denied.
+Failed to extract pgsql/share/tsearch_data/synonym_sample.syn: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\synonym_sample.syn'."
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/tsearch_data/thesaurus_sample.ths: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\thesaurus_sample.ths'."
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/tsearch_data/turkish.stop: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\turkish.stop'."
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+New-Item : Access to the path 'tsearch_data' is denied.
+At line:33 char:38
++ ... destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Program File...re\tsearch_data:String) [New-Item], UnauthorizedAcc 
+   essException
+    + FullyQualifiedErrorId : CreateDirectoryUnauthorizedAccessError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+Failed to extract pgsql/share/tsearch_data/unaccent.rules: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\unaccent.rules'."
+Failed to extract pgsql/share/tsearch_data/xsyn_sample.rules: Exception calling "ExtractToFile" with "3" argument(s): "Could not find a part of the path 'C:\Program Files\PostgreSQL\17\share\tsearch_data\xsyn_sample.rules'."
+Extracted 0 files to C:\Program Files\PostgreSQL\17\share\

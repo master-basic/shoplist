@@ -1,0 +1,928 @@
+
+  server\data\query_state_debug.json:15364:      },
+> server\data\query_state_debug.json:15365:      "queryKey": [
+  server\data\query_state_debug.json:15366:        "woltCities",
+  server\data\query_state_debug.json:15367:        "az",
+  server\data\query_state_debug.json:15368:        null
+  server\data\query_state_debug.json:15369:      ],
+  server\data\query_state_debug.json:15370:      "queryHash": "[\"woltCities\",\"az\",null]"
+  server\data\query_state_debug.json:15371:    },
+  server\data\query_state_debug.json:15372:    {
+  server\data\query_state_debug.json:15373:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:15374:      "state": {
+  server\data\query_state_debug.json:15375:        "data": {
+  server\data\query_state_debug.json:15376:          "id": "2BKivQwum4Jo9VTfBO47p0",
+  server\data\query_state_debug.json:15377:          "contentType": "footer",
+  server\data\query_state_debug.json:15378:          "appLinks": [
+  server\data\query_state_debug.json:15379:            {
+  server\data\query_state_debug.json:15380:              "id": "ApVEe0pcCtAxVTOzzd5wb",
+  server\data\query_state_debug.json:15381:              "contentType": "appLink",
+  server\data\query_state_debug.json:15382:              "banner": {
+  server\data\query_state_debug.json:15383:                "id": "7xaqvusYmbDlca5umD9bZo",
+  server\data\query_state_debug.json:15384:                "updatedAt": "2025-11-18T16:42:03.937Z",
+  server\data\query_state_debug.json:15385:                "createdAt": "2021-08-26T08:06:14.965Z",
+  server\data\query_state_debug.json:18023:      },
+> server\data\query_state_debug.json:18024:      "queryKey": [
+  server\data\query_state_debug.json:18025:        "footer",
+  server\data\query_state_debug.json:18026:        "az"
+  server\data\query_state_debug.json:18027:      ],
+  server\data\query_state_debug.json:18028:      "queryHash": "[\"footer\",\"az\"]"
+  server\data\query_state_debug.json:18029:    },
+  server\data\query_state_debug.json:18030:    {
+  server\data\query_state_debug.json:18031:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:18032:      "state": {
+  server\data\query_state_debug.json:18033:        "data": {
+  server\data\query_state_debug.json:18034:          "countryCode2": "AZ",
+  server\data\query_state_debug.json:18035:          "countryCode3": "AZE"
+  server\data\query_state_debug.json:18036:        },
+  server\data\query_state_debug.json:18037:        "dataUpdateCount": 1,
+  server\data\query_state_debug.json:18038:        "dataUpdatedAt": 1784630064150,
+  server\data\query_state_debug.json:18039:        "error": null,
+  server\data\query_state_debug.json:18040:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:18041:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:18042:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:18043:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:18044:        "fetchMeta": null,
+  server\data\query_state_debug.json:18048:      },
+> server\data\query_state_debug.json:18049:      "queryKey": [
+  server\data\query_state_debug.json:18050:        "geoIpCountry"
+  server\data\query_state_debug.json:18051:      ],
+  server\data\query_state_debug.json:18052:      "queryHash": "[\"geoIpCountry\"]"
+  server\data\query_state_debug.json:18053:    },
+  server\data\query_state_debug.json:18054:    {
+  server\data\query_state_debug.json:18055:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:18056:      "state": {
+  server\data\query_state_debug.json:18057:        "data": {
+  server\data\query_state_debug.json:18058:          "accept-corporate-event-invitation.accept-button": "Bu hesabla t?d
+bir? qosulun",
+  server\data\query_state_debug.json:18059:          "accept-corporate-event-invitation.already-accepted-error.button":
+ "Ok",
+  server\data\query_state_debug.json:18060:          "accept-corporate-event-invitation.already-accepted-error.subtitle
+": "Dey?s?n, bu t?dbir? d?v?tinizi art?q q?bul etmisiniz. T?dbiri profilinizin od?nis usullar?nda gor? bil?rsiniz.",
+  server\data\query_state_debug.json:18061:          "accept-corporate-event-invitation.already-accepted-error.title": 
+"D?v?t art?q q?bul edilib",
+  server\data\query_state_debug.json:18062:          "accept-corporate-event-invitation.error.button": "Ok",
+  server\data\query_state_debug.json:18063:          "accept-corporate-event-invitation.error.subtitle": "T??ssuf ki, b
+u d?v?tl? bagl? problem var. T?dbirin statusunu yoxlamaq v? ya sizin yenid?n d?v?t olunmag?n?z ucun sirk?t hesab?n?za c
+avabdeh s?xsl? ?laq? saxlay?n.",
+  server\data\query_state_debug.json:18064:          "accept-corporate-event-invitation.error.title": "Yanl?s d?v?t",
+  server\data\query_state_debug.json:18065:          "accept-corporate-event-invitation.join-description": "{eventName}
+ ucun Wolt vauceri qazand?n?z. Vauceri {email} istifad? ed?n, Wolt-da art?q movcud olan hesab?n?za birl?sdir? bil?rsini
+z. Sifaris ver?rk?n,  od?m? bolm?sind? vauceri istifad? edin.",
+  server\data\query_state_debug.json:18066:          "accept-corporate-event-invitation.join-prompt": "Siz {eventName} 
+d?v?t olunmusunuz ",
+  server\data\query_state_debug.json:18067:          "accept-corporate-event-invitation.voucher-description": "\"T?dbir
+\" bolm?sind? olan od?nis usulundan istifad? ed?r?k, sifarisinizin d?y?rini od?y? bil?rsiniz ??\n",
+  server\data\query_state_debug.json:18068:          "accept-corporate-event-invitation.voucher-title": "Od?nis zaman? 
+t?dbirinizi secin",
+  server\data\query_state_debug.json:18069:          "accept-corporate-invitation.accept-button": "D?v?ti {name} kimi q
+?bul et",
+  server\data\query_state_debug.json:21726:      },
+> server\data\query_state_debug.json:21727:      "queryKey": [
+  server\data\query_state_debug.json:21728:        "translations/az"
+  server\data\query_state_debug.json:21729:      ],
+  server\data\query_state_debug.json:21730:      "queryHash": "[\"translations/az\"]",
+  server\data\query_state_debug.json:21731:      "meta": {
+  server\data\query_state_debug.json:21732:        "reportError": {
+  server\data\query_state_debug.json:21733:          "message": "Failed to fetch localization messages for locale 'az'.
+"
+  server\data\query_state_debug.json:21734:        }
+  server\data\query_state_debug.json:21735:      }
+  server\data\query_state_debug.json:21736:    },
+  server\data\query_state_debug.json:21737:    {
+  server\data\query_state_debug.json:21738:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:21739:      "state": {
+  server\data\query_state_debug.json:21740:        "data": {
+  server\data\query_state_debug.json:21741:          "venue": {
+  server\data\query_state_debug.json:21742:            "id": "672b2034bc0cf38e7ae2e1df",
+  server\data\query_state_debug.json:21743:            "image_url": "https://imageproxy.wolt.com/assets/6957f5f42eeaac6
+c9caa2425",
+  server\data\query_state_debug.json:21744:            "image_blurhash": "LHIglyoKGF%0y9adQ-t7.Tf*rrWE",
+  server\data\query_state_debug.json:21745:            "brand_logo_image_url": "https://imageproxy.wolt.com/assets/68a4
+1dafd4c6e65238c339ce",
+  server\data\query_state_debug.json:21746:            "brand_logo_image_blurhash": "j1EYS2;L00GW4whk00d3008O;LKH",
+  server\data\query_state_debug.json:21747:            "brand_slug": "bravo-supermarket",
+  server\data\query_state_debug.json:22200:      },
+> server\data\query_state_debug.json:22201:      "queryKey": [
+  server\data\query_state_debug.json:22202:        "venue",
+  server\data\query_state_debug.json:22203:        "static",
+  server\data\query_state_debug.json:22204:        "bravo-supermarket-mardakan-shosessi",
+  server\data\query_state_debug.json:22205:        "az"
+  server\data\query_state_debug.json:22206:      ],
+  server\data\query_state_debug.json:22207:      "queryHash": "[\"venue\",\"static\",\"bravo-supermarket-mardakan-shose
+ssi\",\"az\"]"
+  server\data\query_state_debug.json:22208:    },
+  server\data\query_state_debug.json:22209:    {
+  server\data\query_state_debug.json:22210:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:22211:      "state": {
+  server\data\query_state_debug.json:22212:        "data": {
+  server\data\query_state_debug.json:22213:          "assortment_id": "672b2063a6c24d27db115384",
+  server\data\query_state_debug.json:22214:          "loading_strategy": "partial",
+  server\data\query_state_debug.json:22215:          "primary_language": "az",
+  server\data\query_state_debug.json:22216:          "selected_language": "az",
+  server\data\query_state_debug.json:22217:          "available_languages": [
+  server\data\query_state_debug.json:22218:            {
+  server\data\query_state_debug.json:22219:              "autotranslated": false,
+  server\data\query_state_debug.json:22220:              "language": "az",
+  server\data\query_state_debug.json:22221:              "name": "az?rbaycan"
+  server\data\query_state_debug.json:25235:      },
+> server\data\query_state_debug.json:25236:      "queryKey": [
+  server\data\query_state_debug.json:25237:        "venue-assortment",
+  server\data\query_state_debug.json:25238:        "category-listing",
+  server\data\query_state_debug.json:25239:        "bravo-supermarket-mardakan-shosessi",
+  server\data\query_state_debug.json:25240:        null,
+  server\data\query_state_debug.json:25241:        null,
+  server\data\query_state_debug.json:25242:        "az",
+  server\data\query_state_debug.json:25243:        "no-user"
+  server\data\query_state_debug.json:25244:      ],
+  server\data\query_state_debug.json:25245:      "queryHash": "[\"venue-assortment\",\"category-listing\",\"bravo-super
+market-mardakan-shosessi\",null,null,\"az\",\"no-user\"]"
+  server\data\query_state_debug.json:25246:    },
+  server\data\query_state_debug.json:25247:    {
+  server\data\query_state_debug.json:25248:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:25249:      "state": {
+  server\data\query_state_debug.json:25250:        "data": {
+  server\data\query_state_debug.json:25251:          "pages": [
+  server\data\query_state_debug.json:25252:            {
+  server\data\query_state_debug.json:25253:              "category_navigation_type": "sidebar",
+  server\data\query_state_debug.json:25254:              "collections": [
+  server\data\query_state_debug.json:25255:                {
+  server\data\query_state_debug.json:25256:                  "id": "discover",
+  server\data\query_state_debug.json:29161:      },
+> server\data\query_state_debug.json:29162:      "queryKey": [
+  server\data\query_state_debug.json:29163:        "venue-assortment",
+  server\data\query_state_debug.json:29164:        "venue-content",
+  server\data\query_state_debug.json:29165:        "bravo-supermarket-mardakan-shosessi",
+  server\data\query_state_debug.json:29166:        "no-user",
+  server\data\query_state_debug.json:29167:        "az",
+  server\data\query_state_debug.json:29168:        null,
+  server\data\query_state_debug.json:29169:        null
+  server\data\query_state_debug.json:29170:      ],
+  server\data\query_state_debug.json:29171:      "queryHash": "[\"venue-assortment\",\"venue-content\",\"bravo-supermar
+ket-mardakan-shosessi\",\"no-user\",\"az\",null,null]"
+  server\data\query_state_debug.json:29172:    },
+  server\data\query_state_debug.json:29173:    {
+  server\data\query_state_debug.json:29174:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:29175:      "state": {
+  server\data\query_state_debug.json:29176:        "data": {
+  server\data\query_state_debug.json:29177:          "pages": [
+  server\data\query_state_debug.json:29178:            {
+  server\data\query_state_debug.json:29179:              "category": {
+  server\data\query_state_debug.json:29180:                "id": "de827fe3130ebe26687fd42e",
+  server\data\query_state_debug.json:29181:                "description": "",
+  server\data\query_state_debug.json:29182:                "images": [
+  server\data\query_state_debug.json:31406:      },
+> server\data\query_state_debug.json:31407:      "queryKey": [
+  server\data\query_state_debug.json:31408:        "venue-assortment",
+  server\data\query_state_debug.json:31409:        "category",
+  server\data\query_state_debug.json:31410:        "bravo-supermarket-mardakan-shosessi",
+  server\data\query_state_debug.json:31411:        "taxl-mhsullar-v-muslilr-99",
+  server\data\query_state_debug.json:31412:        null,
+  server\data\query_state_debug.json:31413:        null,
+  server\data\query_state_debug.json:31414:        "az",
+  server\data\query_state_debug.json:31415:        "no-user"
+  server\data\query_state_debug.json:31416:      ],
+  server\data\query_state_debug.json:31417:      "queryHash": "[\"venue-assortment\",\"category\",\"bravo-supermarket-m
+ardakan-shosessi\",\"taxl-mhsullar-v-muslilr-99\",null,null,\"az\",\"no-user\"]"
+  server\data\query_state_debug.json:31418:    },
+  server\data\query_state_debug.json:31419:    {
+  server\data\query_state_debug.json:31420:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31421:      "state": {
+  server\data\query_state_debug.json:31422:        "data": {
+  server\data\query_state_debug.json:31423:          "domainInfo": null
+  server\data\query_state_debug.json:31424:        },
+  server\data\query_state_debug.json:31425:        "dataUpdateCount": 1,
+  server\data\query_state_debug.json:31426:        "dataUpdatedAt": 1784630064430,
+  server\data\query_state_debug.json:31427:        "error": null,
+  server\data\query_state_debug.json:31436:      },
+> server\data\query_state_debug.json:31437:      "queryKey": [
+  server\data\query_state_debug.json:31438:        "server",
+  server\data\query_state_debug.json:31439:        "request-data"
+  server\data\query_state_debug.json:31440:      ],
+  server\data\query_state_debug.json:31441:      "queryHash": "[\"server\",\"request-data\"]"
+  server\data\query_state_debug.json:31442:    },
+  server\data\query_state_debug.json:31443:    {
+  server\data\query_state_debug.json:31444:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31445:      "state": {
+  server\data\query_state_debug.json:31446:        "data": {
+  server\data\query_state_debug.json:31447:          "serverFeatureFlags": {}
+  server\data\query_state_debug.json:31448:        },
+  server\data\query_state_debug.json:31449:        "dataUpdateCount": 1,
+  server\data\query_state_debug.json:31450:        "dataUpdatedAt": 1784630064430,
+  server\data\query_state_debug.json:31451:        "error": null,
+  server\data\query_state_debug.json:31452:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:31453:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:31454:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:31455:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:31456:        "fetchMeta": null,
+  server\data\query_state_debug.json:31457:        "isInvalidated": false,
+  server\data\query_state_debug.json:31460:      },
+> server\data\query_state_debug.json:31461:      "queryKey": [
+  server\data\query_state_debug.json:31462:        "server",
+  server\data\query_state_debug.json:31463:        "feature-flag-data"
+  server\data\query_state_debug.json:31464:      ],
+  server\data\query_state_debug.json:31465:      "queryHash": "[\"server\",\"feature-flag-data\"]"
+  server\data\query_state_debug.json:31466:    },
+  server\data\query_state_debug.json:31467:    {
+  server\data\query_state_debug.json:31468:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31469:      "state": {
+  server\data\query_state_debug.json:31470:        "data": {
+  server\data\query_state_debug.json:31471:          "context": {
+  server\data\query_state_debug.json:31472:            "brand": "wolt",
+  server\data\query_state_debug.json:31473:            "platform": "web",
+  server\data\query_state_debug.json:31474:            "language": "az",
+  server\data\query_state_debug.json:31475:            "environment": "production",
+  server\data\query_state_debug.json:31476:            "is_guest": true,
+  server\data\query_state_debug.json:31477:            "session_id": "no-analytics-consent",
+  server\data\query_state_debug.json:31478:            "country_code": "AZE"
+  server\data\query_state_debug.json:31479:          },
+  server\data\query_state_debug.json:31480:          "successes": {
+  server\data\query_state_debug.json:31481:            "pedregal_cart_list": {
+  server\data\query_state_debug.json:31500:      },
+> server\data\query_state_debug.json:31501:      "queryKey": [
+  server\data\query_state_debug.json:31502:        "evaluateDVs",
+  server\data\query_state_debug.json:31503:        [
+  server\data\query_state_debug.json:31504:          "cx_pco_pedregal_use_mock_data",
+  server\data\query_state_debug.json:31505:          "cx_wolt_pedregal_loyalty_modal_v2",
+  server\data\query_state_debug.json:31506:          "wolt_com_dv_demo",
+  server\data\query_state_debug.json:31507:          "cx_pco_pedregal_web",
+  server\data\query_state_debug.json:31508:          "pedregal_cart_list",
+  server\data\query_state_debug.json:31509:          "pedregal_cart_page",
+  server\data\query_state_debug.json:31510:          "wolt_cx_global_search_pedregal_web"
+  server\data\query_state_debug.json:31511:        ],
+  server\data\query_state_debug.json:31512:        "ba73fd3fc476babb2634d6143ef80132ee07632b",
+  server\data\query_state_debug.json:31513:        "wolt-com",
+  server\data\query_state_debug.json:31514:        "wolt"
+  server\data\query_state_debug.json:31515:      ],
+  server\data\query_state_debug.json:31516:      "queryHash": "[\"evaluateDVs\",[\"cx_pco_pedregal_use_mock_data\",\"cx
+_wolt_pedregal_loyalty_modal_v2\",\"wolt_com_dv_demo\",\"cx_pco_pedregal_web\",\"pedregal_cart_list\",\"pedregal_cart_p
+age\",\"wolt_cx_global_search_pedregal_web\"],\"ba73fd3fc476babb2634d6143ef80132ee07632b\",\"wolt-com\",\"wolt\"]"
+  server\data\query_state_debug.json:31517:    },
+  server\data\query_state_debug.json:31518:    {
+  server\data\query_state_debug.json:31519:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31520:      "state": {
+  server\data\query_state_debug.json:31521:        "data": {
+  server\data\query_state_debug.json:31541:      },
+> server\data\query_state_debug.json:31542:      "queryKey": [
+  server\data\query_state_debug.json:31543:        "ssr-dv-context"
+  server\data\query_state_debug.json:31544:      ],
+  server\data\query_state_debug.json:31545:      "queryHash": "[\"ssr-dv-context\"]"
+  server\data\query_state_debug.json:31546:    },
+  server\data\query_state_debug.json:31547:    {
+  server\data\query_state_debug.json:31548:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31549:      "state": {
+  server\data\query_state_debug.json:31550:        "data": "AZN�0.00",
+  server\data\query_state_debug.json:31551:        "dataUpdateCount": 1,
+  server\data\query_state_debug.json:31552:        "dataUpdatedAt": 1784630064475,
+  server\data\query_state_debug.json:31553:        "error": null,
+  server\data\query_state_debug.json:31554:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:31555:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:31556:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:31557:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:31558:        "fetchMeta": null,
+  server\data\query_state_debug.json:31559:        "isInvalidated": false,
+  server\data\query_state_debug.json:31560:        "status": "success",
+  server\data\query_state_debug.json:31561:        "fetchStatus": "idle"
+  server\data\query_state_debug.json:31562:      },
+> server\data\query_state_debug.json:31563:      "queryKey": [
+  server\data\query_state_debug.json:31564:        "formattedCurrency",
+  server\data\query_state_debug.json:31565:        0,
+  server\data\query_state_debug.json:31566:        "AZN",
+  server\data\query_state_debug.json:31567:        "AZE",
+  server\data\query_state_debug.json:31568:        null
+  server\data\query_state_debug.json:31569:      ],
+  server\data\query_state_debug.json:31570:      "queryHash": "[\"formattedCurrency\",0,\"AZN\",\"AZE\",null]"
+  server\data\query_state_debug.json:31571:    },
+  server\data\query_state_debug.json:31572:    {
+  server\data\query_state_debug.json:31573:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31574:      "state": {
+  server\data\query_state_debug.json:31575:        "data": "AZN�7.98",
+  server\data\query_state_debug.json:31576:        "dataUpdateCount": 1,
+  server\data\query_state_debug.json:31577:        "dataUpdatedAt": 1784630064501,
+  server\data\query_state_debug.json:31578:        "error": null,
+  server\data\query_state_debug.json:31579:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:31580:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:31581:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:31582:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:31583:        "fetchMeta": null,
+  server\data\query_state_debug.json:31587:      },
+> server\data\query_state_debug.json:31588:      "queryKey": [
+  server\data\query_state_debug.json:31589:        "formattedCurrency",
+  server\data\query_state_debug.json:31590:        798,
+  server\data\query_state_debug.json:31591:        "AZN",
+  server\data\query_state_debug.json:31592:        "AZE",
+  server\data\query_state_debug.json:31593:        null
+  server\data\query_state_debug.json:31594:      ],
+  server\data\query_state_debug.json:31595:      "queryHash": "[\"formattedCurrency\",798,\"AZN\",\"AZE\",null]"
+  server\data\query_state_debug.json:31596:    },
+  server\data\query_state_debug.json:31597:    {
+  server\data\query_state_debug.json:31598:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31599:      "state": {
+  server\data\query_state_debug.json:31600:        "data": "AZN�7.98",
+  server\data\query_state_debug.json:31601:        "dataUpdateCount": 1,
+  server\data\query_state_debug.json:31602:        "dataUpdatedAt": 1784630064501,
+  server\data\query_state_debug.json:31603:        "error": null,
+  server\data\query_state_debug.json:31604:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:31605:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:31606:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:31607:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:31608:        "fetchMeta": null,
+  server\data\query_state_debug.json:31612:      },
+> server\data\query_state_debug.json:31613:      "queryKey": [
+  server\data\query_state_debug.json:31614:        "formattedCurrency",
+  server\data\query_state_debug.json:31615:        798,
+  server\data\query_state_debug.json:31616:        "AZN",
+  server\data\query_state_debug.json:31617:        "AZE",
+  server\data\query_state_debug.json:31618:        {
+  server\data\query_state_debug.json:31619:          "withoutDualCurrency": true
+  server\data\query_state_debug.json:31620:        }
+  server\data\query_state_debug.json:31621:      ],
+  server\data\query_state_debug.json:31622:      "queryHash": "[\"formattedCurrency\",798,\"AZN\",\"AZE\",{\"withoutDua
+lCurrency\":true}]"
+  server\data\query_state_debug.json:31623:    },
+  server\data\query_state_debug.json:31624:    {
+  server\data\query_state_debug.json:31625:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31626:      "state": {
+  server\data\query_state_debug.json:31627:        "data": "AZN�2.49",
+  server\data\query_state_debug.json:31628:        "dataUpdateCount": 5,
+  server\data\query_state_debug.json:31629:        "dataUpdatedAt": 1784630064527,
+  server\data\query_state_debug.json:31630:        "error": null,
+  server\data\query_state_debug.json:31631:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:31632:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:31633:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:31639:      },
+> server\data\query_state_debug.json:31640:      "queryKey": [
+  server\data\query_state_debug.json:31641:        "formattedCurrency",
+  server\data\query_state_debug.json:31642:        249,
+  server\data\query_state_debug.json:31643:        "AZN",
+  server\data\query_state_debug.json:31644:        "AZE",
+  server\data\query_state_debug.json:31645:        null
+  server\data\query_state_debug.json:31646:      ],
+  server\data\query_state_debug.json:31647:      "queryHash": "[\"formattedCurrency\",249,\"AZN\",\"AZE\",null]"
+  server\data\query_state_debug.json:31648:    },
+  server\data\query_state_debug.json:31649:    {
+  server\data\query_state_debug.json:31650:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31651:      "state": {
+  server\data\query_state_debug.json:31652:        "data": "AZN�3.49",
+  server\data\query_state_debug.json:31653:        "dataUpdateCount": 4,
+  server\data\query_state_debug.json:31654:        "dataUpdatedAt": 1784630064526,
+  server\data\query_state_debug.json:31655:        "error": null,
+  server\data\query_state_debug.json:31656:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:31657:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:31658:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:31659:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:31660:        "fetchMeta": null,
+  server\data\query_state_debug.json:31664:      },
+> server\data\query_state_debug.json:31665:      "queryKey": [
+  server\data\query_state_debug.json:31666:        "formattedCurrency",
+  server\data\query_state_debug.json:31667:        349,
+  server\data\query_state_debug.json:31668:        "AZN",
+  server\data\query_state_debug.json:31669:        "AZE",
+  server\data\query_state_debug.json:31670:        {
+  server\data\query_state_debug.json:31671:          "withoutDualCurrency": true
+  server\data\query_state_debug.json:31672:        }
+  server\data\query_state_debug.json:31673:      ],
+  server\data\query_state_debug.json:31674:      "queryHash": "[\"formattedCurrency\",349,\"AZN\",\"AZE\",{\"withoutDua
+lCurrency\":true}]"
+  server\data\query_state_debug.json:31675:    },
+  server\data\query_state_debug.json:31676:    {
+  server\data\query_state_debug.json:31677:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31678:      "state": {
+  server\data\query_state_debug.json:31679:        "data": "AZN�3.49",
+  server\data\query_state_debug.json:31680:        "dataUpdateCount": 4,
+  server\data\query_state_debug.json:31681:        "dataUpdatedAt": 1784630064526,
+  server\data\query_state_debug.json:31682:        "error": null,
+  server\data\query_state_debug.json:31683:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:31684:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:31685:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:31691:      },
+> server\data\query_state_debug.json:31692:      "queryKey": [
+  server\data\query_state_debug.json:31693:        "formattedCurrency",
+  server\data\query_state_debug.json:31694:        349,
+  server\data\query_state_debug.json:31695:        "AZN",
+  server\data\query_state_debug.json:31696:        "AZE",
+  server\data\query_state_debug.json:31697:        null
+  server\data\query_state_debug.json:31698:      ],
+  server\data\query_state_debug.json:31699:      "queryHash": "[\"formattedCurrency\",349,\"AZN\",\"AZE\",null]"
+  server\data\query_state_debug.json:31700:    },
+  server\data\query_state_debug.json:31701:    {
+  server\data\query_state_debug.json:31702:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31703:      "state": {
+  server\data\query_state_debug.json:31704:        "data": "AZN�2.49",
+  server\data\query_state_debug.json:31705:        "dataUpdateCount": 4,
+  server\data\query_state_debug.json:31706:        "dataUpdatedAt": 1784630064527,
+  server\data\query_state_debug.json:31707:        "error": null,
+  server\data\query_state_debug.json:31708:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:31709:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:31710:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:31711:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:31712:        "fetchMeta": null,
+  server\data\query_state_debug.json:31716:      },
+> server\data\query_state_debug.json:31717:      "queryKey": [
+  server\data\query_state_debug.json:31718:        "formattedCurrency",
+  server\data\query_state_debug.json:31719:        249,
+  server\data\query_state_debug.json:31720:        "AZN",
+  server\data\query_state_debug.json:31721:        "AZE",
+  server\data\query_state_debug.json:31722:        {
+  server\data\query_state_debug.json:31723:          "withoutDualCurrency": true
+  server\data\query_state_debug.json:31724:        }
+  server\data\query_state_debug.json:31725:      ],
+  server\data\query_state_debug.json:31726:      "queryHash": "[\"formattedCurrency\",249,\"AZN\",\"AZE\",{\"withoutDua
+lCurrency\":true}]"
+  server\data\query_state_debug.json:31727:    },
+  server\data\query_state_debug.json:31728:    {
+  server\data\query_state_debug.json:31729:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31730:      "state": {
+  server\data\query_state_debug.json:31731:        "data": "AZN�4.49",
+  server\data\query_state_debug.json:31732:        "dataUpdateCount": 1,
+  server\data\query_state_debug.json:31733:        "dataUpdatedAt": 1784630064504,
+  server\data\query_state_debug.json:31734:        "error": null,
+  server\data\query_state_debug.json:31735:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:31736:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:31737:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:31743:      },
+> server\data\query_state_debug.json:31744:      "queryKey": [
+  server\data\query_state_debug.json:31745:        "formattedCurrency",
+  server\data\query_state_debug.json:31746:        449,
+  server\data\query_state_debug.json:31747:        "AZN",
+  server\data\query_state_debug.json:31748:        "AZE",
+  server\data\query_state_debug.json:31749:        null
+  server\data\query_state_debug.json:31750:      ],
+  server\data\query_state_debug.json:31751:      "queryHash": "[\"formattedCurrency\",449,\"AZN\",\"AZE\",null]"
+  server\data\query_state_debug.json:31752:    },
+  server\data\query_state_debug.json:31753:    {
+  server\data\query_state_debug.json:31754:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31755:      "state": {
+  server\data\query_state_debug.json:31756:        "data": "AZN�4.49",
+  server\data\query_state_debug.json:31757:        "dataUpdateCount": 1,
+  server\data\query_state_debug.json:31758:        "dataUpdatedAt": 1784630064504,
+  server\data\query_state_debug.json:31759:        "error": null,
+  server\data\query_state_debug.json:31760:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:31761:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:31762:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:31763:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:31764:        "fetchMeta": null,
+  server\data\query_state_debug.json:31768:      },
+> server\data\query_state_debug.json:31769:      "queryKey": [
+  server\data\query_state_debug.json:31770:        "formattedCurrency",
+  server\data\query_state_debug.json:31771:        449,
+  server\data\query_state_debug.json:31772:        "AZN",
+  server\data\query_state_debug.json:31773:        "AZE",
+  server\data\query_state_debug.json:31774:        {
+  server\data\query_state_debug.json:31775:          "withoutDualCurrency": true
+  server\data\query_state_debug.json:31776:        }
+  server\data\query_state_debug.json:31777:      ],
+  server\data\query_state_debug.json:31778:      "queryHash": "[\"formattedCurrency\",449,\"AZN\",\"AZE\",{\"withoutDua
+lCurrency\":true}]"
+  server\data\query_state_debug.json:31779:    },
+  server\data\query_state_debug.json:31780:    {
+  server\data\query_state_debug.json:31781:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31782:      "state": {
+  server\data\query_state_debug.json:31783:        "data": "AZN�5.59",
+  server\data\query_state_debug.json:31784:        "dataUpdateCount": 4,
+  server\data\query_state_debug.json:31785:        "dataUpdatedAt": 1784630064515,
+  server\data\query_state_debug.json:31786:        "error": null,
+  server\data\query_state_debug.json:31787:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:31788:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:31789:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:31795:      },
+> server\data\query_state_debug.json:31796:      "queryKey": [
+  server\data\query_state_debug.json:31797:        "formattedCurrency",
+  server\data\query_state_debug.json:31798:        559,
+  server\data\query_state_debug.json:31799:        "AZN",
+  server\data\query_state_debug.json:31800:        "AZE",
+  server\data\query_state_debug.json:31801:        null
+  server\data\query_state_debug.json:31802:      ],
+  server\data\query_state_debug.json:31803:      "queryHash": "[\"formattedCurrency\",559,\"AZN\",\"AZE\",null]"
+  server\data\query_state_debug.json:31804:    },
+  server\data\query_state_debug.json:31805:    {
+  server\data\query_state_debug.json:31806:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31807:      "state": {
+  server\data\query_state_debug.json:31808:        "data": "AZN�5.59",
+  server\data\query_state_debug.json:31809:        "dataUpdateCount": 4,
+  server\data\query_state_debug.json:31810:        "dataUpdatedAt": 1784630064515,
+  server\data\query_state_debug.json:31811:        "error": null,
+  server\data\query_state_debug.json:31812:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:31813:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:31814:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:31815:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:31816:        "fetchMeta": null,
+  server\data\query_state_debug.json:31820:      },
+> server\data\query_state_debug.json:31821:      "queryKey": [
+  server\data\query_state_debug.json:31822:        "formattedCurrency",
+  server\data\query_state_debug.json:31823:        559,
+  server\data\query_state_debug.json:31824:        "AZN",
+  server\data\query_state_debug.json:31825:        "AZE",
+  server\data\query_state_debug.json:31826:        {
+  server\data\query_state_debug.json:31827:          "withoutDualCurrency": true
+  server\data\query_state_debug.json:31828:        }
+  server\data\query_state_debug.json:31829:      ],
+  server\data\query_state_debug.json:31830:      "queryHash": "[\"formattedCurrency\",559,\"AZN\",\"AZE\",{\"withoutDua
+lCurrency\":true}]"
+  server\data\query_state_debug.json:31831:    },
+  server\data\query_state_debug.json:31832:    {
+  server\data\query_state_debug.json:31833:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31834:      "state": {
+  server\data\query_state_debug.json:31835:        "data": "AZN�9.99",
+  server\data\query_state_debug.json:31836:        "dataUpdateCount": 2,
+  server\data\query_state_debug.json:31837:        "dataUpdatedAt": 1784630064510,
+  server\data\query_state_debug.json:31838:        "error": null,
+  server\data\query_state_debug.json:31839:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:31840:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:31841:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:31847:      },
+> server\data\query_state_debug.json:31848:      "queryKey": [
+  server\data\query_state_debug.json:31849:        "formattedCurrency",
+  server\data\query_state_debug.json:31850:        999,
+  server\data\query_state_debug.json:31851:        "AZN",
+  server\data\query_state_debug.json:31852:        "AZE",
+  server\data\query_state_debug.json:31853:        null
+  server\data\query_state_debug.json:31854:      ],
+  server\data\query_state_debug.json:31855:      "queryHash": "[\"formattedCurrency\",999,\"AZN\",\"AZE\",null]"
+  server\data\query_state_debug.json:31856:    },
+  server\data\query_state_debug.json:31857:    {
+  server\data\query_state_debug.json:31858:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31859:      "state": {
+  server\data\query_state_debug.json:31860:        "data": "AZN�9.99",
+  server\data\query_state_debug.json:31861:        "dataUpdateCount": 2,
+  server\data\query_state_debug.json:31862:        "dataUpdatedAt": 1784630064510,
+  server\data\query_state_debug.json:31863:        "error": null,
+  server\data\query_state_debug.json:31864:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:31865:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:31866:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:31867:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:31868:        "fetchMeta": null,
+  server\data\query_state_debug.json:31872:      },
+> server\data\query_state_debug.json:31873:      "queryKey": [
+  server\data\query_state_debug.json:31874:        "formattedCurrency",
+  server\data\query_state_debug.json:31875:        999,
+  server\data\query_state_debug.json:31876:        "AZN",
+  server\data\query_state_debug.json:31877:        "AZE",
+  server\data\query_state_debug.json:31878:        {
+  server\data\query_state_debug.json:31879:          "withoutDualCurrency": true
+  server\data\query_state_debug.json:31880:        }
+  server\data\query_state_debug.json:31881:      ],
+  server\data\query_state_debug.json:31882:      "queryHash": "[\"formattedCurrency\",999,\"AZN\",\"AZE\",{\"withoutDua
+lCurrency\":true}]"
+  server\data\query_state_debug.json:31883:    },
+  server\data\query_state_debug.json:31884:    {
+  server\data\query_state_debug.json:31885:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31886:      "state": {
+  server\data\query_state_debug.json:31887:        "data": "AZN�3.34",
+  server\data\query_state_debug.json:31888:        "dataUpdateCount": 1,
+  server\data\query_state_debug.json:31889:        "dataUpdatedAt": 1784630064512,
+  server\data\query_state_debug.json:31890:        "error": null,
+  server\data\query_state_debug.json:31891:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:31892:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:31893:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:31899:      },
+> server\data\query_state_debug.json:31900:      "queryKey": [
+  server\data\query_state_debug.json:31901:        "formattedCurrency",
+  server\data\query_state_debug.json:31902:        334,
+  server\data\query_state_debug.json:31903:        "AZN",
+  server\data\query_state_debug.json:31904:        "AZE",
+  server\data\query_state_debug.json:31905:        null
+  server\data\query_state_debug.json:31906:      ],
+  server\data\query_state_debug.json:31907:      "queryHash": "[\"formattedCurrency\",334,\"AZN\",\"AZE\",null]"
+  server\data\query_state_debug.json:31908:    },
+  server\data\query_state_debug.json:31909:    {
+  server\data\query_state_debug.json:31910:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31911:      "state": {
+  server\data\query_state_debug.json:31912:        "data": "AZN�3.05",
+  server\data\query_state_debug.json:31913:        "dataUpdateCount": 2,
+  server\data\query_state_debug.json:31914:        "dataUpdatedAt": 1784630064514,
+  server\data\query_state_debug.json:31915:        "error": null,
+  server\data\query_state_debug.json:31916:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:31917:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:31918:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:31919:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:31920:        "fetchMeta": null,
+  server\data\query_state_debug.json:31924:      },
+> server\data\query_state_debug.json:31925:      "queryKey": [
+  server\data\query_state_debug.json:31926:        "formattedCurrency",
+  server\data\query_state_debug.json:31927:        305,
+  server\data\query_state_debug.json:31928:        "AZN",
+  server\data\query_state_debug.json:31929:        "AZE",
+  server\data\query_state_debug.json:31930:        null
+  server\data\query_state_debug.json:31931:      ],
+  server\data\query_state_debug.json:31932:      "queryHash": "[\"formattedCurrency\",305,\"AZN\",\"AZE\",null]"
+  server\data\query_state_debug.json:31933:    },
+  server\data\query_state_debug.json:31934:    {
+  server\data\query_state_debug.json:31935:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31936:      "state": {
+  server\data\query_state_debug.json:31937:        "data": "AZN�3.05",
+  server\data\query_state_debug.json:31938:        "dataUpdateCount": 1,
+  server\data\query_state_debug.json:31939:        "dataUpdatedAt": 1784630064513,
+  server\data\query_state_debug.json:31940:        "error": null,
+  server\data\query_state_debug.json:31941:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:31942:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:31943:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:31944:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:31945:        "fetchMeta": null,
+  server\data\query_state_debug.json:31949:      },
+> server\data\query_state_debug.json:31950:      "queryKey": [
+  server\data\query_state_debug.json:31951:        "formattedCurrency",
+  server\data\query_state_debug.json:31952:        305,
+  server\data\query_state_debug.json:31953:        "AZN",
+  server\data\query_state_debug.json:31954:        "AZE",
+  server\data\query_state_debug.json:31955:        {
+  server\data\query_state_debug.json:31956:          "withoutDualCurrency": true
+  server\data\query_state_debug.json:31957:        }
+  server\data\query_state_debug.json:31958:      ],
+  server\data\query_state_debug.json:31959:      "queryHash": "[\"formattedCurrency\",305,\"AZN\",\"AZE\",{\"withoutDua
+lCurrency\":true}]"
+  server\data\query_state_debug.json:31960:    },
+  server\data\query_state_debug.json:31961:    {
+  server\data\query_state_debug.json:31962:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31963:      "state": {
+  server\data\query_state_debug.json:31964:        "data": "AZN�9.39",
+  server\data\query_state_debug.json:31965:        "dataUpdateCount": 1,
+  server\data\query_state_debug.json:31966:        "dataUpdatedAt": 1784630064516,
+  server\data\query_state_debug.json:31967:        "error": null,
+  server\data\query_state_debug.json:31968:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:31969:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:31970:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:31976:      },
+> server\data\query_state_debug.json:31977:      "queryKey": [
+  server\data\query_state_debug.json:31978:        "formattedCurrency",
+  server\data\query_state_debug.json:31979:        939,
+  server\data\query_state_debug.json:31980:        "AZN",
+  server\data\query_state_debug.json:31981:        "AZE",
+  server\data\query_state_debug.json:31982:        null
+  server\data\query_state_debug.json:31983:      ],
+  server\data\query_state_debug.json:31984:      "queryHash": "[\"formattedCurrency\",939,\"AZN\",\"AZE\",null]"
+  server\data\query_state_debug.json:31985:    },
+  server\data\query_state_debug.json:31986:    {
+  server\data\query_state_debug.json:31987:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:31988:      "state": {
+  server\data\query_state_debug.json:31989:        "data": "AZN�3.99",
+  server\data\query_state_debug.json:31990:        "dataUpdateCount": 1,
+  server\data\query_state_debug.json:31991:        "dataUpdatedAt": 1784630064517,
+  server\data\query_state_debug.json:31992:        "error": null,
+  server\data\query_state_debug.json:31993:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:31994:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:31995:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:31996:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:31997:        "fetchMeta": null,
+  server\data\query_state_debug.json:32001:      },
+> server\data\query_state_debug.json:32002:      "queryKey": [
+  server\data\query_state_debug.json:32003:        "formattedCurrency",
+  server\data\query_state_debug.json:32004:        399,
+  server\data\query_state_debug.json:32005:        "AZN",
+  server\data\query_state_debug.json:32006:        "AZE",
+  server\data\query_state_debug.json:32007:        null
+  server\data\query_state_debug.json:32008:      ],
+  server\data\query_state_debug.json:32009:      "queryHash": "[\"formattedCurrency\",399,\"AZN\",\"AZE\",null]"
+  server\data\query_state_debug.json:32010:    },
+  server\data\query_state_debug.json:32011:    {
+  server\data\query_state_debug.json:32012:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:32013:      "state": {
+  server\data\query_state_debug.json:32014:        "data": "AZN�5.25",
+  server\data\query_state_debug.json:32015:        "dataUpdateCount": 3,
+  server\data\query_state_debug.json:32016:        "dataUpdatedAt": 1784630064525,
+  server\data\query_state_debug.json:32017:        "error": null,
+  server\data\query_state_debug.json:32018:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:32019:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:32020:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:32021:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:32022:        "fetchMeta": null,
+  server\data\query_state_debug.json:32026:      },
+> server\data\query_state_debug.json:32027:      "queryKey": [
+  server\data\query_state_debug.json:32028:        "formattedCurrency",
+  server\data\query_state_debug.json:32029:        525,
+  server\data\query_state_debug.json:32030:        "AZN",
+  server\data\query_state_debug.json:32031:        "AZE",
+  server\data\query_state_debug.json:32032:        null
+  server\data\query_state_debug.json:32033:      ],
+  server\data\query_state_debug.json:32034:      "queryHash": "[\"formattedCurrency\",525,\"AZN\",\"AZE\",null]"
+  server\data\query_state_debug.json:32035:    },
+  server\data\query_state_debug.json:32036:    {
+  server\data\query_state_debug.json:32037:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:32038:      "state": {
+  server\data\query_state_debug.json:32039:        "data": "AZN�5.87",
+  server\data\query_state_debug.json:32040:        "dataUpdateCount": 3,
+  server\data\query_state_debug.json:32041:        "dataUpdatedAt": 1784630064525,
+  server\data\query_state_debug.json:32042:        "error": null,
+  server\data\query_state_debug.json:32043:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:32044:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:32045:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:32046:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:32047:        "fetchMeta": null,
+  server\data\query_state_debug.json:32051:      },
+> server\data\query_state_debug.json:32052:      "queryKey": [
+  server\data\query_state_debug.json:32053:        "formattedCurrency",
+  server\data\query_state_debug.json:32054:        587,
+  server\data\query_state_debug.json:32055:        "AZN",
+  server\data\query_state_debug.json:32056:        "AZE",
+  server\data\query_state_debug.json:32057:        {
+  server\data\query_state_debug.json:32058:          "withoutDualCurrency": true
+  server\data\query_state_debug.json:32059:        }
+  server\data\query_state_debug.json:32060:      ],
+  server\data\query_state_debug.json:32061:      "queryHash": "[\"formattedCurrency\",587,\"AZN\",\"AZE\",{\"withoutDua
+lCurrency\":true}]"
+  server\data\query_state_debug.json:32062:    },
+  server\data\query_state_debug.json:32063:    {
+  server\data\query_state_debug.json:32064:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:32065:      "state": {
+  server\data\query_state_debug.json:32066:        "data": "AZN�5.87",
+  server\data\query_state_debug.json:32067:        "dataUpdateCount": 3,
+  server\data\query_state_debug.json:32068:        "dataUpdatedAt": 1784630064525,
+  server\data\query_state_debug.json:32069:        "error": null,
+  server\data\query_state_debug.json:32070:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:32071:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:32072:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:32078:      },
+> server\data\query_state_debug.json:32079:      "queryKey": [
+  server\data\query_state_debug.json:32080:        "formattedCurrency",
+  server\data\query_state_debug.json:32081:        587,
+  server\data\query_state_debug.json:32082:        "AZN",
+  server\data\query_state_debug.json:32083:        "AZE",
+  server\data\query_state_debug.json:32084:        null
+  server\data\query_state_debug.json:32085:      ],
+  server\data\query_state_debug.json:32086:      "queryHash": "[\"formattedCurrency\",587,\"AZN\",\"AZE\",null]"
+  server\data\query_state_debug.json:32087:    },
+  server\data\query_state_debug.json:32088:    {
+  server\data\query_state_debug.json:32089:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:32090:      "state": {
+  server\data\query_state_debug.json:32091:        "data": "AZN�6.10",
+  server\data\query_state_debug.json:32092:        "dataUpdateCount": 1,
+  server\data\query_state_debug.json:32093:        "dataUpdatedAt": 1784630064520,
+  server\data\query_state_debug.json:32094:        "error": null,
+  server\data\query_state_debug.json:32095:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:32096:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:32097:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:32098:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:32099:        "fetchMeta": null,
+  server\data\query_state_debug.json:32103:      },
+> server\data\query_state_debug.json:32104:      "queryKey": [
+  server\data\query_state_debug.json:32105:        "formattedCurrency",
+  server\data\query_state_debug.json:32106:        610,
+  server\data\query_state_debug.json:32107:        "AZN",
+  server\data\query_state_debug.json:32108:        "AZE",
+  server\data\query_state_debug.json:32109:        null
+  server\data\query_state_debug.json:32110:      ],
+  server\data\query_state_debug.json:32111:      "queryHash": "[\"formattedCurrency\",610,\"AZN\",\"AZE\",null]"
+  server\data\query_state_debug.json:32112:    },
+  server\data\query_state_debug.json:32113:    {
+  server\data\query_state_debug.json:32114:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:32115:      "state": {
+  server\data\query_state_debug.json:32116:        "data": "AZN�6.10",
+  server\data\query_state_debug.json:32117:        "dataUpdateCount": 1,
+  server\data\query_state_debug.json:32118:        "dataUpdatedAt": 1784630064520,
+  server\data\query_state_debug.json:32119:        "error": null,
+  server\data\query_state_debug.json:32120:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:32121:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:32122:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:32123:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:32124:        "fetchMeta": null,
+  server\data\query_state_debug.json:32128:      },
+> server\data\query_state_debug.json:32129:      "queryKey": [
+  server\data\query_state_debug.json:32130:        "formattedCurrency",
+  server\data\query_state_debug.json:32131:        610,
+  server\data\query_state_debug.json:32132:        "AZN",
+  server\data\query_state_debug.json:32133:        "AZE",
+  server\data\query_state_debug.json:32134:        {
+  server\data\query_state_debug.json:32135:          "withoutDualCurrency": true
+  server\data\query_state_debug.json:32136:        }
+  server\data\query_state_debug.json:32137:      ],
+  server\data\query_state_debug.json:32138:      "queryHash": "[\"formattedCurrency\",610,\"AZN\",\"AZE\",{\"withoutDua
+lCurrency\":true}]"
+  server\data\query_state_debug.json:32139:    },
+  server\data\query_state_debug.json:32140:    {
+  server\data\query_state_debug.json:32141:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:32142:      "state": {
+  server\data\query_state_debug.json:32143:        "data": "AZN�3.55",
+  server\data\query_state_debug.json:32144:        "dataUpdateCount": 2,
+  server\data\query_state_debug.json:32145:        "dataUpdatedAt": 1784630064522,
+  server\data\query_state_debug.json:32146:        "error": null,
+  server\data\query_state_debug.json:32147:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:32148:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:32149:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:32155:      },
+> server\data\query_state_debug.json:32156:      "queryKey": [
+  server\data\query_state_debug.json:32157:        "formattedCurrency",
+  server\data\query_state_debug.json:32158:        355,
+  server\data\query_state_debug.json:32159:        "AZN",
+  server\data\query_state_debug.json:32160:        "AZE",
+  server\data\query_state_debug.json:32161:        null
+  server\data\query_state_debug.json:32162:      ],
+  server\data\query_state_debug.json:32163:      "queryHash": "[\"formattedCurrency\",355,\"AZN\",\"AZE\",null]"
+  server\data\query_state_debug.json:32164:    },
+  server\data\query_state_debug.json:32165:    {
+  server\data\query_state_debug.json:32166:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:32167:      "state": {
+  server\data\query_state_debug.json:32168:        "data": "AZN�7.50",
+  server\data\query_state_debug.json:32169:        "dataUpdateCount": 1,
+  server\data\query_state_debug.json:32170:        "dataUpdatedAt": 1784630064524,
+  server\data\query_state_debug.json:32171:        "error": null,
+  server\data\query_state_debug.json:32172:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:32173:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:32174:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:32175:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:32176:        "fetchMeta": null,
+  server\data\query_state_debug.json:32180:      },
+> server\data\query_state_debug.json:32181:      "queryKey": [
+  server\data\query_state_debug.json:32182:        "formattedCurrency",
+  server\data\query_state_debug.json:32183:        750,
+  server\data\query_state_debug.json:32184:        "AZN",
+  server\data\query_state_debug.json:32185:        "AZE",
+  server\data\query_state_debug.json:32186:        null
+  server\data\query_state_debug.json:32187:      ],
+  server\data\query_state_debug.json:32188:      "queryHash": "[\"formattedCurrency\",750,\"AZN\",\"AZE\",null]"
+  server\data\query_state_debug.json:32189:    },
+  server\data\query_state_debug.json:32190:    {
+  server\data\query_state_debug.json:32191:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:32192:      "state": {
+  server\data\query_state_debug.json:32193:        "data": "AZN�1.99",
+  server\data\query_state_debug.json:32194:        "dataUpdateCount": 1,
+  server\data\query_state_debug.json:32195:        "dataUpdatedAt": 1784630064527,
+  server\data\query_state_debug.json:32196:        "error": null,
+  server\data\query_state_debug.json:32197:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:32198:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:32199:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:32200:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:32201:        "fetchMeta": null,
+  server\data\query_state_debug.json:32205:      },
+> server\data\query_state_debug.json:32206:      "queryKey": [
+  server\data\query_state_debug.json:32207:        "formattedCurrency",
+  server\data\query_state_debug.json:32208:        199,
+  server\data\query_state_debug.json:32209:        "AZN",
+  server\data\query_state_debug.json:32210:        "AZE",
+  server\data\query_state_debug.json:32211:        null
+  server\data\query_state_debug.json:32212:      ],
+  server\data\query_state_debug.json:32213:      "queryHash": "[\"formattedCurrency\",199,\"AZN\",\"AZE\",null]"
+  server\data\query_state_debug.json:32214:    },
+  server\data\query_state_debug.json:32215:    {
+  server\data\query_state_debug.json:32216:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:32217:      "state": {
+  server\data\query_state_debug.json:32218:        "data": "AZN�4.98",
+  server\data\query_state_debug.json:32219:        "dataUpdateCount": 1,
+  server\data\query_state_debug.json:32220:        "dataUpdatedAt": 1784630064527,
+  server\data\query_state_debug.json:32221:        "error": null,
+  server\data\query_state_debug.json:32222:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:32223:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:32224:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:32225:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:32226:        "fetchMeta": null,
+  server\data\query_state_debug.json:32230:      },
+> server\data\query_state_debug.json:32231:      "queryKey": [
+  server\data\query_state_debug.json:32232:        "formattedCurrency",
+  server\data\query_state_debug.json:32233:        498,
+  server\data\query_state_debug.json:32234:        "AZN",
+  server\data\query_state_debug.json:32235:        "AZE",
+  server\data\query_state_debug.json:32236:        {
+  server\data\query_state_debug.json:32237:          "withoutDualCurrency": true
+  server\data\query_state_debug.json:32238:        }
+  server\data\query_state_debug.json:32239:      ],
+  server\data\query_state_debug.json:32240:      "queryHash": "[\"formattedCurrency\",498,\"AZN\",\"AZE\",{\"withoutDua
+lCurrency\":true}]"
+  server\data\query_state_debug.json:32241:    },
+  server\data\query_state_debug.json:32242:    {
+  server\data\query_state_debug.json:32243:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:32244:      "state": {
+  server\data\query_state_debug.json:32245:        "data": "AZN�2.99",
+  server\data\query_state_debug.json:32246:        "dataUpdateCount": 1,
+  server\data\query_state_debug.json:32247:        "dataUpdatedAt": 1784630064528,
+  server\data\query_state_debug.json:32248:        "error": null,
+  server\data\query_state_debug.json:32249:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:32250:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:32251:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:32257:      },
+> server\data\query_state_debug.json:32258:      "queryKey": [
+  server\data\query_state_debug.json:32259:        "formattedCurrency",
+  server\data\query_state_debug.json:32260:        299,
+  server\data\query_state_debug.json:32261:        "AZN",
+  server\data\query_state_debug.json:32262:        "AZE",
+  server\data\query_state_debug.json:32263:        null
+  server\data\query_state_debug.json:32264:      ],
+  server\data\query_state_debug.json:32265:      "queryHash": "[\"formattedCurrency\",299,\"AZN\",\"AZE\",null]"
+  server\data\query_state_debug.json:32266:    },
+  server\data\query_state_debug.json:32267:    {
+  server\data\query_state_debug.json:32268:      "dehydratedAt": 1784630064550,
+  server\data\query_state_debug.json:32269:      "state": {
+  server\data\query_state_debug.json:32270:        "data": "AZN�8.54",
+  server\data\query_state_debug.json:32271:        "dataUpdateCount": 1,
+  server\data\query_state_debug.json:32272:        "dataUpdatedAt": 1784630064528,
+  server\data\query_state_debug.json:32273:        "error": null,
+  server\data\query_state_debug.json:32274:        "errorUpdateCount": 0,
+  server\data\query_state_debug.json:32275:        "errorUpdatedAt": 0,
+  server\data\query_state_debug.json:32276:        "fetchFailureCount": 0,
+  server\data\query_state_debug.json:32277:        "fetchFailureReason": null,
+  server\data\query_state_debug.json:32278:        "fetchMeta": null,
+  server\data\query_state_debug.json:32282:      },
+> server\data\query_state_debug.json:32283:      "queryKey": [
+  server\data\query_state_debug.json:32284:        "formattedCurrency",
+  server\data\query_state_debug.json:32285:        854,
+  server\data\query_state_debug.json:32286:        "AZN",
+  server\data\query_state_debug.json:32287:        "AZE",
+  server\data\query_state_debug.json:32288:        {
+  server\data\query_state_debug.json:32289:          "withoutDualCurrency": true
+  server\data\query_state_debug.json:32290:        }
+  server\data\query_state_debug.json:32291:      ],
+  server\data\query_state_debug.json:32292:      "queryHash": "[\"formattedCurrency\",854,\"AZN\",\"AZE\",{\"withoutDua
+lCurrency\":true}]"
+  server\data\query_state_debug.json:32293:    }
+  server\data\query_state_debug.json:32294:  ]
+  server\data\query_state_debug.json:32295:}
+
+

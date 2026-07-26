@@ -1,0 +1,1111 @@
+{
+  "extractedAt": "2026-07-21T21:25:37.374Z",
+  "totalProducts": 36,
+  "store": "Bravo",
+  "categories": [
+    {
+      "name": "Təkliflər",
+      "slug": "discounted",
+      "product_count": 12
+    },
+    {
+      "name": "Ən çox sifariş verilən",
+      "slug": "popular",
+      "product_count": 12
+    },
+    {
+      "name": "Yeni",
+      "slug": "new",
+      "product_count": 12
+    }
+  ],
+  "products": [
+    {
+      "id": "c1f4e9d32f964517b714786d",
+      "name": "Kartof Tovuz kq",
+      "price": 0.59,
+      "original_price": 0.79,
+      "unit_info": "",
+      "unit_price": {
+        "base": 1,
+        "original_price": 79,
+        "original_net_price": null,
+        "price": 59,
+        "net_price": null,
+        "unit": "kilogram"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Təkliflər",
+      "category_slug": "discounted",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/667938d09800f17d2912c9d0/df0bd8ea-0325-11f0-b826-22640cfd29b5_226097.jpg",
+          "blurhash": "jgZ;3FpGX;KSLcCqpltCX;GFcxlm"
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [
+        {
+          "id": "popular",
+          "label": "Populyar",
+          "decoration": "star",
+          "color": "primary",
+          "style": {
+            "background_color": "#009de0",
+            "text_color": "#ffffff",
+            "background_color_key": "color-bg-fill-brand",
+            "text_color_key": "color-text-on-bg-fill-brand"
+          }
+        }
+      ],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "070cb715146099a55799226c",
+      "name": "Mərcan Premium Soyudulmuş Filesi kq 21016",
+      "price": 8.69,
+      "original_price": 9.95,
+      "unit_info": "",
+      "unit_price": {
+        "base": 1,
+        "original_price": 995,
+        "original_net_price": null,
+        "price": 869,
+        "net_price": null,
+        "unit": "kilogram"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Təkliflər",
+      "category_slug": "discounted",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/66348f21f221b23d85139cf6/1e3d25d4-1397-11ef-a2e0-aa192a8dbcd7_11111.png",
+          "blurhash": null
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "93683a1bdc4eeed20e0feba1",
+      "name": "Xiyar Yelpənək kq 7136",
+      "price": 1.35,
+      "original_price": 1.59,
+      "unit_info": "",
+      "unit_price": {
+        "base": 1,
+        "original_price": 159,
+        "original_net_price": null,
+        "price": 135,
+        "net_price": null,
+        "unit": "kilogram"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Təkliflər",
+      "category_slug": "discounted",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/66348f21f221b23d85139cf6/15530836-1daf-11ef-8017-0e7e22a9f591_11111.png",
+          "blurhash": "jaZfrPGG;;ppTttTh4GF;;BW4hCC"
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "a78f9fd36b691eb74ba6c8a2",
+      "name": "Hicaz Təzə File Açıq kq",
+      "price": 8.39,
+      "original_price": 9.89,
+      "unit_info": "",
+      "unit_price": {
+        "base": 1,
+        "original_price": 989,
+        "original_net_price": null,
+        "price": 839,
+        "net_price": null,
+        "unit": "kilogram"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Təkliflər",
+      "category_slug": "discounted",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/672b2063a6c24d27db115384/d3801dc8-cdc0-11ef-9d50-2ae520b2187e_583154.jpg",
+          "blurhash": "jeZ:;HlmX;PcKXGXlll4X;KGcxlm"
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "5da88b47521b9bf2c26ca18f",
+      "name": "Mərcan Təzə Toyuq Paketdə kq 3676",
+      "price": 6.39,
+      "original_price": 7.25,
+      "unit_info": "",
+      "unit_price": {
+        "base": 1,
+        "original_price": 725,
+        "original_net_price": null,
+        "price": 639,
+        "net_price": null,
+        "unit": "kilogram"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Təkliflər",
+      "category_slug": "discounted",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/66348f21f221b23d85139cf6/a3c3f9e6-0927-11ef-9e10-2ee000feb432_247272.jpg",
+          "blurhash": "j6;vHVGGT;BCPtxVkPCDPKtCgyGG"
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "69ce160e119f101b2f8290a0",
+      "name": "Badımcan 1kq 2391",
+      "price": 0.59,
+      "original_price": 0.79,
+      "unit_info": "",
+      "unit_price": {
+        "base": 1,
+        "original_price": 79,
+        "original_net_price": null,
+        "price": 59,
+        "net_price": null,
+        "unit": "kilogram"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Təkliflər",
+      "category_slug": "discounted",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/66348f21f221b23d85139cf6/504c89cc-0927-11ef-bcb3-6e137a3e0c5f_235403.jpg",
+          "blurhash": "jhUKbxPc;;cQTtKXh4h4;;pF8yGC"
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "41e4d145a02720e31da0ec15",
+      "name": "Azərsüd Süd 3.2% 1l",
+      "price": 2.39,
+      "original_price": 2.89,
+      "unit_info": "1 əd.",
+      "unit_price": {
+        "base": 1,
+        "original_price": 289,
+        "original_net_price": null,
+        "price": 239,
+        "net_price": null,
+        "unit": "piece"
+      },
+      "description": "Süd",
+      "barcode_gtin": "4760095101025",
+      "category": "Təkliflər",
+      "category_slug": "discounted",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/shared/fa5cc8ee-0ba9-11ef-b7c7-428808e16c00_az_rsu_d_su_d_3.2__1l_.png",
+          "blurhash": null
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "7bb25848910816147522d21c",
+      "name": "Milla Feta Pendiri çəki ilə 2903",
+      "price": 9.29,
+      "original_price": 10.99,
+      "unit_info": "",
+      "unit_price": {
+        "base": 1,
+        "original_price": 1099,
+        "original_net_price": null,
+        "price": 929,
+        "net_price": null,
+        "unit": "kilogram"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Təkliflər",
+      "category_slug": "discounted",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/672b2063a6c24d27db115384/8d9d4590-536e-11f0-b985-fe423865e5fd_wmx_s_111111.jpg",
+          "blurhash": "jbW:DElm;;KXTtcPcPXK;;KXh3h4"
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "7e73e8ad657a35591d7ed88b",
+      "name": "Hicaz Təzə Bud Dibi Açıq kq",
+      "price": 5.99,
+      "original_price": 7.29,
+      "unit_info": "",
+      "unit_price": {
+        "base": 1,
+        "original_price": 729,
+        "original_net_price": null,
+        "price": 599,
+        "net_price": null,
+        "unit": "kilogram"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Təkliflər",
+      "category_slug": "discounted",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/672b2063a6c24d27db115384/d37efde4-cdc0-11ef-90e6-1e9fca972070_583156.jpg",
+          "blurhash": "jb:LbLlBX;TcHbl4plLtT;KYgygP"
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "cfccc0c8221cb327bc9a8a7d",
+      "name": "Eti Adicto İntense Şokoladlı Keks 35qr",
+      "price": 0.79,
+      "original_price": 0.99,
+      "unit_info": "1 əd.",
+      "unit_price": {
+        "base": 1,
+        "original_price": 99,
+        "original_net_price": null,
+        "price": 79,
+        "net_price": null,
+        "unit": "piece"
+      },
+      "description": "Eti Adicto İntense Şokoladlı Keks 35qr",
+      "barcode_gtin": "8690526086651",
+      "category": "Təkliflər",
+      "category_slug": "discounted",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/66348f21f221b23d85139cf6/555a08e6-0926-11ef-b9d6-5e0849272a53_223336.jpg",
+          "blurhash": null
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "eac6552ddc7a8437afba7de6",
+      "name": "Burma Qoğal Sər",
+      "price": 0.69,
+      "original_price": 0.85,
+      "unit_info": "",
+      "unit_price": null,
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Təkliflər",
+      "category_slug": "discounted",
+      "images": [
+        {
+          "url": "https://imageproxy.wolt.com/assets/694aa8061b17af7f09c22e64",
+          "blurhash": null
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "9832d3d10f1942a0b9f202da",
+      "name": "Oven Baton Çörəyi 290 qr",
+      "price": 0.7,
+      "original_price": 0.8,
+      "unit_info": "1 əd.",
+      "unit_price": {
+        "base": 1,
+        "original_price": 80,
+        "original_net_price": null,
+        "price": 70,
+        "net_price": null,
+        "unit": "piece"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Təkliflər",
+      "category_slug": "discounted",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/66f6a23f86a34ceec78687fc/50238be6-920a-11ef-9ca6-2e2cd22fe05b_387744.jpg",
+          "blurhash": null
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "7b46b37658636efe779bb310",
+      "name": "Banan kq 2504",
+      "price": 2.99,
+      "original_price": null,
+      "unit_info": "",
+      "unit_price": {
+        "base": 1,
+        "original_price": null,
+        "original_net_price": null,
+        "price": 299,
+        "net_price": null,
+        "unit": "kilogram"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Ən çox sifariş verilən",
+      "category_slug": "popular",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/66348f21f221b23d85139cf6/57da9e7c-0927-11ef-a6de-9eb1cdb29cc5_236181.jpg",
+          "blurhash": null
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [
+        {
+          "id": "popular",
+          "label": "Populyar",
+          "decoration": "star",
+          "color": "primary",
+          "style": {
+            "background_color": "#009de0",
+            "text_color": "#ffffff",
+            "background_color_key": "color-bg-fill-brand",
+            "text_color_key": "color-text-on-bg-fill-brand"
+          }
+        }
+      ],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "96d9942b99c675b44bffc61f",
+      "name": "Xiyar Melit 1kq 2393",
+      "price": 1.15,
+      "original_price": null,
+      "unit_info": "",
+      "unit_price": {
+        "base": 1,
+        "original_price": null,
+        "original_net_price": null,
+        "price": 115,
+        "net_price": null,
+        "unit": "kilogram"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Ən çox sifariş verilən",
+      "category_slug": "popular",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/66348f21f221b23d85139cf6/50522bfc-0927-11ef-aec3-16088b406a15_235405.jpg",
+          "blurhash": "jdYvjMKH;;llPcCph4pC;;pS4hGG"
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [
+        {
+          "id": "popular",
+          "label": "Populyar",
+          "decoration": "star",
+          "color": "primary",
+          "style": {
+            "background_color": "#009de0",
+            "text_color": "#ffffff",
+            "background_color_key": "color-bg-fill-brand",
+            "text_color_key": "color-text-on-bg-fill-brand"
+          }
+        }
+      ],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "4062df002d350cca44d73ab7",
+      "name": "Pomidor Çəhrayı 1kq 2512",
+      "price": 2.19,
+      "original_price": null,
+      "unit_info": "",
+      "unit_price": {
+        "base": 1,
+        "original_price": null,
+        "original_net_price": null,
+        "price": 219,
+        "net_price": null,
+        "unit": "kilogram"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Ən çox sifariş verilən",
+      "category_slug": "popular",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/66348f21f221b23d85139cf6/57da84f0-0927-11ef-b3c3-32183569e48f_236189.jpg",
+          "blurhash": "jc;f3LpCT;LcHstlp4GYP;GXghl4"
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [
+        {
+          "id": "popular",
+          "label": "Populyar",
+          "decoration": "star",
+          "color": "primary",
+          "style": {
+            "background_color": "#009de0",
+            "text_color": "#ffffff",
+            "background_color_key": "color-bg-fill-brand",
+            "text_color_key": "color-text-on-bg-fill-brand"
+          }
+        }
+      ],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "c1f4e9d32f964517b714786d",
+      "name": "Kartof Tovuz kq",
+      "price": 0.59,
+      "original_price": 0.79,
+      "unit_info": "",
+      "unit_price": {
+        "base": 1,
+        "original_price": 79,
+        "original_net_price": null,
+        "price": 59,
+        "net_price": null,
+        "unit": "kilogram"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Ən çox sifariş verilən",
+      "category_slug": "popular",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/667938d09800f17d2912c9d0/df0bd8ea-0325-11f0-b826-22640cfd29b5_226097.jpg",
+          "blurhash": "jgZ;3FpGX;KSLcCqpltCX;GFcxlm"
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [
+        {
+          "id": "popular",
+          "label": "Populyar",
+          "decoration": "star",
+          "color": "primary",
+          "style": {
+            "background_color": "#009de0",
+            "text_color": "#ffffff",
+            "background_color_key": "color-bg-fill-brand",
+            "text_color_key": "color-text-on-bg-fill-brand"
+          }
+        }
+      ],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "7fa143d4b75c183f5d04fe14",
+      "name": "Kök Yerli 1kq 3046",
+      "price": 1.25,
+      "original_price": null,
+      "unit_info": "",
+      "unit_price": {
+        "base": 1,
+        "original_price": null,
+        "original_net_price": null,
+        "price": 125,
+        "net_price": null,
+        "unit": "kilogram"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Ən çox sifariş verilən",
+      "category_slug": "popular",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/66348f21f221b23d85139cf6/6c3dc8da-0927-11ef-90a5-f6ce40ed4f4d_238855.jpg",
+          "blurhash": "jb;fjNKXT;lkvcGXF4l4P;plghLc"
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [
+        {
+          "id": "popular",
+          "label": "Populyar",
+          "decoration": "star",
+          "color": "primary",
+          "style": {
+            "background_color": "#009de0",
+            "text_color": "#ffffff",
+            "background_color_key": "color-bg-fill-brand",
+            "text_color_key": "color-text-on-bg-fill-brand"
+          }
+        }
+      ],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "070cb715146099a55799226c",
+      "name": "Mərcan Premium Soyudulmuş Filesi kq 21016",
+      "price": 8.69,
+      "original_price": 9.95,
+      "unit_info": "",
+      "unit_price": {
+        "base": 1,
+        "original_price": 995,
+        "original_net_price": null,
+        "price": 869,
+        "net_price": null,
+        "unit": "kilogram"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Ən çox sifariş verilən",
+      "category_slug": "popular",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/66348f21f221b23d85139cf6/1e3d25d4-1397-11ef-a2e0-aa192a8dbcd7_11111.png",
+          "blurhash": null
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "13b21d1fa25d3406f4378dcf",
+      "name": "Limon Afrika kq",
+      "price": 5.49,
+      "original_price": null,
+      "unit_info": "",
+      "unit_price": {
+        "base": 1,
+        "original_price": null,
+        "original_net_price": null,
+        "price": 549,
+        "net_price": null,
+        "unit": "kilogram"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Ən çox sifariş verilən",
+      "category_slug": "popular",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/672b2063a6c24d27db115384/679c5ac6-4224-11f0-9f18-16bf7ad2f0b0_wmx_s_111111.jpg",
+          "blurhash": "je:LvKlkTLPdmXpCJBKXPLKHgNlk"
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "93683a1bdc4eeed20e0feba1",
+      "name": "Xiyar Yelpənək kq 7136",
+      "price": 1.35,
+      "original_price": 1.59,
+      "unit_info": "",
+      "unit_price": {
+        "base": 1,
+        "original_price": 159,
+        "original_net_price": null,
+        "price": 135,
+        "net_price": null,
+        "unit": "kilogram"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Ən çox sifariş verilən",
+      "category_slug": "popular",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/66348f21f221b23d85139cf6/15530836-1daf-11ef-8017-0e7e22a9f591_11111.png",
+          "blurhash": "jaZfrPGG;;ppTttTh4GF;;BW4hCC"
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "2e5a5f11119f86f07092c7de",
+      "name": "Bibər Rəngli Çəki 3916",
+      "price": 4.49,
+      "original_price": null,
+      "unit_info": "",
+      "unit_price": {
+        "base": 1,
+        "original_price": null,
+        "original_net_price": null,
+        "price": 449,
+        "net_price": null,
+        "unit": "kilogram"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Ən çox sifariş verilən",
+      "category_slug": "popular",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/66348f21f221b23d85139cf6/b9814004-0927-11ef-b6f8-4e28d3d2207b_250855.jpg",
+          "blurhash": "jeZ;bKpRX;KZHclCBkOWX;Grcxm4"
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "56e9d622130d8acc9c31219f",
+      "name": "Soğan Qırmızı 1kq 2494",
+      "price": 1.49,
+      "original_price": null,
+      "unit_info": "",
+      "unit_price": {
+        "base": 1,
+        "original_price": null,
+        "original_net_price": null,
+        "price": 149,
+        "net_price": null,
+        "unit": "kilogram"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Ən çox sifariş verilən",
+      "category_slug": "popular",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/66348f21f221b23d85139cf6/56207e8a-0927-11ef-b51f-2ee000feb432_236170.jpg",
+          "blurhash": "jgYKDFGX;;p5KXGXllll;;BD8hqF"
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "a78f9fd36b691eb74ba6c8a2",
+      "name": "Hicaz Təzə File Açıq kq",
+      "price": 8.39,
+      "original_price": 9.89,
+      "unit_info": "",
+      "unit_price": {
+        "base": 1,
+        "original_price": 989,
+        "original_net_price": null,
+        "price": 839,
+        "net_price": null,
+        "unit": "kilogram"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Ən çox sifariş verilən",
+      "category_slug": "popular",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/672b2063a6c24d27db115384/d3801dc8-cdc0-11ef-9d50-2ae520b2187e_583154.jpg",
+          "blurhash": "jeZ:;HlmX;PcKXGXlll4X;KGcxlm"
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "22cbd97b645c89fde5cc6e6c",
+      "name": "Face Təndir Çörəyi Orta",
+      "price": 0.79,
+      "original_price": null,
+      "unit_info": "",
+      "unit_price": null,
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Ən çox sifariş verilən",
+      "category_slug": "popular",
+      "images": [
+        {
+          "url": "https://wolt-menu-images-cdn.wolt.com/menu-images/672b2063a6c24d27db115384/c8660288-240d-11f0-8797-0e8070a8aee8_whatsapp_image_2025_04_24_at_16.34.31__4__photoroom.jpg",
+          "blurhash": "jnXKDCGH;;plPcpCh4GGKYxTllup"
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "5547ad86720df4f7d0a56988",
+      "name": "Can Pişmaniyə 140qr",
+      "price": 3.59,
+      "original_price": null,
+      "unit_info": "140 q",
+      "unit_price": {
+        "base": 1,
+        "original_price": null,
+        "original_net_price": null,
+        "price": 2564,
+        "net_price": null,
+        "unit": "kilogram"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Yeni",
+      "category_slug": "new",
+      "images": [
+        {
+          "url": "https://imageproxy.wolt.com/assets/6a5e27bdde79d3eb0c37f5f3",
+          "blurhash": null
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "10bde0bf0dc7ebce2b98b0bf",
+      "name": "Gerkules Qarabaşaq Lopaları Qutu 300qr",
+      "price": 6.1,
+      "original_price": null,
+      "unit_info": "1 əd.",
+      "unit_price": {
+        "base": 1,
+        "original_price": null,
+        "original_net_price": null,
+        "price": 610,
+        "net_price": null,
+        "unit": "piece"
+      },
+      "description": "Gerkules Qarabaşaq Lopaları Qutu 300qr",
+      "barcode_gtin": "4602112510024",
+      "category": "Yeni",
+      "category_slug": "new",
+      "images": [
+        {
+          "url": "https://imageproxy.wolt.com/assets/6a5de6600fdc417d46ce658b",
+          "blurhash": null
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "b9434c632e45022f6dbdd830",
+      "name": "Bizim Tarla Manqal Salatı 630qr",
+      "price": 4.63,
+      "original_price": null,
+      "unit_info": "1 əd.",
+      "unit_price": {
+        "base": 1,
+        "original_price": null,
+        "original_net_price": null,
+        "price": 463,
+        "net_price": null,
+        "unit": "piece"
+      },
+      "description": "Bizim Tarla Manqal Salatı 630qr",
+      "barcode_gtin": "4760068001468",
+      "category": "Yeni",
+      "category_slug": "new",
+      "images": [
+        {
+          "url": "https://imageproxy.wolt.com/assets/6a5de6600fdc417d46ce658e",
+          "blurhash": null
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "9306fa88617221bee996fb35",
+      "name": "Kaija Kilka Tomat Sousunda 240qr",
+      "price": 3.19,
+      "original_price": null,
+      "unit_info": "1 əd.",
+      "unit_price": {
+        "base": 1,
+        "original_price": null,
+        "original_net_price": null,
+        "price": 319,
+        "net_price": null,
+        "unit": "piece"
+      },
+      "description": "Kaija Kilka Tomat Sousunda 240qr",
+      "barcode_gtin": "4751007731386",
+      "category": "Yeni",
+      "category_slug": "new",
+      "images": [
+        {
+          "url": "https://imageproxy.wolt.com/assets/6a5de6600fdc417d46ce658f",
+          "blurhash": null
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "98780edf4499ef8c6aeea49c",
+      "name": "Camsil Matik Şüşə Təmizləyici Vasitə 1l",
+      "price": 4.59,
+      "original_price": null,
+      "unit_info": "1 əd.",
+      "unit_price": {
+        "base": 1,
+        "original_price": null,
+        "original_net_price": null,
+        "price": 459,
+        "net_price": null,
+        "unit": "piece"
+      },
+      "description": "Camsil Matik Şüşə Təmizləyici Vasitə 1l",
+      "barcode_gtin": "8690546611031",
+      "category": "Yeni",
+      "category_slug": "new",
+      "images": [
+        {
+          "url": "https://imageproxy.wolt.com/assets/6a5de6600fdc417d46ce658c",
+          "blurhash": null
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "67160b1a06f8174d3f9fc780",
+      "name": "Coolsy Cola 2l",
+      "price": 1.99,
+      "original_price": null,
+      "unit_info": "",
+      "unit_price": null,
+      "description": "",
+      "barcode_gtin": "4760157741688",
+      "category": "Yeni",
+      "category_slug": "new",
+      "images": [
+        {
+          "url": "https://imageproxy.wolt.com/assets/6a5dd3c90fdc417d46ce641b",
+          "blurhash": null
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "28aa1666ca543bb66c06ec94",
+      "name": "Sleepy Easy Clean Kirəç Sökücü Salfet 30əd.",
+      "price": 6.49,
+      "original_price": 10.95,
+      "unit_info": "1 əd.",
+      "unit_price": {
+        "base": 1,
+        "original_price": 1095,
+        "original_net_price": null,
+        "price": 649,
+        "net_price": null,
+        "unit": "piece"
+      },
+      "description": "",
+      "barcode_gtin": "8682241217670",
+      "category": "Yeni",
+      "category_slug": "new",
+      "images": [
+        {
+          "url": "https://imageproxy.wolt.com/assets/6a5dd3c90fdc417d46ce641e",
+          "blurhash": null
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "34a5a95fd2add0383ff705d0",
+      "name": "Armudu Earl Grey Qara Cay 225 Qr Qutu",
+      "price": 5.99,
+      "original_price": null,
+      "unit_info": "",
+      "unit_price": null,
+      "description": "",
+      "barcode_gtin": "4760157741374",
+      "category": "Yeni",
+      "category_slug": "new",
+      "images": [
+        {
+          "url": "https://imageproxy.wolt.com/assets/6a5dd3c90fdc417d46ce641c",
+          "blurhash": null
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "f1876929320824f0d016c466",
+      "name": "Golden Cow Pendir 125 q",
+      "price": 1.5,
+      "original_price": null,
+      "unit_info": "1 əd.",
+      "unit_price": {
+        "base": 1,
+        "original_price": null,
+        "original_net_price": null,
+        "price": 150,
+        "net_price": null,
+        "unit": "piece"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Yeni",
+      "category_slug": "new",
+      "images": [
+        {
+          "url": "https://imageproxy.wolt.com/assets/6a5dfd82ca398677dbafa299",
+          "blurhash": null
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "30c76eea5e55d7c86ddca4d6",
+      "name": "GOlden Cow Pendir 500 q",
+      "price": 4.45,
+      "original_price": 4.95,
+      "unit_info": "1 əd.",
+      "unit_price": {
+        "base": 1,
+        "original_price": 495,
+        "original_net_price": null,
+        "price": 445,
+        "net_price": null,
+        "unit": "piece"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Yeni",
+      "category_slug": "new",
+      "images": [
+        {
+          "url": "https://imageproxy.wolt.com/assets/6a5dffdc616a386cfb734c77",
+          "blurhash": null
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "cd29521ea244ccf5df9f7709",
+      "name": "Golden Cow Pendir 250 q",
+      "price": 2.55,
+      "original_price": null,
+      "unit_info": "",
+      "unit_price": null,
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Yeni",
+      "category_slug": "new",
+      "images": [
+        {
+          "url": "https://imageproxy.wolt.com/assets/6a5e08cfde79d3eb0c37e8ba",
+          "blurhash": null
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    },
+    {
+      "id": "a6b19a9b5321478e05d10566",
+      "name": "Sab Kənd Dovğası 180 q",
+      "price": 0.89,
+      "original_price": null,
+      "unit_info": "1 əd.",
+      "unit_price": {
+        "base": 1,
+        "original_price": null,
+        "original_net_price": null,
+        "price": 89,
+        "net_price": null,
+        "unit": "piece"
+      },
+      "description": "",
+      "barcode_gtin": null,
+      "category": "Yeni",
+      "category_slug": "new",
+      "images": [
+        {
+          "url": "https://imageproxy.wolt.com/assets/6a5e0869de79d3eb0c37e893",
+          "blurhash": null
+        }
+      ],
+      "dietary_preferences": [],
+      "tags": [],
+      "vat_percentage": 18,
+      "store": "Bravo"
+    }
+  ]
+}
