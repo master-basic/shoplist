@@ -4,7 +4,6 @@ import { useAuth } from './useAuth';
 import * as authApi from '@/api/auth';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
-// Mock the API
 vi.mock('@/api/auth', () => ({
   registerUser: vi.fn(),
   loginUser: vi.fn(),
@@ -14,7 +13,6 @@ vi.mock('@/api/auth', () => ({
   createHousehold: vi.fn(),
 }));
 
-// Mock debug log
 vi.mock('@/utils/debug', () => ({
   default: {
     info: vi.fn(),
@@ -114,7 +112,6 @@ describe('useAuth', () => {
 
     const { result } = renderHook(() => useAuth(), { wrapper });
 
-    // Wait for initial load to avoid the "undefined" error during logout cleanup
     await waitFor(() => expect(result.current.isAuthenticated).toBe(true));
 
     result.current.logout();
