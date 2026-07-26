@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useStore } from '@/store/useStore';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Skeleton } from '@/components/Skeleton';
@@ -17,11 +18,91 @@ const ScanPage: React.FC = () => {
   const { lists, user } = useStore();
   const [scanMode, setScanMode] = useState<'upload' | 'camera'>('upload');
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [scanning, setScanning] = useState(false);
   const [saving, setSaving] = useState(false);
   const [ocrResult, setOcrResult] = useState<any>(null);
   const [reviewMode, setReviewMode] = useState(false);
   const [selectedListId, setSelectedListId] = useState<string | null>(null);
+  const [manualText, setManualText] = useState('');
+  const [ocrError, setOcrError] = useState<string | null>(null);
+  const [isCameraAllowed, setIsCameraAllowed] = useState<boolean | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Request camera permission
+  React.useEffect(() => {
+    if (scanMode === 'camera' && isCameraAllowed === null && typeof navigator !== 'undefined') {
+      (navigator as any).permissions?.({ name: 'camera' })
+        .then(result => {
+          if (result.state === 'granted') {
+            setIsCameraAllowed(true);
+          } else if (result.state === 'denied') {
+            setIsCameraAllowed(false);
+          }
+        })
+        .catch(() => setIsCameraAllowed(false));
+    }
+  }, [scanMode]);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => setImagePreview(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleManualTextSubmit = () => {
+    if (manualText.trim()) {
+      setOcrResult({
+        items: [{ name: manualText.trim(), quantity: 1, unitPrice: 0, totalPrice: 0 } as OCRItem],
+        storeName: 'Manual',
+        date: new Date().toISOString(),
+        subtotal: 0,
+        tax: 0,
+        total: 0,
+        confidence: 0,
+        imageUrl: null,
+      });
+      setManualText('');
+      setReviewMode(true);
+    }
+  };
+
+  const handleScan = async () => {
+    if (!imageFile) return;
+    setScanning(true);
+    setOcrError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append('image', imageFile);
+
+      const token = localStorage.getItem('auth_token');
+      const authHeader: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
+      const ocrRes = await fetch(`${API_BASE}/api/receipts/ocr`, {
+        method: 'POST',
+        headers: authHeader,
+        body: formData,
+      });
+
+      if (!ocrRes.ok) {
+        const errorData = await ocrRes.text();
+        throw new Error(errorData || 'OCR processing failed');
+      }
+
+      const ocrData = await ocrRes.json();
+      setOcrResult(ocrData.ocrResult);
+    } catch (err) {
+      const error = err instanceof Error ? err.message : 'Unknown error';
+      setOcrError(error);
+      console.error('Scan error:', err);
+    } finally {
+      setScanning(false);
+    }
+  };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -151,29 +232,84 @@ const ScanPage: React.FC = () => {
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">Upload Receipt Image</label>
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-              <input type="file" accept="image/*,.pdf" onChange={handleFileUpload}
-                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100" />
-              <p className="text-sm text-gray-500 mt-2">Supports JPG, PNG, and PDF</p>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*,.pdf"
+                onChange={handleFileUpload}
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+              />
+              <p className="text-sm text-gray-500 mt-2">Supports JPG, PNG, and PDF (max 10MB)</p>
+              {imagePreview && (
+                <div className="mt-4">
+                  <img src={imagePreview} alt="Receipt preview" className="mx-auto max-h-64 rounded-lg shadow-lg" />
+                  <p className="text-xs text-gray-400 mt-2">Image preview</p>
+                </div>
+              )}
             </div>
           </div>
         )}
 
-        {scanMode === 'camera' && (
-          <div className="mt-4">
-            <input
-              type="file"
-              accept="image/*"
-              capture="environment"
-              onChange={handleFileUpload}
-              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
-            />
-            <p className="text-xs text-gray-400 mt-1">Point camera at receipt</p>
+        {scanMode === 'camera' && isCameraAllowed === false && (
+          <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <p className="text-sm text-yellow-800">Camera access denied. Please enable camera permissions in your browser settings or use the Upload option.</p>
           </div>
         )}
 
-        {!ocrResult && !scanning && (
+        {scanMode === 'camera' && isCameraAllowed !== false && (
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              <span className="flex items-center gap-2">
+                📷 Camera Mode
+                <span className="text-xs text-gray-500 font-normal">(Point at receipt)</span>
+              </span>
+            </label>
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                capture="environment"
+                onChange={handleFileUpload}
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+              />
+              {imagePreview && (
+                <div className="mt-4">
+                  <img src={imagePreview} alt="Receipt preview" className="mx-auto max-h-64 rounded-lg shadow-lg" />
+                  <p className="text-xs text-gray-400 mt-2">Live preview</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {!ocrResult && !scanning && !ocrError && (
           <div className="mb-6">
             <Button onClick={handleScan} disabled={!imageFile}>Scan Receipt</Button>
+          </div>
+        )}
+
+        {ocrError && !ocrResult && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-sm text-red-800 font-medium">OCR Error</p>
+            <p className="text-sm text-red-600 mt-1">{ocrError}</p>
+            <p className="text-sm text-red-600 mt-2">Fallback: Enter receipt data manually below</p>
+            <div className="mt-3">
+              <Input
+                placeholder="Paste receipt text or enter item details..."
+                value={manualText}
+                onChange={(e) => setManualText(e.target.value)}
+                rows={4}
+              />
+              <div className="flex gap-2 mt-2">
+                <Button onClick={handleManualTextSubmit} disabled={!manualText.trim()}>
+                  Use Manual Text
+                </Button>
+                <Button onClick={() => setOcrError(null)} variant="secondary">
+                  Try Again
+                </Button>
+              </div>
+            </div>
           </div>
         )}
 
