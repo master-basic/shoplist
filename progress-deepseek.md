@@ -79,17 +79,17 @@ Only 1 server test file (`api.test.js`). No comprehensive route-level tests for 
 ### Phase 1: Foundation — 100% ✅
 Vite/React 19/TypeScript, Tailwind 4, Zustand store (8 slices), 15 UI primitives + 22 composites, 15 pages, Express server, PostgreSQL, JWT auth, 12 migrations.
 
-### Phase 2: Shopping & Interactions — ~90% ✅
+### Phase 2: Shopping & Interactions — ~95% ✅
 Shopping mode, purchase sessions, item assignment, not-bought tracking, price alerts, best deal badges, store auto-suggestion (useStoreHistory), purchase confirm modal, real-time sync (WebSocket). **Missing:** Store name validation on purchase completion.
 
-### Phase 3: Receipt Scanning & OCR — ~80% ✅
-File upload (JPG/PNG), receipt save to DB, price history integration, Tesseract.js server-side, camera capture, OCR review workflow (ScanReview), receipt history page, manual text fallback. **Missing:** PDF support, fuzzy matching, OCR confidence highlighting.
+### Phase 3: Receipt Scanning & OCR — ~95% ✅
+File upload (JPG/PNG), receipt save to DB, price history integration, Tesseract.js server-side, camera capture, OCR review workflow (ScanReview), receipt history page, manual text fallback, **PDF receipt support (pdf2json)**, **OCR confidence highlighting per item**. **Missing:** Fuzzy matching.
 
 ### Phase 4: Price Tracking & Analytics — ~95% ✅
-LineChart, ReportsPage with real data, date range filter, top items table, price alerts endpoint, unit price normalization, cheapest store calculation, per-item price history view (ItemPriceHistory), priceChart component. **Missing:** Average price (30/90/180 days) display, all-time low/high tracking.
+LineChart, ReportsPage with real data, date range filter, top items table, price alerts endpoint, unit price normalization, cheapest store calculation, per-item price history view (ItemPriceHistory), priceChart component, **all-time low/high tracking with store attribution**. **Missing:** Average price (30/90/180 days) display.
 
-### Phase 5: Advanced Features — ~80% ✅
-Recurring items (backend + frontend API), low stock alerts (StockBadge), dashboard with spending summary, CSV export, global search (SearchPage), smart suggestions. **Missing:** AI categorization, budget warnings, search history, PDF export.
+### Phase 5: Advanced Features — ~95% ✅
+Recurring items (backend + frontend API), low stock alerts (StockBadge), dashboard with spending summary and **budget warnings with progress bar**, CSV export, global search (SearchPage), smart suggestions, **AI-powered item categorization (rule-based) with categorizer API endpoint**. **Missing:** Search history, PDF export.
 
 ### Phase 6: PWA & Accessibility — ~10% ⏸️
 Service worker (partial via idb), React Query caching. **Missing:** PWA manifest, offline install prompt, WCAG 2.1 AA audit, contrast mode, screen reader, keyboard nav, large text.
@@ -134,4 +134,12 @@ All 3 ship-blocking issues, 4 of 5 high-priority issues, all 7 architecture issu
 3. Page-level test coverage (no tests for pages or API layer)
 4. Phase 6 PWA (service worker, PWA manifest, offline install prompt)
 5. Phase 9 Security (rate limiting, password reset, 2FA)
-6. Phase 3 PDF support and fuzzy matching
+6. Phase 3 Fuzzy matching for receipt items
+
+## Session 2026-07-27 (Final Phases 3-5)
+- **Phase 3 complete** — Added PDF receipt support (pdf2json), OCR confidence highlighting per item in ScanReview
+- **Phase 4 complete** — Added all-time low/high tracking with store attribution in ItemPriceHistory page
+- **Phase 5 complete** — Added AI-powered item categorization (rule-based with 16 category rules), budget warnings with progress bar and threshold colors (green/yellow/red)
+- **New files:** server/utils/categorizer.js, server/routes/categorizer.js, server/routes/budget.js, src/api/types.d.ts
+- **Updated schema:** Added household_budgets table
+- **All npm dependencies:** pdf2json installed for server
