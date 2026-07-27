@@ -13,47 +13,18 @@ vi.mock('@/api/auth', () => ({
   createHousehold: vi.fn(),
 }));
 
+const createClient = () => new QueryClient({
+  defaultOptions: { queries: { retry: false, staleTime: 0 } },
+});
+
 const wrapper = ({ children }: { children: React.ReactNode }) => {
-  const queryClient = new QueryClient({
-    defaultQueryFn: () => Promise.resolve(null),
-    // Disable cache for testing to avoid interference between tests
-    queryClientConfig: {
-      defaultQueryFn: () => Promise.resolve(null),
-    }
-  });
-  // Actually, it's easier to just create a new client per test
-  // But for simplicity in wrapper, I'll use a stable one or create it here.
-  // To ensure isolation, the client should ideally be per-test.
-  // But renderHook wrapper is called once per render.
+  const queryClient = createClient();
   return (
     <QueryClientProvider client={queryClient}>
       {children}
     </QueryClientProvider>
   );
 };
-
-// A better way to handle QueryClient in tests:
-const createWrapper = () => {
-  const queryClient = new QueryClient({
-    defaultQueryFn: () => Promise.resolve(null),
-  });
-  return ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
-  );
-};
-
-// However, renderHook wrapper receives the same function.
-// I'll use a simplified version.
-const TestProvider = ({ children }: { children: React.ReactNode }) => {
-  const [queryClient] = vi.mocked(new QueryClient({ defaultQueryFn: () => Promise.resolve(null) })); // Not working this way
-  // I will just use a standard approach.
-  return <div />; 
-};
-
-// Let's just use a standard wrapper that creates a new client.
-// The issue is that renderHook calls the wrapper once per test.
 
 describe('useAuth', () => {
   beforeEach(() => {
@@ -71,17 +42,6 @@ describe('useAuth', () => {
     localStorage.clear();
   });
 
-  const wrapper = ({ children }: { children: React.ReactNode }) => {
-    const qc = new QueryClient({
-      defaultQueryFn: () => Promise.resolve(null),
-    });
-    return (
-      <QueryClientProvider client={qc}>
-        {children}
-      </QueryClientProvider>
-    );
-  };
-
   it('should return null user if no token is in localStorage', async () => {
     vi.mocked(localStorage.getItem).mockReturnValue(null);
     // verifyToken won't be called because token is null and enabled: !!token
@@ -95,7 +55,7 @@ describe('useAuth', () => {
   });
 
   it('should login and store credentials', async () => {
-    const mockUser = { id: '123', name: 'Test User', email: 'test@test.com' };
+    const mockUser = { id: '123', name: 'Test User', email: 'test@test.com', isAdmin: false, created_at: '', preferred_currency: 'USD', notification_preferences: { push_notifications: true, price_change_alerts: true, weekly_summary: true, list_updates: true, reminders: true }, households: [] };
     const mockToken = 'mock-token';
 
     // Setup localStorage mocks
@@ -126,7 +86,7 @@ describe('useAuth', () => {
         return null;
     });
 
-    const mockUser = { id: '123', name: 'Test User' };
+    const mockUser = { id: '123', name: 'Test User', email: 'test@test.com', isAdmin: false, created_at: '', preferred_currency: 'USD', notification_preferences: { push_notifications: true, price_change_alerts: true, weekly_summary: true, list_updates: true, reminders: true }, households: [] };
     vi.mocked(authApi.verifyToken).mockResolvedValue(mockUser);
 
     const { result } = renderHook(() => useAuth(), { wrapper });

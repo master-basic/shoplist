@@ -116,3 +116,19 @@ CREATE INDEX IF NOT EXISTS idx_receipts_household ON receipts(household_id);
 CREATE INDEX IF NOT EXISTS idx_receipt_items_receipt ON receipt_items(receipt_id);
 CREATE INDEX IF NOT EXISTS idx_receipt_items_list_item ON receipt_items(list_item_id);
 CREATE INDEX IF NOT EXISTS idx_price_history_item ON price_history(item_name, store_name);
+
+-- Create household_budgets table
+CREATE TABLE IF NOT EXISTS household_budgets (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    household_id UUID NOT NULL REFERENCES households(id) ON DELETE CASCADE,
+    amount DECIMAL(12,2) NOT NULL,
+    period_start DATE NOT NULL,
+    period_end DATE NOT NULL,
+    description TEXT,
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(household_id, period_start, period_end)
+);
+
+CREATE INDEX IF NOT EXISTS idx_household_budgets_household ON household_budgets(household_id);

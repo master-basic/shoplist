@@ -7,6 +7,27 @@
 - **Price_history INSERT missing NOT NULL columns** — `purchases.js` INSERT only targeted migration-008 columns, missing `item_name`, `store_name`, `unit_price`, `quantity`, `session_id`, `bought_by` from the original schema. Fixed.
 - **debug.ts included auth header on log POST** — Caused CORS preflight. Reverted.
 
+## Fixed Bugs (current session — Jul 27, TypeScript build fixes)
+- **Toast variant mismatch** — `Lists.tsx` used `variant="danger"` but `ToastVariant` only includes `'success' | 'error' | 'warning' | 'info''`. Fixed to `variant="error"`.
+- **OCRItem interface field mismatch** — `parseOCRResult` created items with `price`/`unit`/`category`/`categoryConfidence` fields but `OCRItem` from `ScanReview.tsx` expects `unitPrice`/`totalPrice`/`quantity`/`category`/`categoryConfidence`. Fixed field names and added `totalPrice`.
+- **Missing tesseract.js type declarations** — `src/api/ocr.ts` imported `tesseract.js` without a `.d.ts` file, causing `TS2307: Cannot find module 'tesseract.js'`. Created `src/api/types.d.ts` with module declaration.
+- **Recharts labelFormatter type mismatch** — `PriceChart.tsx:25` — `labelFormatter` expects `(label: ReactNode)` not `(label: string)`. Fixed param type.
+- **Button.test.tsx — HTMLElement.disabled** — `screen.getByRole()` returns `HTMLElement`, not `HTMLButtonElement`. Added `as HTMLButtonElement` type assertion.
+- **Checkbox.test.tsx — HTMLElement.checked/indeterminate** — `HTMLElement` doesn't have `.checked` or `.indeterminate` properties. Added `as HTMLInputElement` type assertions.
+- **useAuth.test.tsx — duplicate wrapper declaration** — Two `const wrapper` declarations in same scope caused `TS2451`. Removed the duplicate.
+- **useAuth.test.tsx — QueryClientConfig `logger` property** — `logger` is not a valid property in current `@tanstack/react-query` version. Removed it.
+- **useAuth.test.tsx — QueryClientConfig `defaultQueryFn` property** — `defaultQueryFn` is not a valid property. Removed it.
+- **useAuth.test.tsx — User type missing required fields** — `notification_preferences` must include `{ push_notifications, price_change_alerts, weekly_summary, list_updates, reminders }`. Added all fields to test mocks.
+- **useGroceryList.test.tsx — useStore/useHousehold/useAuth mocks incomplete** — Mock return values missing many required properties from actual hook return types. Expanded all three mocks to match actual types.
+- **useGroceryList.test.tsx — createList call signature mismatch** — Hook expects `{ name: string; householdId: string }` object arg but test passed two separate args. Fixed call signature.
+- **useHousehold.test.tsx — useAuth mock incomplete** — Missing `households`, `isLoading`, `error`, `isAuthenticated`, and 5 more properties. Expanded mock.
+- **usePriceHistory.test.tsx — `global.fetch` undefined in test** — `global` is not defined in vitest test environment. Changed to `globalThis.fetch`.
+- **ocr.ts:106 — Tesseract handler param type mismatch** — `worker.on('recognize', ...)` handler expected `{ percent?: number }` but declaration declared `...args: unknown[]`. Fixed by changing param to `unknown` with `as { percent?: number }` cast inside.
+- **ocr.ts:111 — Worker destructuring type error** — `worker as { data: { text: string } }` failed because neither type sufficiently overlaps. Fixed by adding `as unknown` intermediate cast: `worker as unknown as { data: { text: string } }`.
+- **useAuth.test.tsx:89 — Second `notification_preferences: {}` instance** — The logout test's `mockUser` still had empty `notification_preferences: {}`. Added all required fields (`push_notifications`, `price_change_alerts`, `weekly_summary`, `list_updates`, `reminders`).
+
+**Build Status:** ✅ Clean — 0 TypeScript errors
+
 ## Fixed Bugs (previous session)
 - **Empty item created on list creation** — `useGroceryList.ts:41` called `addItemToList` with empty name immediately after creating a list. Removed the spurious item creation.
 - **Store user not persisted** — User state wasn't included in Zustand `partialize`, causing page refreshes to lose auth. Added `user` to persisted fields.

@@ -50,7 +50,7 @@ export const SpendingSummary: React.FC<SpendingSummaryProps> = ({
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
               <XAxis dataKey="category" tick={{ fontSize: 12 }} />
               <YAxis tick={{ fontSize: 12 }} tickFormatter={(v: number) => `${v.toFixed(0)}`} />
-              <Tooltip formatter={(value: number) => [formatCurrency(value), 'Amount']} />
+              <Tooltip formatter={(value: unknown) => [formatCurrency(value as number), 'Amount']} />
               <Bar dataKey="amount" fill="#22c55e" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>

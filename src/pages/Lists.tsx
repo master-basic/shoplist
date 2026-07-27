@@ -21,6 +21,7 @@ export const Lists: React.FC = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newListName, setNewListName] = useState('');
   const [error, setError] = useState('');
+  const [notification, setNotification] = useState('');
   const { user, lists, priceHistory, addList, deleteList: storeDeleteList, toggleItem, updateItem, deleteListItem: storeDeleteListItem, currentHouseholdId, setCurrentHouseholdId } = useStore();
   const [households, setHouseholds] = useState<any[]>([]);
 
@@ -324,8 +325,8 @@ export const Lists: React.FC = () => {
       </div>
       )}
 
-      {notification && <Toast variant="success" message={notification} onClose={() => setNotification(null)} />}
-      {error && notification && <Toast variant="error" message={error} onClose={() => setNotification(null)} />}
+      {notification && <Toast variant="success" message={notification} onClose={() => setNotification('')} />}
+      {error && <Toast variant="error" message={error} onClose={() => setError('')} />}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <Card className="w-full max-w-md mx-4 p-6">

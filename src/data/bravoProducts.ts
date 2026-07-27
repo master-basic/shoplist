@@ -28,6 +28,9 @@ export interface VenueAssortment {
     should_display_price_by_subtracting_deposit: boolean;
   };
   categories: any[];
+  items: any[];
+  options: any[];
+  variant_groups: any[];
 }
 
 export const venueAssortment: VenueAssortment = {

@@ -33,7 +33,7 @@ vi.mock('@/hooks/useAuth', () => ({
 describe('useGroceryList', () => {
   const createWrapper = () => {
     const qc = new QueryClient({
-      defaultQueryFn: () => Promise.resolve(null),
+      defaultOptions: { queries: { retry: false, staleTime: 0 } },
     });
     return ({ children }: { children: React.ReactNode }) => (
       <QueryClientProvider client={qc}>
@@ -52,11 +52,35 @@ describe('useGroceryList', () => {
       duplicateList: vi.fn(),
       archiveList: vi.fn(),
       reorderItems: vi.fn(),
-    });
+    } as any);
     // Mock useHousehold
-    vi.mocked(useHousehold).mockReturnValue({ currentHouseholdId: 'h1' });
+    vi.mocked(useHousehold).mockReturnValue({
+      currentHouseholdId: 'h1',
+      setCurrentHouseholdId: vi.fn(),
+      households: [],
+      loading: false,
+      error: null,
+      loadUserHouseholds: vi.fn(),
+      createHousehold: vi.fn(),
+      joinHousehold: vi.fn(),
+      inviteMember: vi.fn(),
+      removeMember: vi.fn(),
+      updateMemberRole: vi.fn(),
+      getMembers: [],
+      fetchMembers: vi.fn(),
+    } as any);
     // Mock useAuth
-    vi.mocked(useAuth).mockReturnValue({ user: { id: 'u1' } as any });
+    vi.mocked(useAuth).mockReturnValue({
+      user: { id: 'u1', name: '', email: '', isAdmin: false, created_at: '', preferred_currency: 'USD', notification_preferences: {}, households: [] },
+      households: [],
+      isLoading: false,
+      error: null,
+      isAuthenticated: false,
+      login: vi.fn(),
+      logout: vi.fn(),
+      register: vi.fn(),
+      verifyToken: vi.fn(),
+    } as any);
   });
 
   it('should fetch lists on mount', async () => {
@@ -77,7 +101,7 @@ describe('useGroceryList', () => {
 
     const { result } = renderHook(() => useGroceryList(), { wrapper: createWrapper() });
 
-    await result.current.createList('New List', 'h1');
+    await result.current.createList({ name: 'New List', householdId: 'h1' });
 
     expect(apiLists.createList).toHaveBeenCalled();
   });

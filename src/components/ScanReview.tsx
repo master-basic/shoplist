@@ -64,6 +64,25 @@ export const ScanReview: React.FC<ScanReviewProps> = ({
 
   const checkedCount = editableItems.filter(i => i.checked).length;
 
+  const getConfidenceColor = (confidence?: number) => {
+    if (!confidence || confidence === 0) return 'text-gray-400';
+    if (confidence >= 80) return 'text-green-500';
+    if (confidence >= 50) return 'text-yellow-500';
+    return 'text-red-500';
+  };
+
+  const getConfidenceLabel = (confidence?: number) => {
+    if (!confidence || confidence === 0) return 'Unverified';
+    if (confidence >= 80) return 'High confidence';
+    if (confidence >= 50) return 'Medium confidence';
+    return 'Low confidence';
+  };
+
+  const getConfidenceBarWidth = (confidence?: number) => {
+    if (!confidence || confidence === 0) return 0;
+    return confidence;
+  };
+
   return (
     <div className="space-y-4">
       <Card>
@@ -84,31 +103,49 @@ export const ScanReview: React.FC<ScanReviewProps> = ({
                 onChange={() => handleToggle(item.id)}
                 className="mt-2"
               />
-              <div className="flex-1 grid grid-cols-3 gap-2">
-                <Input
-                  value={item.name}
-                  onChange={e => handleEdit(item.id, 'name', e.target.value)}
-                  disabled={!item.checked}
-                  placeholder="Item name"
-                />
-                <Input
-                  type="number"
-                  value={item.quantity}
-                  onChange={e => handleEdit(item.id, 'quantity', e.target.value)}
-                  disabled={!item.checked}
-                  placeholder="Qty"
-                  min="0"
-                  step="1"
-                />
-                <Input
-                  type="number"
-                  value={item.unitPrice}
-                  onChange={e => handleEdit(item.id, 'unitPrice', e.target.value)}
-                  disabled={!item.checked}
-                  placeholder="Price"
-                  min="0"
-                  step="0.01"
-                />
+              <div className="flex-1 space-y-2">
+                <div className="grid grid-cols-3 gap-2">
+                  <Input
+                    value={item.name}
+                    onChange={e => handleEdit(item.id, 'name', e.target.value)}
+                    disabled={!item.checked}
+                    placeholder="Item name"
+                  />
+                  <Input
+                    type="number"
+                    value={item.quantity}
+                    onChange={e => handleEdit(item.id, 'quantity', e.target.value)}
+                    disabled={!item.checked}
+                    placeholder="Qty"
+                    min="0"
+                    step="1"
+                  />
+                  <Input
+                    type="number"
+                    value={item.unitPrice}
+                    onChange={e => handleEdit(item.id, 'unitPrice', e.target.value)}
+                    disabled={!item.checked}
+                    placeholder="Price"
+                    min="0"
+                    step="0.01"
+                  />
+                </div>
+                {item.categoryConfidence && item.categoryConfidence > 0 && (
+                  <div className="flex items-center gap-2 pt-1">
+                    <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all ${
+                          item.categoryConfidence >= 80 ? 'bg-green-500' :
+                          item.categoryConfidence >= 50 ? 'bg-yellow-500' : 'bg-red-500'
+                        }`}
+                        style={{ width: `${getConfidenceBarWidth(item.categoryConfidence)}%` }}
+                      />
+                    </div>
+                    <span className={`text-xs font-medium ${getConfidenceColor(item.categoryConfidence)}`}>
+                      {Math.round(item.categoryConfidence)}%
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           </Card>

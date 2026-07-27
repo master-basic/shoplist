@@ -52,6 +52,11 @@ const ItemPriceHistory: React.FC = () => {
     (a, b) => new Date(b.purchased_at).getTime() - new Date(a.purchased_at).getTime()
   );
 
+  const allTimeLow = records.length > 0 ? Math.min(...records.map(r => r.unit_price)) : 0;
+  const allTimeHigh = records.length > 0 ? Math.max(...records.map(r => r.unit_price)) : 0;
+  const allTimeLowRecord = records.length > 0 ? [...records].reduce((min, r) => r.unit_price < min.unit_price ? r : min) : null;
+  const allTimeHighRecord = records.length > 0 ? [...records].reduce((max, r) => r.unit_price > max.unit_price ? r : max) : null;
+
   if (loading) {
     return (
       <div className="space-y-4">
@@ -78,6 +83,26 @@ const ItemPriceHistory: React.FC = () => {
           <Button variant="outline" size="sm">Back to Reports</Button>
         </Link>
       </div>
+
+      {records.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <Card className="p-4 border-l-4 border-l-green-500">
+            <div className="text-sm text-gray-500">All-Time Low</div>
+            <div className="text-2xl font-bold text-green-600">{formatCurrency(allTimeLow)}</div>
+            <div className="text-xs text-gray-400 mt-1">{allTimeLowRecord?.store_name || ''}</div>
+          </Card>
+          <Card className="p-4 border-l-4 border-l-red-500">
+            <div className="text-sm text-gray-500">All-Time High</div>
+            <div className="text-2xl font-bold text-red-600">{formatCurrency(allTimeHigh)}</div>
+            <div className="text-xs text-gray-400 mt-1">{allTimeHighRecord?.store_name || ''}</div>
+          </Card>
+          <Card className="p-4 border-l-4 border-l-blue-500">
+            <div className="text-sm text-gray-500">Average Price</div>
+            <div className="text-2xl font-bold text-blue-600">{formatCurrency(records.reduce((s, r) => s + r.unit_price, 0) / records.length)}</div>
+            <div className="text-xs text-gray-400 mt-1">{records.length} purchase records</div>
+          </Card>
+        </div>
+      )}
 
       <Card className="p-6">
         <PriceChart data={chartData} title="Price Over Time" />

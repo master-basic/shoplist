@@ -20,14 +20,14 @@ All foundation, security, testing, code quality, DB setup, frontend tests, CI, R
 | 7 | Setup & Configuration | ✅ All 5 tasks done |
 | 8 | Frontend Testing | ✅ All 4 tasks done |
 | 9 | CI & Infrastructure | ✅ All 2 tasks done |
-| 10 | Shopping & Interactions | ✅ 1 of 4 done (WebSocket) |
-| 11 | OCR & Receipts | ✅ 1 of 4 done (Real OCR) |
-| 12 | Price Tracking & Analytics | ✅ 2 of 4 done (Unit Price Normalization, Cheapest Store) |
-| 13 | Advanced Features (MVP) | ✅ 4 of 7 done (Recurring BE + FE API, Dashboard API, CSV Export) |
+| 10 | Shopping & Interactions | ✅ All 4 tasks done (WebSocket, store auto-suggestion, purchase confirm, price entry) |
+| 11 | OCR & Receipts | ✅ All 4 tasks done (camera access, OCR review workflow, receipt history, manual text fallback) |
+| 12 | Price Tracking & Analytics | ✅ All 4 tasks done (unit price normalization, cheapest store, per-item history, priceChart) |
+| 13 | Advanced Features (MVP) | ✅ All 7 tasks done (recurring items, low stock alerts, dashboard, dashboard API, CSV export, global search, search bar) |
 
 ## Test Baseline
-- **Server:** 29/29 tests pass (Jest + Supertest)
-- **Frontend:** 27/27 tests pass (Vitest + RTL, 7 files)
+- **Server:** 1 test file (api.test.js) — needs comprehensive route-level tests
+- **Frontend:** 11 tests pass (Vitest + RTL, 11 files) — covers UI primitives and hooks
 - **0 open handles:** node-cron disabled in test mode
 
 ---
@@ -209,10 +209,22 @@ Rounds 1-8 (all done)
 
 ---
 
-## Current Sprint Status
+## Current Sprint Status (Updated 2026-07-27)
 
-### ✅ ALL ARCHITECT WORK COMPLETE
-Rounds 1-13 — every Architect task is done
+### ✅ ALL ARCHITECT & JUNIOR WORK COMPLETE
+Rounds 1-13 — every Architect task and Junior task is done
 
-### ⏳ NEXT UP (Junior only)
-All specs are listed above in each Round table — Junior can pick any ⏳ Pending task
+### ⏳ NEXT UP (Future rounds)
+| Round | Name | Estimated effort | Notes |
+|-------|------|-----------------|-------|
+| **14** | PWA (Phase 6) | 2-3 sprints | Service worker, offline, accessibility audit |
+| **15** | Notifications (Phase 7) | 2 sprints | Web push, in-app center, preferences |
+| **16** | DB Optimization (Phase 8) | 1 sprint | Pool config, triggers, functions |
+| **17** | Security & Privacy (Phase 9) | 2 sprints | Rate limiting, password reset, GDPR |
+
+### 📝 New Tasks for 2026-07-27 Session
+- **14a** Comprehensive server route-level tests (12 route modules, 53+ routes) — Junior/Architect
+- **14b** Page-level test coverage (all 15 pages) — Junior
+- **14c** Integration tests (API + frontend flow tests) — Architect
+- **14d** PWA manifest and service worker registration — Junior
+- **14e** Phase 3: PDF support and OCR confidence highlighting — Architect

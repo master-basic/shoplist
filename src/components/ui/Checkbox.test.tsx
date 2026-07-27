@@ -20,13 +20,13 @@ describe('Checkbox', () => {
 
   it('should show checkmark when checked is true', () => {
     render(<Checkbox checked />);
-    const checkbox = screen.getByRole('checkbox');
+    const checkbox = screen.getByRole('checkbox') as HTMLInputElement;
     expect(checkbox.checked).toBe(true);
   });
 
   it('should show indeterminate state when indeterminate is true', () => {
     render(<Checkbox indeterminate />);
-    const checkbox = screen.getByRole('checkbox');
+    const checkbox = screen.getByRole('checkbox') as HTMLInputElement;
     expect(checkbox.indeterminate).toBe(true);
   });
 });

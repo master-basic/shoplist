@@ -17,6 +17,24 @@
 **File:** `src/pages/ListDetail.tsx`  
 **Fix:** Add empty state when list has no items
 
+## Priority (Updated — Jul 27, 2026)
+1. **CI pipeline** — GitHub Actions for automated testing
+2. **Server test coverage** — Comprehensive route-level tests for 12 modules
+3. **Page-level tests** — All 15 pages need coverage
+4. **Integration tests** — API + frontend flow tests
+
 ## Already Fixed (verified)
 - Admin delete confirmation ✅ (line 51)
 - AddItemModal validation ✅ (line 80-84)
+- Purchase FK violation — preserved DB IDs ✅
+- Stale persisted lists — Zustand partialize fixed ✅
+- Price history INSERT missing columns ✅
+- useAuth converted to React Query ✅
+- All 4 hooks on React Query ✅
+- WebSocket real-time sync ✅
+- Store auto-suggestion (StoreSuggest) ✅
+- Purchase confirm modal ✅
+- Camera capture + OCR review workflow ✅
+- Per-item price history + unit normalization ✅
+- Recurring items (backend + frontend) ✅
+- Dashboard + CSV export + global search ✅

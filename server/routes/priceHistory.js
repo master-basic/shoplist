@@ -67,6 +67,12 @@ router.get('/stats', async (req, res) => {
     );
     stats.cheapest_store = cheapestResult.rows[0]?.store || null;
     stats.cheapest_price = cheapestResult.rows[0]?.price || null;
+    const mostExpensiveResult = await pool.query(
+      'SELECT ph.store, ph.price FROM price_history ph LEFT JOIN list_items li ON ph.list_item_id = li.id WHERE li.name ILIKE $1 ORDER BY ph.price DESC LIMIT 1',
+      [`%${itemName}%`]
+    );
+    stats.allTimeHighStore = mostExpensiveResult.rows[0]?.store || null;
+    stats.allTimeHighPrice = mostExpensiveResult.rows[0]?.price || null;
     res.json({ stats });
   } catch (error) {
     console.error('Get price stats error:', error);

@@ -11,7 +11,7 @@ vi.mock('@/store/useStore', () => ({
 describe('usePriceHistory', () => {
   const createWrapper = () => {
     const qc = new QueryClient({
-      defaultQueryFn: () => Promise.resolve(null),
+      defaultOptions: { queries: { retry: false, staleTime: 0 } },
     });
     return ({ children }: { children: React.ReactNode }) => (
       <QueryClientProvider client={qc}>
@@ -26,8 +26,8 @@ describe('usePriceHistory', () => {
       currentHouseholdId: 'h1',
     } as any);
     
-    // Mock global fetch
-    global.fetch = vi.fn();
+    // Mock fetch
+    (globalThis as any).fetch = vi.fn();
   });
 
   it('should return trend data correctly', () => {
@@ -63,7 +63,7 @@ describe('usePriceHistory', () => {
       }
     };
 
-    (global.fetch as any).mockResolvedValue({
+    ((globalThis as any).fetch as any).mockResolvedValue({
       ok: true,
       json: async () => mockStats,
     });

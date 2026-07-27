@@ -23,6 +23,6 @@ describe('Button', () => {
   it('should be disabled when isLoading is true', () => {
     render(<Button isLoading>Loading</Button>);
     const button = screen.getByRole('button', { name: /loading/i });
-    expect(button.disabled).toBe(true);
+    expect((button as HTMLButtonElement).disabled).toBe(true);
   });
 });

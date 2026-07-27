@@ -118,17 +118,16 @@ export const ShoppingPage: React.FC = () => {
   const handleConfirmMarkAsBought = async () => {
     if (itemsToConfirm.length === 0) return;
     
-    // Update all checked items with real prices from itemPrices state
+    const currentPrices = itemPrices;
     const updatedItems = itemsToConfirm.map((item: any) => ({
       ...item,
       is_checked: true,
-      actual_price: itemPrices[item.id] !== undefined ? itemPrices[item.id] : (item.estimated_price || 0),
+      actual_price: currentPrices[item.id] !== undefined ? currentPrices[item.id] : (item.estimated_price || 0),
     }));
     
     setShowConfirmation(false);
     setItemsToConfirm([]);
     
-    // Call complete purchase
     await handleConfirmPurchase(updatedItems);
   };
 

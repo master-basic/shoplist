@@ -22,7 +22,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, title }) => {
         <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
         <XAxis dataKey="date" tick={{ fontSize: 12 }} />
         <YAxis tick={{ fontSize: 12 }} domain={['auto', 'auto']} tickFormatter={(v: number) => `${v.toFixed(2)}`} />
-        <Tooltip formatter={(value: number) => [formatCurrency(value), 'Price']} labelFormatter={(label) => `Date: ${label}`} />
+        <Tooltip formatter={(value: unknown) => [formatCurrency(value as number), 'Price']} labelFormatter={(label: React.ReactNode) => `Date: ${label}`} />
         <Line type="monotone" dataKey="price" stroke="#22c55e" strokeWidth={2} dot={{ r: 4 }} />
       </LineChart>
     </ResponsiveContainer>

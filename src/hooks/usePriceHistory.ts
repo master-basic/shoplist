@@ -55,6 +55,8 @@ export const usePriceHistory = (itemName?: string) => {
         avgPrice: parseFloat(stats.avg_price) || 0,
         cheapestStore: stats.cheapest_store,
         cheapestPrice: parseFloat(stats.cheapest_price) || 0,
+        allTimeHighStore: stats.allTimeHighStore || null,
+        allTimeHighPrice: parseFloat(stats.allTimeHighPrice) || 0,
         mostRecent: null,
       };
     },

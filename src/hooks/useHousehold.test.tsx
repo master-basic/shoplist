@@ -25,7 +25,7 @@ vi.mock('@/hooks/useAuth', () => ({
 describe('useHousehold', () => {
   const createWrapper = () => {
     const qc = new QueryClient({
-      defaultQueryFn: () => Promise.resolve(null),
+      defaultOptions: { queries: { retry: false, staleTime: 0 } },
     });
     return ({ children }: { children: React.ReactNode }) => (
       <QueryClientProvider client={qc}>
@@ -37,14 +37,24 @@ describe('useHousehold', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(useStore).mockReturnValue({
-      user: { id: 'u1' } as any,
+      user: { id: 'u1', name: '', email: '', isAdmin: false, created_at: '', preferred_currency: 'USD', notification_preferences: {}, households: [] } as any,
       currentHouseholdId: null,
       setCurrentHouseholdId: vi.fn(),
       households: [],
       addHousehold: vi.fn(),
       updateHousehold: vi.fn(),
     } as any);
-    vi.mocked(useAuth).mockReturnValue({ user: { id: 'u1' } as any });
+    vi.mocked(useAuth).mockReturnValue({
+      user: { id: 'u1', name: '', email: '', isAdmin: false, created_at: '', preferred_currency: 'USD', notification_preferences: {}, households: [] },
+      households: [],
+      isLoading: false,
+      error: null,
+      isAuthenticated: false,
+      login: vi.fn(),
+      logout: vi.fn(),
+      register: vi.fn(),
+      verifyToken: vi.fn(),
+    } as any);
   });
 
   it('should join a household', async () => {

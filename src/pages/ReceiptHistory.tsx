@@ -241,9 +241,9 @@ export const ReceiptHistoryPage: React.FC = () => {
               <div className="flex items-center gap-4 flex-1 min-w-0">
                 {/* Receipt Thumbnail */}
                 <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                  {receipt.fileUrl ? (
+                  {receipt.file_url ? (
                     <img
-                      src={receipt.fileUrl}
+                      src={receipt.file_url}
                       alt="Receipt"
                       className="w-full h-full object-cover"
                       onError={(e) => {
@@ -260,11 +260,8 @@ export const ReceiptHistoryPage: React.FC = () => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <h3 className="text-sm font-semibold text-gray-900 truncate">
-                      {receipt.storeName || 'Unknown Store'}
+                      Receipt
                     </h3>
-                    <Badge variant={getReceiptStatusColor(receipt.status) as any}>
-                      {getReceiptStatusLabel(receipt.status)}
-                    </Badge>
                   </div>
                   <div className="text-xs text-gray-500 mt-1">
                     {formatDate(receipt.uploaded_at)}
@@ -279,10 +276,7 @@ export const ReceiptHistoryPage: React.FC = () => {
               <div className="flex items-center gap-3 ml-4">
                 <div className="text-right">
                   <div className="text-sm font-bold text-gray-900">
-                    {formatCurrency(receipt.totalAmount)}
-                  </div>
-                  <div className="text-xs text-gray-500">
-                    {receipt.items?.length || 0} items
+                    {formatCurrency(0)}
                   </div>
                 </div>
 
@@ -296,7 +290,7 @@ export const ReceiptHistoryPage: React.FC = () => {
                   {showDeleteConfirm === receipt.id ? (
                     <div className="flex items-center gap-1">
                       <Button
-                        variant="error"
+                        variant="danger"
                         size="sm"
                         onClick={() => handleDelete(receipt.id)}
                         disabled={deletingId === receipt.id}

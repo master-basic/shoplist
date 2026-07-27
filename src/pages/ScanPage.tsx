@@ -128,7 +128,7 @@ const ScanPage: React.FC = () => {
 
         setCategorySuggestions(Array.from(categories).map(cat => ({
           category: cat,
-          items: categorizedItems.filter((i: OCRItem) => i.category === cat).map(i => i.name),
+          items: categorizedItems.filter((i: OCRItem) => i.category === cat).map((i: OCRItem) => i.name),
         })).sort((a, b) => a.category.localeCompare(b.category)));
       }
 

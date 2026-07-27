@@ -46,6 +46,8 @@ app.use('/api/price-check', require('./routes/priceCheck'));
 app.use('/api/analytics', require('./routes/analytics'));
 app.use('/api/export', require('./routes/export'));
 app.use('/api/log', require('./routes/logging'));
+app.use('/api/categorizer', require('./routes/categorizer'));
+app.use('/api/budget', require('./routes/budget'));
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

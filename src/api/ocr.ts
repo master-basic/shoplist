@@ -16,9 +16,9 @@ export interface ReceiptOCRData {
   ocrResult: ReceiptOCRResult;
 }
 
-export const callOCR = async (imageFile: File): Promise<ReceiptOCRResult> => {
+export const callOCR = async (file: File): Promise<ReceiptOCRResult> => {
   const formData = new FormData();
-  formData.append('image', imageFile);
+  formData.append('image', file);
 
   const token = localStorage.getItem('auth_token');
   const authHeader: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
@@ -51,25 +51,24 @@ export const parseOCRResult = (rawText: string, imageUrl: string | null): Receip
   const itemLines: string[] = [];
 
   for (const line of lines) {
-    const line = line.trim();
-    if (!line) continue;
+    const trimmed = line.trim();
+    if (!trimmed) continue;
 
-    const priceMatch = line.match(/(\$[\d,]+\.?\d*)/);
+    const priceMatch = trimmed.match(/(\$[\d,]+\.?\d*)/);
     const price = priceMatch ? parseFloat(priceMatch[1].replace(/,/g, '')) : null;
 
-    if (price && line.length > 10) {
+    if (price && trimmed.length > 10) {
       prices.push(price);
-      itemLines.push(line);
+      itemLines.push(trimmed);
     }
   }
 
   for (let i = 0; i < itemLines.length; i++) {
     items.push({
-      id: crypto.randomUUID(),
       name: itemLines[i],
-      price: prices[i] || 0,
+      unitPrice: prices[i] || 0,
+      totalPrice: prices[i] || 0,
       quantity: 1,
-      unit: '',
       category: '',
       categoryConfidence: 0,
     });
@@ -101,21 +100,22 @@ export const clientOCR = async (imageFile: File): Promise<ReceiptOCRResult> => {
     const worker = Tesseract.recognize(
       imageFile,
       'eng',
-      { logger: (progress) => console.log(progress) }
+      { logger: (p: unknown) => console.log(p) }
     );
 
-    worker.on('recognize', (progress) => {
-      console.log(`OCR progress: ${progress.percent}%`);
+    worker.on('recognize', (progress: unknown) => {
+      const p = progress as { percent?: number };
+      console.log(`OCR progress: ${p.percent ?? 0}%`);
     });
 
     worker.on('end', () => {
-      const { data: { text } } = worker;
+      const { data: { text } } = worker as unknown as { data: { text: string } };
       const imageUrl = URL.createObjectURL(imageFile);
       const result = parseOCRResult(text, imageUrl);
       resolve(result);
     });
 
-    worker.on('error', (error) => {
+    worker.on('error', (error: unknown) => {
       reject(error);
     });
   });
