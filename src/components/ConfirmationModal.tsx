@@ -56,11 +56,11 @@ export function ConfirmationModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
       <Card className="w-full max-w-md p-6">
         <div className={`p-4 rounded-lg mb-4 ${getVariantStyles()}`}>
           <div className="text-3xl mb-2">{getIcon()}</div>
-          <h3 className="text-lg font-semibold">{title}</h3>
+          <h3 id="confirm-title" className="text-lg font-semibold">{title}</h3>
         </div>
 
         <div className="mb-6">

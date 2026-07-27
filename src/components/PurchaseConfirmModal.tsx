@@ -53,11 +53,11 @@ export const PurchaseConfirmModal: React.FC<PurchaseConfirmModalProps> = ({
   );
 
   return (
-    <div className="fixed inset-0 z-[60] bg-black/50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[60] bg-black/50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="purchase-confirm-title">
       <Card className="max-w-md w-full p-6">
         <div className="text-center mb-4">
           <div className="text-4xl mb-2">🛍️</div>
-          <h3 className="text-lg font-semibold text-gray-800">Complete Purchase</h3>
+          <h3 id="purchase-confirm-title" className="text-lg font-semibold text-gray-800">Complete Purchase</h3>
           <p className="text-sm text-gray-600">
             Review items for <strong className="text-gray-800">{storeName || 'Unknown Store'}</strong>
           </p>

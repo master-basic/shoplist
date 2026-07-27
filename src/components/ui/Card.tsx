@@ -25,6 +25,7 @@ export const Card: React.FC<CardProps> = ({
     <div 
       className={`bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden ${onClick ? 'cursor-pointer hover:shadow-lg transition-shadow' : ''} ${className}`}
       onClick={onClick}
+      {...(onClick ? { role: 'button', tabIndex: 0, onKeyDown: (e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } } } : {})}
     >
       {(title || actionButton) && (
         <div className="px-6 py-4 border-b border-gray-200">

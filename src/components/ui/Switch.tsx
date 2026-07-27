@@ -33,9 +33,16 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
               ${checked ? 'bg-green-600' : 'bg-gray-300'}
             `}
             onClick={() => onChange(!checked)}
+            onKeyDown={(e) => {
+              if (e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault();
+                onChange(!checked);
+              }
+            }}
             role="switch"
             aria-checked={checked}
             aria-label={label || 'Switch'}
+            tabIndex={0}
           >
             <div
               className={`

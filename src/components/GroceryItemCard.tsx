@@ -80,6 +80,9 @@ export function GroceryItemCard({
                 : 'border-slate-300 hover:border-green-500'
               }
             `}
+            aria-label={item.checked_by ? `Uncheck ${item.name}` : `Check ${item.name}`}
+            aria-checked={!!item.checked_by}
+            role="checkbox"
           >
             {item.checked_by && (
               <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -151,6 +154,9 @@ export function GroceryItemCard({
               : 'border-slate-300 hover:border-green-500'
             }
           `}
+          aria-label={item.checked_by ? `Uncheck ${item.name}` : `Check ${item.name}`}
+          aria-checked={!!item.checked_by}
+          role="checkbox"
         >
           {item.checked_by && (
             <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -167,6 +173,7 @@ export function GroceryItemCard({
                 type="text"
                 value={editForm.name}
                 onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                aria-label="Item name"
                 className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                 placeholder="Item name"
               />
@@ -175,6 +182,7 @@ export function GroceryItemCard({
                   type="number"
                   value={editForm.quantity}
                   onChange={(e) => setEditForm({ ...editForm, quantity: parseFloat(e.target.value) || 0 })}
+                  aria-label="Quantity"
                   className="w-24 px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="Qty"
                 />
@@ -182,6 +190,7 @@ export function GroceryItemCard({
                   type="text"
                   value={editForm.unit}
                   onChange={(e) => setEditForm({ ...editForm, unit: e.target.value })}
+                  aria-label="Unit"
                   className="flex-1 px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="Unit (kg, pcs, etc.)"
                 />
@@ -191,12 +200,14 @@ export function GroceryItemCard({
                   type="number"
                   value={editForm.estimated_price || ''}
                   onChange={(e) => setEditForm({ ...editForm, estimated_price: parseFloat(e.target.value) || 0 })}
+                  aria-label="Price"
                   className="w-32 px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="Price"
                 />
                 <select
                   value={editForm.category}
                   onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
+                  aria-label="Category"
                   className="flex-1 px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                 >
                   <option value="produce">Produce</option>
@@ -262,7 +273,7 @@ export function GroceryItemCard({
                 <button
                   onClick={() => setIsEditing(true)}
                   className="p-2 text-slate-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                  title="Edit item"
+                  aria-label={`Edit ${item.name}`}
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -279,7 +290,7 @@ export function GroceryItemCard({
             <button
               onClick={() => setShowNotBoughtInput(true)}
               className="p-2 text-slate-400 hover:text-amber-500 hover:bg-amber-50 rounded-lg transition-colors"
-              title="Mark as not bought"
+              aria-label={`Mark ${item.name} as not bought`}
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
@@ -290,7 +301,7 @@ export function GroceryItemCard({
             <button
               onClick={() => onRemove(item.id)}
               className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-              title="Remove item"
+              aria-label={`Remove ${item.name}`}
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -306,6 +317,7 @@ export function GroceryItemCard({
             value={notBoughtReason}
             onChange={(e) => setNotBoughtReason(e.target.value)}
             placeholder="Why wasn't this bought?"
+            aria-label="Reason item was not bought"
             className="flex-1 px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
             autoFocus
           />

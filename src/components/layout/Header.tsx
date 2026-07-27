@@ -24,6 +24,7 @@ export function Header() {
           <button
             className="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg"
             onClick={() => {}} // Would toggle sidebar
+            aria-label="Open menu"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -48,6 +49,7 @@ export function Header() {
             <input
               type="text"
               placeholder="Search items, stores, lists..."
+              aria-label="Search items, stores, lists"
               className="w-full px-4 py-2 pl-10 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:bg-white"
             />
             <svg
@@ -68,6 +70,7 @@ export function Header() {
             <button
               onClick={() => setShowNotifications(!showNotifications)}
               className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg relative"
+              aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ''}`}
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -83,6 +86,7 @@ export function Header() {
           {/* Currency selector */}
           <select
             defaultValue="AZN"
+            aria-label="Select currency"
             className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500"
           >
             <option value="AZN">AZN ₼</option>
@@ -91,7 +95,7 @@ export function Header() {
           </select>
 
           {/* User avatar */}
-          <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold ml-2 cursor-pointer">
+          <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold ml-2 cursor-pointer" role="img" aria-label={user?.name ? `Profile: ${user.name}` : 'Profile'}>
             {user?.name?.charAt(0).toUpperCase() || 'U'}
           </div>
         </div>

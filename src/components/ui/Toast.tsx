@@ -50,7 +50,7 @@ export const Toast: React.FC<ToastProps> = ({
   if (!show) return null;
 
   return (
-    <div className={`fixed top-4 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg text-white transition-all ${variants[variant]} ${className}`}>
+    <div role="alert" aria-live="polite" className={`fixed top-4 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg text-white transition-all ${variants[variant]} ${className}`}>
       {icons[variant]}
       <span className="flex-1">{message}</span>
       {onClose && (
