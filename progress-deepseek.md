@@ -129,12 +129,11 @@ JWT auth on all routes, bcrypt password hashing. **Missing:** Rate limiting, pas
 All 3 ship-blocking issues, 4 of 5 high-priority issues, all 7 architecture issues, plus operational setup (PostgreSQL, .env, frontend tests). Full Phase 2, 3 (mostly), 4, and 5 implementation complete.
 
 ### Next Priority
-1. CI pipeline (GitHub Actions)
-2. Comprehensive server test coverage (currently only 1 test file)
-3. Page-level test coverage (no tests for pages or API layer)
-4. Phase 6 remaining — PWA screenshots for store listings
-5. Phase 9 Security (rate limiting, password reset, 2FA)
-6. Phase 3 Fuzzy matching for receipt items
+1. Comprehensive server test coverage (currently only 1 test file)
+2. Page-level test coverage (no tests for pages or API layer)
+3. Phase 6 remaining — PWA screenshots for store listings
+4. Phase 9 Security (rate limiting, password reset, 2FA)
+5. Phase 3 Fuzzy matching for receipt items
 
 ## Session 2026-07-27 (Final Phases 3-5)
 - **Phase 3 complete** — Added PDF receipt support (pdf2json), OCR confidence highlighting per item in ScanReview
@@ -183,4 +182,15 @@ All 3 ship-blocking issues, 4 of 5 high-priority issues, all 7 architecture issu
   - Toast — added `role="alert"`, `aria-live="polite"`
   - MainLayout — added `aria-label` to desktop and mobile nav elements
 - **Audit report:** Created `wcag-audit.md` with full findings, WCAG criterion references, and fix details
+- **All npm dependencies:** All 36 tests still pass, build clean (0 TS errors)
+
+## Session 2026-07-27 (CI Pipeline)
+- **GitHub Actions CI** — Enhanced `.github/workflows/ci.yml` from basic test-only to full pipeline:
+  - **Lint job:** ESLint on frontend code
+  - **Typecheck job:** `npx tsc --noEmit` for TypeScript validation
+  - **Test job:** Frontend (vitest) + server (jest) tests
+  - **Build job:** `npm run build` with artifact upload (dist/ retained 7 days)
+  - **Concurrency:** Cancel in-progress runs on same branch
+  - **Caching:** npm cache via `actions/setup-node@v4`
+  - Jobs run in parallel (lint, typecheck, test), build waits for all to pass
 - **All npm dependencies:** All 36 tests still pass, build clean (0 TS errors)
