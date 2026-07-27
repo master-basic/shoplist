@@ -9,7 +9,7 @@ export interface ListSlice {
   addList: (list: GroceryList) => void;
   deleteList: (listId: string) => void;
   deleteListItem: (listId: string, itemId: string) => void;
-  addItemToList: (listId: string, item: Omit<ListItem, 'id'>) => void;
+  addItemToList: (listId: string, item: Omit<ListItem, 'id'> & { id?: string }) => void;
   updateItem: (listId: string, itemId: string, updates: Partial<ListItem>) => void;
   toggleItem: (listId: string, itemId: string) => void;
   duplicateList: (listId: string) => GroceryList | undefined;
@@ -38,7 +38,7 @@ export const createListSlice: ListSliceCreator = (set, get) => ({
     if (!list) { log.warn('Store addItemToList: list not found', { listId }); return; }
     const newItem = {
       ...item,
-      id: uuidv4(),
+      id: item.id || uuidv4(),
       sort_order: list.items.length,
       is_checked: false,
       is_recurring: item.is_recurring ?? false,

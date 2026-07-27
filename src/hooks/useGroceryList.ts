@@ -6,6 +6,7 @@ import { authHeaders } from '@/api/client';
 import { useHousehold } from './useHousehold';
 import { useAuth } from './useAuth';
 import type { ListItem, GroceryList, OCRData } from '@/types';
+import log from '@/utils/debug';
 import {
   getUserLists,
   getListById,
@@ -67,10 +68,16 @@ export const useGroceryList = () => {
       return { listId, newItem };
     },
     onSuccess: ({ listId, newItem }) => {
+      if (!newItem.item) { log.warn('addItem onSuccess: no item property in response', { newItem }); return; }
+      const serverItem = newItem.item;
       addItemToList(listId, {
-        ...newItem, checked_by: undefined, checked_at: undefined,
-        unit: newItem.unit || 'pcs', quantity: newItem.quantity || 1,
-        estimated_price: newItem.estimated_price || 0, price_history: []
+        ...serverItem,
+        checked_by: serverItem.checked_by || undefined,
+        checked_at: serverItem.checked_at || undefined,
+        unit: serverItem.unit || 'pcs',
+        quantity: serverItem.quantity ?? 1,
+        estimated_price: serverItem.estimated_price ?? 0,
+        price_history: serverItem.price_history ?? [],
       });
     },
   });
