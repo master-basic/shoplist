@@ -3,6 +3,8 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useWebSocket } from '@/hooks/useWebSocket';
 import { StoreProvider, useStore } from '@/store/useStore';
+import { useOffline } from '@/hooks/useOffline';
+import { OfflineBanner } from '@/components/OfflineBanner';
 import log from '@/utils/debug';
 
 // Pages
@@ -39,6 +41,7 @@ function WebSocketConnector() {
 
 function App() {
   const location = useLocation();
+  const isOffline = useOffline();
   log.info('App rendered', { path: location.pathname });
   
   // Check if current route is a public route
@@ -130,6 +133,7 @@ function App() {
   
   return (
     <>
+      <OfflineBanner isOnline={!isOffline} />
       <WebSocketConnector />
       <StoreProvider>
         <Routes>
