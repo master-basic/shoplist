@@ -5,6 +5,8 @@ import { useWebSocket } from '@/hooks/useWebSocket';
 import { StoreProvider, useStore } from '@/store/useStore';
 import { useOffline } from '@/hooks/useOffline';
 import { OfflineBanner } from '@/components/OfflineBanner';
+import { usePwaInstall } from '@/hooks/usePwaInstall';
+import { PwaInstallPrompt } from '@/components/PwaInstallPrompt';
 import log from '@/utils/debug';
 
 // Pages
@@ -42,6 +44,7 @@ function WebSocketConnector() {
 function App() {
   const location = useLocation();
   const isOffline = useOffline();
+  const { isInstalled, shouldShowPrompt, promptInstall, dismissPrompt } = usePwaInstall();
   log.info('App rendered', { path: location.pathname });
   
   // Check if current route is a public route
@@ -134,6 +137,9 @@ function App() {
   return (
     <>
       <OfflineBanner isOnline={!isOffline} />
+      {shouldShowPrompt && !isInstalled && (
+        <PwaInstallPrompt onInstall={promptInstall} onDismiss={dismissPrompt} />
+      )}
       <WebSocketConnector />
       <StoreProvider>
         <Routes>
