@@ -10,7 +10,7 @@ router.post('/', async (req, res) => {
   try {
     const { listId, storeName, userId, householdId, items } = req.body;
     if (!listId || !userId || !items || !items.length) return res.status(400).json({ error: 'listId, userId, and items array are required' });
-    const totalAmount = items.reduce((sum, i) => sum + (i.totalPrice || i.unitPrice || 0), 0);
+    const totalAmount = items.reduce((sum, i) => sum + (parseFloat(i.totalPrice) || parseFloat(i.unitPrice) || 0), 0);
     const receiptResult = await pool.query(
       'INSERT INTO receipts (household_id, list_id, user_id, name, total_amount, currency, status) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
       [householdId || null, listId, userId, `Purchase - ${storeName || 'Unknown'}`, totalAmount, 'AZN', 'purchased']

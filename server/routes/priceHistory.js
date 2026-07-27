@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
     if (finalPrice === null) return res.status(400).json({ error: 'price or unitPrice is required' });
     const result = await pool.query(
       'INSERT INTO price_history (list_item_id, item_name, store_name, price, unit_price, currency, store, quantity, purchase_date, purchased_at, created_by) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *',
-      [finalListItemId, itemName || null, storeName || null, finalPrice, unitPrice || finalPrice, currency || 'AZN', store || storeName || 'Unknown', quantity || 1, purchaseDate || (purchasedAt ? purchasedAt.split('T')[0] : new Date().toISOString().split('T')[0]), purchasedAt || new Date().toISOString(), createdBy]
+      [finalListItemId, itemName || null, storeName || null, finalPrice, unitPrice || finalPrice, currency || 'AZN', store || storeName || 'Unknown', parseInt(quantity, 10) || 1, purchaseDate || (purchasedAt ? purchasedAt.split('T')[0] : new Date().toISOString().split('T')[0]), purchasedAt || new Date().toISOString(), createdBy]
     );
     res.status(201).json({ priceEntry: result.rows[0], message: 'Price entry created successfully' });
   } catch (error) {
