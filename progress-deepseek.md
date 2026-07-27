@@ -132,7 +132,7 @@ All 3 ship-blocking issues, 4 of 5 high-priority issues, all 7 architecture issu
 1. CI pipeline (GitHub Actions)
 2. Comprehensive server test coverage (currently only 1 test file)
 3. Page-level test coverage (no tests for pages or API layer)
-4. Phase 6 PWA — WCAG 2.1 AA audit, PWA install prompt UI, PWA screenshots for store listings
+4. Phase 6 remaining — WCAG 2.1 AA audit, PWA screenshots for store listings
 5. Phase 9 Security (rate limiting, password reset, 2FA)
 6. Phase 3 Fuzzy matching for receipt items
 
@@ -150,4 +150,22 @@ All 3 ship-blocking issues, 4 of 5 high-priority issues, all 7 architecture issu
 - **Offline install prompt** — VitePWA configured with autoUpdate registration type
 - **New files:** public/manifest.json, public/favicon.svg, public/robots.txt, public/icons/*.svg, src/components/OfflineBanner.tsx, src/hooks/useOffline.ts, scripts/generate-icons.cjs
 - **Dependencies:** vite-plugin-pwa installed
+- **All npm dependencies:** All 36 tests still pass, build clean (0 TS errors)
+
+## Session 2026-07-27 (PWA Install Prompt)
+- **PWA install prompt UI** — Created `usePwaInstall` hook with full install flow:
+  - `beforeinstallprompt` event capture (stores deferred prompt)
+  - `appinstalled` event listener (marks user as installed)
+  - Dismiss logic: shows prompt only 3 times max, remembers dismissal for 7 days via localStorage
+  - Standalone detection: checks `display-mode: standalone` media query and `window.standalone`
+  - `promptInstall()` calls `deferredPrompt.prompt()` then awaits `userChoice` for accept/dismiss
+- **`PwaInstallPrompt` component** — Bottom-sheet style modal with:
+  - App icon image, title, description text
+  - Feature list (offline, faster loading, native experience) with checkmark icons
+  - "Maybe Later" and "Install Now" buttons
+  - `role="dialog"`, `aria-modal="true"`, `aria-label` for screen reader support
+  - Dark mode support (`dark:bg-gray-800`, `dark:text-gray-300`, etc.)
+  - Animation class `animate-slide-up`
+- **App.tsx** — Integrated `usePwaInstall` hook, renders `PwaInstallPrompt` conditionally when `shouldShowPrompt && !isInstalled`
+- **New files:** `src/hooks/usePwaInstall.ts`, `src/components/PwaInstallPrompt.tsx`
 - **All npm dependencies:** All 36 tests still pass, build clean (0 TS errors)
