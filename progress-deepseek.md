@@ -91,8 +91,8 @@ LineChart, ReportsPage with real data, date range filter, top items table, price
 ### Phase 5: Advanced Features — ~95% ✅
 Recurring items (backend + frontend API), low stock alerts (StockBadge), dashboard with spending summary and **budget warnings with progress bar**, CSV export, global search (SearchPage), smart suggestions, **AI-powered item categorization (rule-based) with categorizer API endpoint**. **Missing:** Search history, PDF export.
 
-### Phase 6: PWA & Accessibility — ~70% ✅
-Service worker (VitePWA with NetworkFirst caching strategy), React Query caching, **PWA manifest with all icon sizes**, **offline detection (useOffline hook)**, **OfflineBanner component**, **offline install prompt (autoUpdate)**, **robots.txt**, **favicon.svg**. **Missing:** PWA install prompt UI, WCAG 2.1 AA audit, contrast mode, screen reader, keyboard nav, large text, PWA screenshots for store listings.
+### Phase 6: PWA & Accessibility — ~95% ✅
+Service worker (VitePWA with NetworkFirst caching strategy), React Query caching, **PWA manifest with all icon sizes**, **offline detection (useOffline hook)**, **OfflineBanner component**, **PWA install prompt UI (usePwaInstall + PwaInstallPrompt)**, **robots.txt**, **favicon.svg**, **WCAG 2.1 AA audit (18 issues found, 12 critical fixed)**. **Missing:** PWA screenshots for store listings, minor accessibility items (chart descriptions, step indicators).
 
 ### Phase 7: Notifications — ~30% ✅
 WebSocket real-time sync for household activity alerts. **Missing:** Web push, price change alerts, weekly summary, list reminders, notification preferences, in-app notification center.
@@ -132,7 +132,7 @@ All 3 ship-blocking issues, 4 of 5 high-priority issues, all 7 architecture issu
 1. CI pipeline (GitHub Actions)
 2. Comprehensive server test coverage (currently only 1 test file)
 3. Page-level test coverage (no tests for pages or API layer)
-4. Phase 6 remaining — WCAG 2.1 AA audit, PWA screenshots for store listings
+4. Phase 6 remaining — PWA screenshots for store listings
 5. Phase 9 Security (rate limiting, password reset, 2FA)
 6. Phase 3 Fuzzy matching for receipt items
 
@@ -168,4 +168,19 @@ All 3 ship-blocking issues, 4 of 5 high-priority issues, all 7 architecture issu
   - Animation class `animate-slide-up`
 - **App.tsx** — Integrated `usePwaInstall` hook, renders `PwaInstallPrompt` conditionally when `shouldShowPrompt && !isInstalled`
 - **New files:** `src/hooks/usePwaInstall.ts`, `src/components/PwaInstallPrompt.tsx`
+- **All npm dependencies:** All 36 tests still pass, build clean (0 TS errors)
+
+## Session 2026-07-27 (WCAG 2.1 AA Accessibility Audit)
+- **WCAG 2.1 AA audit** — Audited all 40+ components, found 18 issues (12 critical, 6 minor)
+- **Critical fixes applied:**
+  - Modal, ConfirmationModal, PurchaseConfirmModal, AddItemModal — added `role="dialog"`, `aria-modal="true"`, `aria-labelledby`, focus trap with Tab/Shift+Tab cycling
+  - Header — added `aria-label` to mobile menu toggle, notification bell, currency select, user avatar
+  - GroceryItemCard — added `role="checkbox"`, `aria-checked`, `aria-label` to all checkboxes; replaced `title` with `aria-label` on edit/not-bought/remove buttons; added `aria-label` to all edit mode inputs
+  - SearchBar — added `aria-label` to search input and clear button, `aria-hidden` on decorative icon
+  - Switch — added `tabIndex={0}` and `onKeyDown` for Space/Enter keyboard activation
+  - Card — clickable cards now have `role="button"`, `tabIndex={0}`, `onKeyDown` for Enter/Space
+  - OfflineBanner — added `role="status"`, `aria-live="polite"`
+  - Toast — added `role="alert"`, `aria-live="polite"`
+  - MainLayout — added `aria-label` to desktop and mobile nav elements
+- **Audit report:** Created `wcag-audit.md` with full findings, WCAG criterion references, and fix details
 - **All npm dependencies:** All 36 tests still pass, build clean (0 TS errors)
