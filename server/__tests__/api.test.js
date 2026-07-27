@@ -277,8 +277,10 @@ describe('POST /api/price-history', () => {
 describe('GET /api/price-history/stats', () => {
   it('returns stats for an item', async () => {
     const statsRow = { count: 5, min_price: 1.0, max_price: 3.0, avg_price: 2.0, stores: ['Store A'] };
-    mockQueryOnce([statsRow]);
+    pool.query.mockReset();
+    pool.query.mockResolvedValueOnce({ rows: [statsRow] });
     pool.query.mockResolvedValueOnce({ rows: [{ store_name: 'Store A', unit_price: 1.0 }] });
+    pool.query.mockResolvedValueOnce({ rows: [{ store_name: 'Store A', unit_price: 3.0 }] });
     const res = await request(app).get('/api/price-history/stats?itemName=Milk').set('Authorization', `Bearer ${mockToken}`);
     expect(res.status).toBe(200);
     expect(res.body.stats.count).toBe(5);

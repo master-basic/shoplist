@@ -65,7 +65,7 @@ const categoryRules = [
   },
 ];
 
-function categorizeItem(name: string): { category: string; confidence: number } {
+function categorizeItem(name) {
   if (!name || name.trim().length === 0) {
     return { category: 'Other', confidence: 0 };
   }
@@ -83,7 +83,7 @@ function categorizeItem(name: string): { category: string; confidence: number } 
   return { category: 'Other', confidence: 0 };
 }
 
-function autoCategorizeItems(items: Array<{ name: string }>): Array<{ name: string; category: string; categoryConfidence: number }> {
+function autoCategorizeItems(items) {
   return items.map(item => {
     const result = categorizeItem(item.name);
     return {
