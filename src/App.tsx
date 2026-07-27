@@ -19,6 +19,7 @@ import { PriceCheckPage } from './pages/PriceCheckPage.tsx';
 import { DashboardPage } from './pages/DashboardPage.tsx';
 import { ItemPriceHistory } from './pages/ItemPriceHistory.tsx';
 import { SearchPage } from './pages/SearchPage.tsx';
+import { ReceiptHistoryPage } from './pages/ReceiptHistory.tsx';
 import NotFound from './pages/NotFound.tsx';
 
 // Auth Components
@@ -120,6 +121,8 @@ function App() {
         return <ItemPriceHistory />;
       case '/global-search':
         return <SearchPage />;
+      case '/receipts':
+        return <ReceiptHistoryPage />;
       default:
         return <NotFound />;
     }

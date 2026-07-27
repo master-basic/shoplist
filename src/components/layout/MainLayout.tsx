@@ -35,6 +35,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     { path: '/scan', label: 'Scan', icon: '📷' },
     { path: '/reports', label: 'Reports', icon: '📊' },
     { path: '/search', label: 'Search', icon: '🔍' },
+    { path: '/receipts', label: 'Receipts', icon: '🧾' },
     { path: '/household', label: 'Household', icon: '👨‍👩‍👧‍👦' },
     { path: '/profile', label: 'Profile', icon: '👤' },
     { path: '/admin', label: 'Admin', icon: '⚙️' },
