@@ -1,15 +1,13 @@
 import React, { createContext, useContext, ReactNode, useMemo, useState, useEffect } from 'react';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import type { User, GroceryList, HouseholdMember, Household, PurchaseSession, PurchasedItem, PriceHistoryItem, ListItem, ListItem as ListItemType, HouseholdSettings, NotificationPreferences, RecurringItem, Category, Unit, PriceTrend, OCRData, OCRItem, ReceiptFile, SearchQuery, SearchFilters, SearchResult, SmartSuggestion, Notification, OnboardingState, OfflineQueueItem, SyncStatus } from '../types';
+import type { User, GroceryList, HouseholdMember, Household, ListItem, HouseholdSettings, NotificationPreferences, RecurringItem, Category, Unit, PriceTrend, OCRData, OCRItem, ReceiptFile, SearchQuery, SearchFilters, SearchResult, SmartSuggestion, Notification, OnboardingState, OfflineQueueItem, SyncStatus } from '../types';
 import { createUserSlice, UserSlice } from './slices/userSlice';
 import { createHouseholdSlice, HouseholdSlice } from './slices/householdSlice';
 import { createListSlice, ListSlice } from './slices/listSlice';
-import { createPurchaseSlice, PurchaseSlice } from './slices/purchaseSlice';
-import { createPriceHistorySlice, PriceHistorySlice } from './slices/priceHistorySlice';
 import { createUISlice, UISlice } from './slices/uiSlice';
 
-type StoreState = UserSlice & HouseholdSlice & ListSlice & PurchaseSlice & PriceHistorySlice & UISlice;
+type StoreState = UserSlice & HouseholdSlice & ListSlice & UISlice;
 
 export const useStore = create<StoreState>()(
   persist(
@@ -17,8 +15,6 @@ export const useStore = create<StoreState>()(
       ...createUserSlice(...a),
       ...createHouseholdSlice(...a),
       ...createListSlice(...a),
-      ...createPurchaseSlice(...a),
-      ...createPriceHistorySlice(...a),
       ...createUISlice(...a),
     }),
     { name: 'grocerymind-store', storage: createJSONStorage(() => localStorage), partialize: (state) => ({ user: state.user }) }
@@ -43,12 +39,6 @@ interface StoreContextType {
   duplicateList: (listId: string) => GroceryList | undefined;
   archiveList: (listId: string) => void;
   reorderItems: (listId: string, itemIds: string[]) => void;
-  purchaseSessions: PurchaseSession[];
-  addPurchaseSession: (session: Omit<PurchaseSession, 'id'>) => void;
-  addPurchasedItem: (sessionId: string, item: Omit<PurchasedItem, 'id' | 'sessionId'>) => void;
-  priceHistory: PriceHistoryItem[];
-  addPriceHistory: (item: PriceHistoryItem) => void;
-  getPriceHistory: (itemName: string, days?: number) => PriceHistoryItem[];
   loading: boolean;
   setLoading: (loading: boolean) => void;
   toast: string | null;

@@ -43,8 +43,14 @@ router.get('/:id/members', async (req, res) => {
 router.post('/:id/members', async (req, res) => {
   try {
     const { id } = req.params;
-    const { userId, role } = req.body;
-    if (!userId || !role) return res.status(400).json({ error: 'userId and role are required' });
+    let { userId, role, email } = req.body;
+    if (!role) return res.status(400).json({ error: 'role is required' });
+    if (!userId && email) {
+      const userResult = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
+      if (userResult.rows.length === 0) return res.status(404).json({ error: 'User not found with this email' });
+      userId = userResult.rows[0].id;
+    }
+    if (!userId) return res.status(400).json({ error: 'userId or email is required' });
     const existing = await pool.query('SELECT * FROM user_households WHERE user_id = $1 AND household_id = $2', [userId, id]);
     if (existing.rows.length > 0) return res.status(400).json({ error: 'User already in this household' });
     await pool.query('INSERT INTO user_households (user_id, household_id, role) VALUES ($1, $2, $3)', [userId, id, role]);

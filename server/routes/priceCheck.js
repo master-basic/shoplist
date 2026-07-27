@@ -71,7 +71,8 @@ router.get('/products/:productName/history', async (req, res) => {
       params.push(store);
     }
     if (days) {
-      query += ` AND checked_at >= NOW() - INTERVAL '${parseInt(days)} days'`;
+      query += ` AND checked_at >= NOW() - $${paramIdx++} * INTERVAL '1 day'`;
+      params.push(parseInt(days, 10) || 30);
     }
 
     query += ' ORDER BY checked_at DESC';
@@ -130,7 +131,7 @@ router.get('/compare', async (req, res) => {
 router.get('/trends', async (req, res) => {
   try {
     const { days } = req.query;
-    const interval = days ? `${parseInt(days)} days` : '30 days';
+    const dayVal = parseInt(days, 10) || 30;
 
     const result = await pool.query(`
       WITH ranked AS (
@@ -142,7 +143,7 @@ router.get('/trends', async (req, res) => {
           ROW_NUMBER() OVER (PARTITION BY pc.product_name, pc.store ORDER BY pc.checked_at DESC) AS rn,
           FIRST_VALUE(pc.price) OVER (PARTITION BY pc.product_name, pc.store ORDER BY pc.checked_at) AS first_price
         FROM price_checks pc
-        WHERE pc.checked_at >= NOW() - INTERVAL '${interval}'
+        WHERE pc.checked_at >= NOW() - $1 * INTERVAL '1 day'
       ),
       latest AS (
         SELECT * FROM ranked WHERE rn = 1
@@ -160,7 +161,7 @@ router.get('/trends', async (req, res) => {
       ORDER BY ABS(
         ((l.price - l.first_price) / NULLIF(l.first_price, 0)) * 100
       ) DESC
-    `);
+    `, [dayVal]);
 
     res.json({ trends: result.rows });
   } catch (err) {

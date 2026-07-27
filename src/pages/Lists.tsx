@@ -22,7 +22,7 @@ export const Lists: React.FC = () => {
   const [newListName, setNewListName] = useState('');
   const [error, setError] = useState('');
   const [notification, setNotification] = useState('');
-  const { user, lists, priceHistory, addList, deleteList: storeDeleteList, toggleItem, updateItem, deleteListItem: storeDeleteListItem, currentHouseholdId, setCurrentHouseholdId } = useStore();
+  const { user, lists, addList, deleteList: storeDeleteList, toggleItem, updateItem, deleteListItem: storeDeleteListItem, currentHouseholdId, setCurrentHouseholdId } = useStore();
   const [households, setHouseholds] = useState<any[]>([]);
 
   useEffect(() => {
@@ -110,25 +110,9 @@ export const Lists: React.FC = () => {
     }
   };
 
-  const smartSuggestions = useMemo(() => {
-    if (searchMode !== 'items') return [];
-    const frequentlyBought = priceHistory.reduce((acc, item) => {
-      acc[item.item_name] = (acc[item.item_name] || 0) + item.quantity;
-      return acc;
-    }, {} as Record<string, number>);
-    const activeListItems = new Set(
-      lists.find(l => l.status === 'active')?.items.map(i => i.name.toLowerCase()) || []
-    );
-    return Object.entries(frequentlyBought)
-      .filter(([name]) => !activeListItems.has(name.toLowerCase()))
-      .slice(0, 5)
-      .map(([name, qty]) => ({
-        item_name: name,
-        frequency: qty,
-        last_price: priceHistory.filter(item => item.item_name === name)
-          .sort((a, b) => new Date(b.purchased_at).getTime() - new Date(a.purchased_at).getTime())[0]?.unit_price || 0,
-      }));
-  }, [searchMode, priceHistory, lists]);
+  const smartSuggestions: Array<{ item_name: string; frequency: number; last_price: number }> = useMemo(() => {
+    return [];
+  }, []);
 
   const itemSearchResults = useMemo(() => {
     if (searchMode !== 'items' || !searchTerm.trim()) return [];
@@ -336,6 +320,7 @@ export const Lists: React.FC = () => {
               label="List Name"
               value={newListName}
               onChange={(e) => setNewListName(e.target.value)}
+              onKeyDown={(e: React.KeyboardEvent) => { if (e.key === 'Enter') handleCreateList(); }}
               placeholder="e.g., Weekly Groceries"
               autoFocus
             />

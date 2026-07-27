@@ -5,8 +5,7 @@ import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
+  plugins: [react(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'robots.txt', 'apple-icons/*.png'],
@@ -99,6 +98,12 @@ export default defineConfig({
       }
     })
   ],
+  server: {
+    port: 5173,
+    strictPort: false,
+    cors: true,
+    open: false,
+  },
   base: './',
   resolve: {
     alias: {

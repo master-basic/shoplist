@@ -246,11 +246,11 @@ const ReportsPage: React.FC = () => {
                     <p className="text-sm font-medium text-gray-800">{alert.itemName}</p>
                     <p className="text-xs text-gray-500">at {alert.store}</p>
                   </div>
-                  <div className="text-right">
+                    <div className="text-right">
                     <p className={`text-sm font-bold ${alert.direction === 'up' ? 'text-red-600' : 'text-green-600'}`}>
-                      {alert.direction === 'up' ? '↑' : '↓'} {Math.abs(alert.changePercent)}%
+                      {alert.direction === 'up' ? '↑' : '↓'} {Math.abs(alert.changePercent || 0)}%
                     </p>
-                    <p className="text-xs text-gray-500">{alert.currentPrice.toFixed(2)} vs avg {alert.averagePrice.toFixed(2)}</p>
+                    <p className="text-xs text-gray-500">{Number(alert.currentPrice || 0).toFixed(2)} vs avg {Number(alert.averagePrice || 0).toFixed(2)}</p>
                   </div>
                 </div>
               ))}

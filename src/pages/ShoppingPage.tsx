@@ -8,6 +8,8 @@ import { useLogRender } from '@/hooks/useLogRender';
 import { apiFetch } from '@/api/client';
 import log from '@/utils/debug';
 
+const PREDEFINED_STORES = ['Bravo', 'Araz', 'Oba', 'Local Market', 'Bazarstore', 'Megastore', 'Neptun', 'Contakt', 'Grow Food'];
+
 export const ShoppingPage: React.FC = () => {
   useLogRender('ShoppingPage');
   const { user, lists, addList, toggleItem } = useStore();
@@ -50,7 +52,18 @@ export const ShoppingPage: React.FC = () => {
   }, [user?.id]);
 
   const handleToggleItem = (listId: string, itemId: string) => {
+    const list = lists.find((l) => l.id === listId);
+    if (!list) return;
+    const item = list.items.find((i: any) => i.id === itemId);
+    if (!item) return;
+    const newChecked = !item.is_checked;
     toggleItem(listId, itemId);
+    apiFetch(`/api/lists/items/${itemId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ isChecked: newChecked }),
+    }).catch((err) => {
+      log.warn('Toggle sync failed', { itemId, error: err.message });
+    });
   };
 
   const handleOpenPurchaseModal = () => {
@@ -58,13 +71,15 @@ export const ShoppingPage: React.FC = () => {
     const list = lists.find((l) => l.id === selectedListId);
     if (!list) return;
     
-    const uncheckedItems = list.items.filter((i: any) => i.is_checked);
-    if (uncheckedItems.length === 0) return;
+    const checkedItems = list.items.filter((i: any) => i.is_checked);
+    if (checkedItems.length === 0) return;
     
-    const items = uncheckedItems.map((i: any) => ({
+    const items = checkedItems.map((i: any) => ({
       id: i.id,
       name: i.name,
       quantity: i.quantity || 1,
+      listItemId: i.id,
+      estimated_price: i.estimated_price || 0,
     }));
     setItemsToConfirm(items);
     setShowConfirmation(true);
@@ -109,25 +124,39 @@ export const ShoppingPage: React.FC = () => {
   };
 
   const handleMarkAsBought = async () => {
-    if (!selectedListId || !user?.id || itemsToConfirm.length === 0) return;
-    
-    // Show confirmation with items list
+    if (!selectedListId || !user?.id) return;
+    const list = lists.find((l) => l.id === selectedListId);
+    if (!list) return;
+
+    const checkedItems = list.items.filter((i: any) => i.is_checked);
+    if (checkedItems.length === 0) return;
+
+    const items = checkedItems.map((i: any) => ({
+      id: i.id,
+      name: i.name,
+      quantity: i.quantity || 1,
+      listItemId: i.id,
+      estimated_price: i.estimated_price || 0,
+    }));
+    setItemsToConfirm(items);
     setShowConfirmation(true);
   };
 
   const handleConfirmMarkAsBought = async () => {
     if (itemsToConfirm.length === 0) return;
-    
+
     const currentPrices = itemPrices;
     const updatedItems = itemsToConfirm.map((item: any) => ({
-      ...item,
-      is_checked: true,
-      actual_price: currentPrices[item.id] !== undefined ? currentPrices[item.id] : (item.estimated_price || 0),
+      listItemId: item.id,
+      name: item.name,
+      quantity: item.quantity || 1,
+      unitPrice: currentPrices[item.id] !== undefined ? currentPrices[item.id] : (item.estimated_price || 0),
+      totalPrice: (currentPrices[item.id] !== undefined ? currentPrices[item.id] : (item.estimated_price || 0)) * (item.quantity || 1),
     }));
-    
+
     setShowConfirmation(false);
     setItemsToConfirm([]);
-    
+
     await handleConfirmPurchase(updatedItems);
   };
 
@@ -202,11 +231,12 @@ export const ShoppingPage: React.FC = () => {
                     </p>
                     {item.is_checked && (
                       <div className="mt-1" onClick={(e) => e.stopPropagation()}>
-                        <label className="text-[10px] uppercase text-gray-400 font-bold">Price</label>
+                        <label className="text-[10px] uppercase text-gray-400 font-bold">Price (AZN)</label>
                         <Input
                           type="number"
                           step="0.01"
-                          value={itemPrices[item.id] !== undefined ? itemPrices[item.id] : (item.estimated_price || 0)}
+                          placeholder={item.estimated_price ? item.estimated_price.toFixed(2) : "0.00"}
+                          value={itemPrices[item.id] !== undefined ? itemPrices[item.id] : ''}
                           onChange={(e: any) => setItemPrices((prev) => ({ ...prev, [item.id]: parseFloat(e.target.value) || 0 }))}
                           className="h-8 w-24 text-sm"
                         />
@@ -224,12 +254,29 @@ export const ShoppingPage: React.FC = () => {
 
         <div className="bg-white border-t border-gray-200 px-4 py-4">
           <div className="max-w-2xl mx-auto flex gap-3 items-center">
-            <Input
-              placeholder="Store name (e.g. Bravo)"
-              value={storeName}
-              onChange={(e: any) => setStoreName(e.target.value)}
-              className="flex-1"
-            />
+            <div className="flex-1">
+              <select
+                value={PREDEFINED_STORES.includes(storeName) ? storeName : 'Other'}
+                onChange={(e: any) => {
+                  if (e.target.value === 'Other') setStoreName('');
+                  else setStoreName(e.target.value);
+                }}
+                className="w-full h-10 px-3 border border-gray-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              >
+                <option value="">Select store...</option>
+                {PREDEFINED_STORES.map(s => <option key={s} value={s}>{s}</option>)}
+                <option value="Other">Other (type below)</option>
+              </select>
+              {!PREDEFINED_STORES.includes(storeName) && (
+                <input
+                  type="text"
+                  placeholder="Type store name..."
+                  value={storeName}
+                  onChange={(e: any) => setStoreName(e.target.value)}
+                  className="w-full h-10 px-3 mt-1 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+              )}
+            </div>
             <Button
               onClick={handleMarkAsBought}
               variant="primary"

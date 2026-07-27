@@ -112,12 +112,12 @@ export const ReceiptHistoryPage: React.FC = () => {
       return false;
     }
     if (dateFrom) {
-      const receiptDate = new Date(r.uploaded_at || '');
+      const receiptDate = new Date(r.created_at || '');
       const from = new Date(dateFrom);
       if (receiptDate < from) return false;
     }
     if (dateTo) {
-      const receiptDate = new Date(r.uploaded_at || '');
+      const receiptDate = new Date(r.created_at || '');
       const to = new Date(dateTo);
       if (receiptDate > to) return false;
     }
@@ -127,8 +127,8 @@ export const ReceiptHistoryPage: React.FC = () => {
     return true;
   });
 
-  const totalSpending = filteredReceipts.reduce((sum, r) => sum + ((r as any).totalAmount || 0), 0);
-  const uniqueStores = new Set(filteredReceipts.map((r) => ((r as any).storeName || '')).filter(Boolean)).size;
+  const totalSpending = filteredReceipts.reduce((sum, r) => sum + (r.total_amount || 0), 0);
+  const uniqueStores = new Set(filteredReceipts.map((r) => (r.name || '')).filter(Boolean)).size;
 
   return (
     <div className="space-y-6">
@@ -241,9 +241,9 @@ export const ReceiptHistoryPage: React.FC = () => {
               <div className="flex items-center gap-4 flex-1 min-w-0">
                 {/* Receipt Thumbnail */}
                 <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                  {receipt.file_url ? (
+                  {receipt.image_url ? (
                     <img
-                      src={receipt.file_url}
+                      src={receipt.image_url}
                       alt="Receipt"
                       className="w-full h-full object-cover"
                       onError={(e) => {
@@ -264,7 +264,7 @@ export const ReceiptHistoryPage: React.FC = () => {
                     </h3>
                   </div>
                   <div className="text-xs text-gray-500 mt-1">
-                    {formatDate(receipt.uploaded_at)}
+                    {formatDate(receipt.created_at)}
                   </div>
                   <div className="text-xs text-gray-400 mt-1">
                     ID: {receipt.id?.slice(0, 8)}...
@@ -276,7 +276,7 @@ export const ReceiptHistoryPage: React.FC = () => {
               <div className="flex items-center gap-3 ml-4">
                 <div className="text-right">
                   <div className="text-sm font-bold text-gray-900">
-                    {formatCurrency(0)}
+                    {formatCurrency(receipt.total_amount)}
                   </div>
                 </div>
 

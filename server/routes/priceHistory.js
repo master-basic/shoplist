@@ -87,13 +87,15 @@ router.post('/best-deals', async (req, res) => {
     const deals = {};
     for (const name of itemNames) {
       const result = await pool.query(
-        `SELECT DISTINCT ON (li.name) li.name as item_name, ph.store, ph.price
-         FROM price_history ph JOIN list_items li ON ph.list_item_id = li.id
-         WHERE LOWER(li.name) = LOWER($1) ORDER BY li.name, ph.price ASC LIMIT 1`,
+        `SELECT ph.store, ph.price, ph.item_name
+         FROM price_history ph
+         WHERE LOWER(ph.item_name) = LOWER($1)
+         ORDER BY ph.unit_price ASC NULLS LAST, ph.price ASC NULLS LAST
+         LIMIT 1`,
         [name]
       );
       if (result.rows.length > 0) {
-        deals[name] = { store: result.rows[0].store, price: parseFloat(result.rows[0].price) };
+        deals[name.toLowerCase()] = { store: result.rows[0].store, price: parseFloat(result.rows[0].price || result.rows[0].unit_price) };
       }
     }
     res.json({ deals });

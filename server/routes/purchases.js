@@ -19,15 +19,18 @@ router.post('/', async (req, res) => {
     const createdItems = [];
     const logger = require('../utils/logger');
     for (const item of items) {
-      logger.info(`[PURCHASE] item listItemId=${item.listItemId} name=${item.name} qty=${item.quantity} price=${item.unitPrice}`);
+      const qty = parseInt(item.quantity, 10) || 1;
+      const unitPrice = parseFloat(item.unitPrice) || 0;
+      const totalPrice = parseFloat(item.totalPrice) || unitPrice;
+      logger.info(`[PURCHASE] item listItemId=${item.listItemId} name=${item.name} qty=${qty} price=${unitPrice}`);
       const ri = await pool.query(
         'INSERT INTO receipt_items (receipt_id, list_item_id, quantity, unit_price, total_price) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-        [receipt.id, item.listItemId || null, item.quantity || 1, item.unitPrice || 0, item.totalPrice || item.unitPrice || 0]
+        [receipt.id, item.listItemId || null, qty, unitPrice, totalPrice]
       );
       createdItems.push(ri.rows[0]);
       await pool.query(
         'INSERT INTO price_history (item_name, store_name, unit_price, quantity, session_id, bought_by, list_item_id, price, currency, store, purchase_date, created_by) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)',
-        [item.name || 'Unknown', storeName || 'Unknown', item.unitPrice || 0, item.quantity || 1, receipt.id, userId, item.listItemId || null, item.unitPrice || 0, 'AZN', storeName || 'Unknown', new Date().toISOString().split('T')[0], userId]
+        [item.name || 'Unknown', storeName || 'Unknown', unitPrice, qty, receipt.id, userId, item.listItemId || null, unitPrice, 'AZN', storeName || 'Unknown', new Date().toISOString().split('T')[0], userId]
       );
     }
     res.status(201).json({ session: { ...receipt, items: createdItems } });
@@ -53,6 +56,18 @@ router.get('/user/:userId', async (req, res) => {
   } catch (error) {
     console.error('Get purchase sessions error:', error);
     res.status(500).json({ error: 'Failed to get purchase sessions', message: error.message });
+  }
+});
+
+router.get('/stores', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT DISTINCT store_name FROM price_history WHERE store_name IS NOT NULL AND store_name != \'\' ORDER BY store_name'
+    );
+    res.json({ stores: result.rows.map(r => r.store_name) });
+  } catch (error) {
+    console.error('Get stores error:', error);
+    res.status(500).json({ error: 'Failed to get stores', message: error.message });
   }
 });
 

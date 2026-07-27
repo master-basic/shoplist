@@ -50,7 +50,7 @@ export async function createListItem(name: string, quantity: number, estimatedPr
   log.info('API createListItem', { name, quantity, listId, unit, notes, isRecurring });
   const response = await apiFetch(`/api/lists/${listId}/items`, {
     method: 'POST',
-    body: JSON.stringify({ name, quantity, estimated_price: estimatedPrice, category, userId: createdBy, assigned_to: assignedTo, unit, notes, is_recurring: isRecurring, recurrence_frequency: recurrenceFrequency }),
+    body: JSON.stringify({ name, quantity, unitPrice: estimatedPrice, category, userId: createdBy, assigned_to: assignedTo, unit, notes, is_recurring: isRecurring, recurrence_frequency: recurrenceFrequency }),
   });
   return response.json();
 }
@@ -65,7 +65,7 @@ export async function updateListItem(id: string, listId: string, name?: string, 
   log.info('API updateListItem', { id, listId, name });
   const response = await apiFetch(`/api/lists/${listId}/items/${id}`, {
     method: 'PUT',
-    body: JSON.stringify({ name, quantity, estimated_price: estimatedPrice, category }),
+    body: JSON.stringify({ name, quantity, unitPrice: estimatedPrice, category }),
   });
   return response.json();
 }

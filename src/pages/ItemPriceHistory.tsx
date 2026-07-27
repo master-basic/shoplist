@@ -130,16 +130,17 @@ const ItemPriceHistory: React.FC = () => {
               <tbody>
                 {sortedRecords.map((r, i) => {
                   const prev = sortedRecords[i + 1];
-                  const change = prev ? ((r.unit_price - prev.unit_price) / prev.unit_price) * 100 : 0;
+                  const change = prev && prev.unit_price ? ((r.unit_price - prev.unit_price) / prev.unit_price) * 100 : 0;
+                  const isFiniteChange = isFinite(change);
                   return (
                     <tr key={r.id} className="border-b last:border-0 hover:bg-gray-50">
                       <td className="py-3 px-4 text-gray-800">{new Date(r.purchased_at).toLocaleDateString()}</td>
                       <td className="py-3 px-4 text-gray-600">{r.store_name}</td>
                       <td className="py-3 px-4 text-right font-medium">{formatCurrency(r.unit_price)}</td>
                       <td className="py-3 px-4 text-right">
-                        {prev ? (
+                        {prev && prev.unit_price ? (
                           <span className={`font-medium ${change > 0 ? 'text-red-500' : change < 0 ? 'text-green-500' : 'text-gray-400'}`}>
-                            {change > 0 ? '▲' : change < 0 ? '▼' : '■'} {Math.abs(change).toFixed(1)}%
+                            {change > 0 ? '▲' : change < 0 ? '▼' : '■'} {isFiniteChange ? Math.abs(change).toFixed(1) : '0.0'}%
                           </span>
                         ) : (
                           <span className="text-gray-400">—</span>

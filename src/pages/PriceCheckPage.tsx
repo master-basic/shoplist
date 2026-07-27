@@ -91,7 +91,15 @@ export const PriceCheckPage: React.FC = () => {
 
     const fetchTrends = fetch(`${API_BASE}/api/price-check/trends`, { headers: h })
       .then(r => r.ok ? r.json() : { trends: [] })
-      .then(d => setTrends(d.trends || []));
+      .then(d => setTrends((d.trends || []).map((t: any) => ({
+        product_name: t.product_name,
+        store: t.store,
+        current_price: t.current_price || 0,
+        previous_price: t.period_start_price || 0,
+        change_percent: t.change_percent || 0,
+        direction: t.change_percent > 0 ? 'up' : t.change_percent < 0 ? 'down' : 'same',
+        checked_at: t.checked_at,
+      }))));
 
     Promise.all([fetchCompare, fetchHistory, fetchTrends])
       .catch(() => setError('Failed to load price data'))
@@ -136,7 +144,11 @@ export const PriceCheckPage: React.FC = () => {
     return Object.values(grouped).sort((a, b) => String(a.date).localeCompare(String(b.date)));
   }, [historyData]);
 
-  const storeColors: Record<string, string> = { Bravo: '#22c55e', Araz: '#3b82f6' };
+  const storeColors: Record<string, string> = {
+    Bravo: '#22c55e', Araz: '#3b82f6', Oba: '#f59e0b',
+    'Local Market': '#8b5cf6', Bazarstore: '#ef4444', Megastore: '#06b6d4',
+    Neptun: '#ec4899', Contakt: '#14b8a6', 'Grow Food': '#84cc16',
+  };
 
   const trendFiltered = useMemo(() => {
     let items = trends;
@@ -232,7 +244,7 @@ export const PriceCheckPage: React.FC = () => {
                     </div>
                     <div className="text-right">
                       <span className={`text-lg font-bold ${isCheapest ? 'text-green-600' : 'text-gray-700'}`}>
-                        {entry?.price.toFixed(2)} AZN
+                        {Number(entry?.price || 0).toFixed(2)} AZN
                       </span>
                       {entry?.unit && <span className="text-xs text-gray-400 ml-1">/{entry.unit}</span>}
                       <div className="text-xs text-gray-400">
@@ -284,7 +296,8 @@ export const PriceCheckPage: React.FC = () => {
               <div className="border-t border-gray-100 divide-y divide-gray-50">
                 {historyData.sort((a, b) => new Date(b.checked_at).getTime() - new Date(a.checked_at).getTime()).map((h, i) => {
                   const next = historyData.find(x => x.store === h.store && new Date(x.checked_at) < new Date(h.checked_at));
-                  const change = next ? ((h.price - next.price) / next.price * 100) : 0;
+                  const change = next && next.price ? ((h.price - next.price) / next.price * 100) : 0;
+                  const isFiniteChange = isFinite(change);
                   return (
                     <div key={i} className="flex items-center justify-between px-4 py-2 text-sm">
                       <div className="flex items-center gap-3">
@@ -292,11 +305,13 @@ export const PriceCheckPage: React.FC = () => {
                         <span className="text-gray-600">{h.store}</span>
                       </div>
                       <div className="flex items-center gap-4">
-                        <span className="font-medium">{h.price.toFixed(2)} AZN</span>
-                        {next && (
+                        <span className="font-medium">{Number(h.price || 0).toFixed(2)} AZN</span>
+                        {next && next.price ? (
                           <span className={`text-xs font-medium ${change > 0 ? 'text-red-500' : change < 0 ? 'text-green-500' : 'text-gray-400'}`}>
-                            {change > 0 ? '▲' : change < 0 ? '▼' : '■'} {Math.abs(change).toFixed(1)}%
+                            {change > 0 ? '▲' : change < 0 ? '▼' : '■'} {isFiniteChange ? Math.abs(change).toFixed(1) : '0.0'}%
                           </span>
+                        ) : (
+                          <span className="text-xs text-gray-400">—</span>
                         )}
                         <span className="text-gray-400 text-xs">{new Date(h.checked_at).toLocaleDateString()}</span>
                       </div>
@@ -338,11 +353,11 @@ export const PriceCheckPage: React.FC = () => {
                   </div>
                   <div className="text-right flex items-center gap-3">
                     <div className="text-sm">
-                      <span className="text-gray-400 line-through mr-1">{t.previous_price.toFixed(2)}</span>
-                      <span className="font-bold">{t.current_price.toFixed(2)} AZN</span>
+                      <span className="text-gray-400 line-through mr-1">{Number(t.previous_price || 0).toFixed(2)}</span>
+                      <span className="font-bold">{Number(t.current_price || 0).toFixed(2)} AZN</span>
                     </div>
                     <Badge variant={t.direction === 'down' ? 'success' : t.direction === 'up' ? 'error' : 'secondary'}>
-                      {t.direction === 'down' ? '▼' : t.direction === 'up' ? '▲' : '■'} {Math.abs(t.change_percent).toFixed(1)}%
+                      {t.direction === 'down' ? '▼' : t.direction === 'up' ? '▲' : '■'} {Math.abs(t.change_percent || 0).toFixed(1)}%
                     </Badge>
                   </div>
                 </div>

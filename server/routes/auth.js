@@ -5,8 +5,27 @@ const { authenticateToken, generateToken } = require('../auth');
 
 const router = express.Router();
 
+const loginAttempts = new Map();
+function rateLimit(key, maxAttempts = 5, windowMs = 60000) {
+  const now = Date.now();
+  const entry = loginAttempts.get(key);
+  if (entry) {
+    if (now - entry.resetAt > windowMs) {
+      loginAttempts.set(key, { count: 1, resetAt: now + windowMs });
+      return false;
+    }
+    if (entry.count >= maxAttempts) return true;
+    entry.count++;
+  } else {
+    loginAttempts.set(key, { count: 1, resetAt: now + windowMs });
+  }
+  return false;
+}
+
 router.post('/register', async (req, res) => {
   try {
+    const ip = req.ip || req.connection.remoteAddress;
+    if (rateLimit(`register:${ip}`)) return res.status(429).json({ error: 'Too many registration attempts. Please try again later.' });
     const { name, email, username: reqUsername, password } = req.body;
     if (!name || !password) return res.status(400).json({ error: 'Name and password are required' });
     if (!email && !reqUsername) return res.status(400).json({ error: 'Email or username is required' });
@@ -35,6 +54,8 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   try {
+    const ip = req.ip || req.connection.remoteAddress;
+    if (rateLimit(`login:${ip}`)) return res.status(429).json({ error: 'Too many login attempts. Please try again later.' });
     const { email, username, password } = req.body;
     const loginId = email || username;
     if (!loginId || !password) return res.status(400).json({ error: 'Email/username and password are required' });

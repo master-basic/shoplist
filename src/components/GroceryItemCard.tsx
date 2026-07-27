@@ -119,9 +119,9 @@ export function GroceryItemCard({
                     Not bought: {item.not_bought_reason}
                   </span>
                 )}
-                {bestDeal && (
+                {bestDeal && bestDeal.store && bestDeal.price != null && (
                   <span className="inline-block mt-1 ml-1 px-2 py-0.5 bg-purple-50 text-purple-700 text-xs rounded-full font-medium">
-                    Best at {bestDeal.store} ({bestDeal.price.toFixed(2)})
+                    Best at {bestDeal.store} ({Number(bestDeal.price).toFixed(2)})
                   </span>
                 )}
               </div>
@@ -264,9 +264,9 @@ export function GroceryItemCard({
                       Not bought: {item.not_bought_reason}
                     </span>
                   )}
-                  {bestDeal && (
+                  {bestDeal && bestDeal.store && bestDeal.price != null && (
                     <span className="inline-block mt-1 ml-1 px-2 py-0.5 bg-purple-50 text-purple-700 text-xs rounded-full font-medium">
-                      Best at {bestDeal.store} ({bestDeal.price.toFixed(2)})
+                      Best at {bestDeal.store} ({Number(bestDeal.price).toFixed(2)})
                     </span>
                   )}
                 </div>

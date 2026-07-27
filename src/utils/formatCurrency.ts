@@ -5,11 +5,12 @@
 /**
  * Format a number as currency based on the given currency code
  */
-export const formatCurrency = (amount: number, currency: string = 'AZN'): string => {
+export const formatCurrency = (amount: number | null | undefined, currency: string = 'AZN'): string => {
+  const safeAmount = typeof amount === 'number' && !isNaN(amount) ? amount : 0;
   return new Intl.NumberFormat('en-AZ', {
     style: 'currency',
     currency: currency.toUpperCase(),
-  }).format(amount);
+  }).format(safeAmount);
 };
 
 /**

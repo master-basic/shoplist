@@ -64,8 +64,8 @@ export async function getCompare(productName: string): Promise<CompareResult[]> 
   const res = await fetch(`${API_BASE}/api/price-check/compare?product_name=${encodeURIComponent(productName)}`, { headers: { 'Content-Type': 'application/json', ...authHeaders() } });
   if (!res.ok) { log.warn('API getCompare failed', { status: res.status }); return []; }
   const data = await res.json();
-  log.info('API getCompare result', { count: (data.comparison || []).length });
-  return data.comparison || [];
+  log.info('API getCompare result', { count: (data.compare || []).length });
+  return data.compare || [];
 }
 
 export async function getTrends(store?: string, category?: string): Promise<TrendInfo[]> {

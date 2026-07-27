@@ -35,10 +35,18 @@ const DashboardPage: React.FC = () => {
     const fetchSummary = async () => {
       if (!user?.id) { setLoading(false); return; }
       try {
-        const res = await apiFetch(`/api/analytics/summary?userId=${user.id}`);
+        const params = currentHouseholdId ? `?householdId=${currentHouseholdId}` : '';
+        const res = await apiFetch(`/api/analytics/summary${params}`);
         if (res.ok) {
           const data = await res.json();
-          setSummary(data);
+          setSummary({
+            totalSpent: data.totalSpentThisMonth || 0,
+            currency: 'AZN',
+            itemsBought: data.totalItemsBought || 0,
+            activeLists: data.activeListsCount || 0,
+            categorySpending: [],
+            topItems: [],
+          });
         }
       } catch (err) {
         console.error('Error fetching dashboard summary:', err);
@@ -47,7 +55,7 @@ const DashboardPage: React.FC = () => {
       }
     };
     fetchSummary();
-  }, [user?.id]);
+  }, [user?.id, currentHouseholdId]);
 
   useEffect(() => {
     const fetchBudget = async () => {

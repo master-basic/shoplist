@@ -24,7 +24,7 @@ interface CreateReceiptItemParams {
 export async function createReceipt(params: CreateReceiptParams): Promise<ReceiptFile> {
   log.info('API createReceipt', { userId: params.userId, fileName: params.file.name, fileSize: params.file.size });
   const formData = new FormData();
-  formData.append('file', params.file);
+  formData.append('image', params.file);
   formData.append('userId', params.userId);
   formData.append('householdId', params.householdId);
   if (params.listId) formData.append('listId', params.listId);
@@ -73,10 +73,11 @@ export async function getReceiptById(receiptId: string): Promise<ReceiptFile | n
 }
 
 export async function getUserReceipts(userId: string, householdId?: string): Promise<ReceiptFile[]> {
-  const params = new URLSearchParams({ userId });
+  const params = new URLSearchParams();
   if (householdId) params.append('householdId', householdId);
+  const qs = params.toString();
   log.info('API getUserReceipts', { userId, householdId });
-  const response = await apiFetch(`/api/receipts?${params}`);
+  const response = await apiFetch(`/api/receipts/user/${userId}${qs ? '?' + qs : ''}`);
   const data = await response.json();
   log.info('API getUserReceipts result', { count: (data.receipts || []).length });
   return data.receipts || [];

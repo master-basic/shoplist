@@ -196,10 +196,17 @@ export interface OCRItem {
 export interface ReceiptFile {
   id: string;
   user_id: string;
-  session_id: string;
-  file_url: string;
-  file_type: 'image' | 'pdf';
-  uploaded_at: string;
+  household_id: string;
+  list_id?: string;
+  name?: string;
+  total_amount: number;
+  currency: string;
+  image_url?: string;
+  ocr_data?: string;
+  status: string;
+  created_at: string;
+  updated_at?: string;
+  user_name?: string;
 }
 
 export interface SearchQuery {
